@@ -90,8 +90,7 @@ class BaseballAutoConfig{
             this.configFile.saveValue(PLAYER_KEY,element.getKeyRole(), element.getRole()) 
             this.configFile.saveValue(PLAYER_KEY,element.getKeyBattleType(), element.getBattleType()) 
         }
-        this.configFile.saveValue("GLOBAL_CONFIG","JobOrder",baseballAutoGui.getJobOrder())
-        
+        this.configFile.saveValue("GLOBAL_CONFIG","JobOrder",baseballAutoGui.getJobOrder())        
     }
     savePlayerResult( player ){
         this.configFile.saveValue("PLAYERS_CONFIG",player.getKeyResult(), player.getResult()) 

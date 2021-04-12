@@ -23,13 +23,17 @@ Class RealTimeBattleMode{
         counter+=this.playStartRealTimeBattle( ) 
         counter+=this.runBunt( )
         counter+=this.runStrike( )
-        counter+=this.skippBeforeGameStart( )        
+        counter+=this.skippBeforeGameStart( ) 
         counter+=this.skippPlayLineupStatus( )
         counter+=this.runBunt( )
         counter+=this.runStrike( )
         counter+=this.checkPopup( )
         counter+=this.checkGameResultWindow( )
 
+        if( counter = 0 ){
+            counter+=this.moveMainPageForNextJob()
+        }
+        ; this.logger.log("나는 실시간배틀" counter)
         return counter
     }
 
@@ -59,7 +63,7 @@ Class RealTimeBattleMode{
         if ( this.gameController.searchImageFolder("0.기본UI\2-3.실시간대전_Base") ){		
             this.player.setStay()
             this.logger.log("실시간 대전을 시작합니다") 
-             if ( this.gameController.searchAndClickFolder("실시간대전\버튼_실시간대전_시작") ){
+            if ( this.gameController.searchAndClickFolder("실시간대전\버튼_실시간대전_시작") ){
                 if( this.checkPopup() ){
                     return 0
                 }
@@ -91,7 +95,7 @@ Class RealTimeBattleMode{
     }
 
     runStrike(count:=0){
-        loopCount:=count        
+        loopCount:=count 
         if ( this.gameController.searchAndClickFolder("실시간대전\실행_속구",0,0,false) ){
             this.gameController.sleep(0.3)
             loopCount++
@@ -114,9 +118,9 @@ Class RealTimeBattleMode{
                     this.gameController.clickRatioPos(0.5, 0.6, 50)
                     this.gameController.sleep(1)
                 }
-                return 1			                
+                return 1			 
             }
-            
+
         }
         return 0 
     }
@@ -126,8 +130,8 @@ Class RealTimeBattleMode{
             this.player.setStay()
             this.logger.log(this.player.getAppTitle() " - 스킵합니다") 
             if( this.gameController.searchAndClickFolder("실시간대전\버튼_스킵스킵",0,0,false) = true ){				
-                  return 1			                
-            }            
+                return 1			 
+            } 
         }
         return 0 
     }
@@ -148,14 +152,17 @@ Class RealTimeBattleMode{
             this.player.setStay()
             if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){
 
-                 this.player.addResult()
-
-                if( this.player.needToStopRealTimeBattle() ){
+                this.player.addResult()
+                if( this.player.needToStopBattle() ){
                     this.logger.log("실시간대전을 다 돌았습니다.") 
                     this.player.setBye()
                 }else{
-                    this.logger.log("친구 대전이 " this.player.getRemainRealTimeBattleCount() "회 남았습니다." )                    
-                    this.player.setFree()
+                    if( this.player.getRemainBattleCount() = "무한" ){
+                        this.logger.log("계속 해서 돕니다. 이건 잘못된 선택입니다." )
+                    }else{
+                        this.logger.log("실시간대전을 " this.player.getRemainBattleCount() "번 더 돕니다." ) 
+                    }
+                    this.player.setFree()                    
                 }
                 return 1
             }
@@ -170,6 +177,16 @@ Class RealTimeBattleMode{
                 return 1
             }			
         }		
+    }
+
+    moveMainPageForNextJob(){
+        if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){		
+            this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
+            if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
+                this.logger.log("무한 루프는 안된다") 
+                return 1
+            }
+        }
     }
 
 }

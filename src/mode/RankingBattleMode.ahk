@@ -2,8 +2,7 @@
 Class RankingBattleMode{
 
     logger:= new AutoLogger( "랭킹대전" ) 
-    
-    closeChecker:=0
+
     __NEW( controller )
     {
         this.gameController :=controller
@@ -29,6 +28,11 @@ Class RankingBattleMode{
         counter+=this.checkPopup( )
         counter+=this.checkPlaying( )
         counter+=this.checkRankingClose( )
+
+        if( counter = 0 ){
+            counter+=this.moveMainPageForNextJob()
+        }
+        ; this.logger.log("나는 랭킹대전" counter)
         return counter
     }
 
@@ -63,14 +67,8 @@ Class RankingBattleMode{
                     return 1
                 }		 
             }else{
-                this.closeChecker++                
-                this.logger.log("랭대 다 돈거 같아 시작하지 않습니다. .." + this.closeChecker) 
-                if( this.closeChecker > 2 ){
-                    this.closeChecker:=0
-                    this.player.setBye()
-                }else{
-                    this.player.setFree()
-                }                
+                this.logger.log("상대가 없는거 보니 다 돌았습니다.") 
+                this.player.setBye()
                 return 1
             }
         }
@@ -145,9 +143,8 @@ Class RankingBattleMode{
 
     checkRankingClose(){
         if ( this.gameController.searchImageFolder("랭대모드\화면_랭대종료" ) ){		
-            this.player.setStay()
-            
-            this.logger.log("랭대는 이제 다 돌았네요") 
+            this.player.setStay()            
+            this.logger.log("랭대는 다 돌거나 갱신한다. ") 
             if( this.gameController.searchAndClickFolder("랭대모드\화면_랭대종료\버튼_확인" ) ){
                 this.player.setFree()
                 return 1
@@ -169,13 +166,33 @@ Class RankingBattleMode{
         if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){		
             this.logger.log("MVP 를 확인했습니다.") 
             if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){
-                this.closeChecker:=0
                 this.player.addResult()
-                this.player.setFree()                            
+                if( this.player.needToStopBattle() ){
+                    this.logger.log("랭킹대전을 횟수만큼 돌았습니다.") 
+                    this.player.setBye()
+                }else{
+                    if( this.player.getRemainBattleCount() = "무한" ){
+                        this.logger.log("상대가 없을 때까지 돕니다." )
+                    }else{
+                        this.logger.log("랭킹대전을 " this.player.getRemainBattleCount() "번 더 돕니다." ) 
+                    }
+                    this.player.setFree()
+                }
                 return 1
             }
         }
         return 0 
     }
+
+    moveMainPageForNextJob(){
+        if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){		
+            this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
+            if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
+                this.logger.log("무한 루프는 안된다") 
+                return 1
+            }
+        }
+    }
+
 
 }

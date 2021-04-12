@@ -24,9 +24,9 @@ Class BaseballAuto{
         this.typePerMode["리그"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["리그"].Push(new LeagueRunningMode( this.gameController ) ) 
 
-        this.typePerMode["대전"]:=[]
-        this.typePerMode["대전"].Push(new GameStarterMode( this.gameController ) ) 
-        this.typePerMode["대전"].Push(new RealTimeBattleMode( this.gameController ) ) 
+        this.typePerMode["실대"]:=[]
+        this.typePerMode["실대"].Push(new GameStarterMode( this.gameController ) ) 
+        this.typePerMode["실대"].Push(new RealTimeBattleMode( this.gameController ) ) 
 
         this.typePerMode["랭대"]:=[]
         this.typePerMode["랭대"].Push(new GameStarterMode( this.gameController ) ) 
@@ -81,13 +81,13 @@ Class BaseballAuto{
                             break
                         } 
 
-                        modeList:= this.typePerMode[globalCurrentPlayer.getRole()]
+                        modeList:= this.typePerMode[globalCurrentPlayer.getMode()]
                         for index, gameMode in modeList ; Enumeration is the recommended approach in most cases.
                         {
                             gameMode.setPlayer(player) 
                             localChecker+=gameMode.checkAndRun()
                         } 
-                        if( globalCurrentPlayer.getRole() ="리그")
+                        if( globalCurrentPlayer.getMode() ="리그")
                             this.gameController.sleep(2)
 
                         ; this.logger.log( player.getAppTitle() " checker count=" localChecker)
@@ -96,7 +96,7 @@ Class BaseballAuto{
                         }else{
                             ; Stay 를 벗어 나게 해주자
                             if ( localChecker = 0 ){
-                                if( globalCurrentPlayer.getRole() ="리그"){
+                                if( globalCurrentPlayer.getMode() ="리그"){
                                     if( loopCount = 80 || loopCount = 90){
                                         this.logger.log("ERROR : 어딘지 모르니 일단 뒤로가기!!!")
                                         this.startMode.setPlayer(player)

@@ -30,8 +30,13 @@ Class FriendsBattleMode{
         counter+=this.checkGameResultWindow( )
         counter+=this.checkMVPWindow( )
 
-        counter+=this.checkPopup( )        
+        counter+=this.checkPopup( ) 
         counter+=this.receiveReward( ) 	
+
+        if( counter = 0 ){
+            counter+=this.moveMainPageForNextJob()
+        }
+        ; this.logger.log("나는 친구대전" counter)
         return counter
     }
 
@@ -45,7 +50,7 @@ Class FriendsBattleMode{
         }
         return 0
     }
-    
+
     selectFriendsBattle(){
         if ( this.gameController.searchImageFolder("0.기본UI\2.대전모드_Base") ){		
             this.player.setStay()
@@ -64,11 +69,8 @@ Class FriendsBattleMode{
             if ( this.gameController.searchAndClickFolder("친구대전\버튼_탑대상",0,30) ){
                 return 1
             }		 
-        }else{
-            return 10
         }
-        return 0	
-
+        return 0
     }
 
     startFriendsBattle(){
@@ -127,9 +129,9 @@ Class FriendsBattleMode{
     }
 
     checkPlaying(){
-        this.gameController.sleep(2)        
+        this.gameController.sleep(2) 
         return 0 
-    }  
+    } 
 
     checkGameResultWindow(){
         if ( this.gameController.searchImageFolder("1.공통\화면_경기_결과" ) ){		
@@ -147,12 +149,15 @@ Class FriendsBattleMode{
             this.logger.log("MVP 를 확인했습니다.") 
             if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){
                 this.player.addResult()
-
-                if( this.player.needToStopFriendsBattle() ){
+                if( this.player.needToStopBattle() ){
                     this.logger.log("친구대전을 다 돌았습니다.") 
                     this.player.setBye()
                 }else{
-                    this.logger.log("친구 대전이 " this.player.getRemainFriendsBattleCount() "회 남았습니다." )                    
+                    if( this.player.getRemainBattleCount() = "무한" ){
+                        this.logger.log("친구대전을 계속 돌겠다니.... 이건 잘못된 선택입니다." )
+                    }else{
+                        this.logger.log("친구대전을 " this.player.getRemainBattleCount() "번 더 돕니다." ) 
+                    }                    
                     this.player.setFree()
                 }
                 return 1
@@ -170,5 +175,15 @@ Class FriendsBattleMode{
             }
         }
         return 0 
+    }
+
+    moveMainPageForNextJob(){
+        if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){		
+            this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
+            if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
+                this.logger.log("무한 루프는 안된다") 
+                return 1
+            }
+        }
     }
 }

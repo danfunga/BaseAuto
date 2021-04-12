@@ -102,7 +102,8 @@ Class MC_ScanWindow {
     ; stringArray:=["리그","대전","랭대","홈런","친구","일꾼","기타"]
     ; msg
     ; if( !BaseballAutoPlayer.hasValue( role, BaseballAutoPlayer.AVAILABLE_ROLES) ){
-        MsgBox, % BaseballAutoPlayer.AVAILABLE_ROLES[1]
+        msgbox % BaseballAutoPlayer.ASSIST_MODE_ARRAY.length()
+        
     ; }else{
     ;     MsgBox, % "찾았다"
     ; }

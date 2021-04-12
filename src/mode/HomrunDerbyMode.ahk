@@ -3,8 +3,7 @@
 Class HomrunDerbyMode{
 
     logger:= new AutoLogger( "홈런더비" ) 
-    closeChecker:=0
-
+    
     __NEW( controller )
     {
         this.gameController :=controller
@@ -28,6 +27,11 @@ Class HomrunDerbyMode{
         counter+=this.checkMVPWindow( )
         counter+=this.checkPopup( )
         counter+=this.checkHomerunDerbyClose( )
+
+        if( counter = 0 ){
+            counter+=this.moveMainPageForNextJob()
+        }
+        ; this.logger.log("나는 홈런대전" counter)
         return counter
     }
 
@@ -128,27 +132,41 @@ Class HomrunDerbyMode{
         if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){		
             this.player.setStay()
             this.logger.log("홈런더비 종료를 확인했습니다.") 
-            this.closeChecker:=0
             if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){
                 this.player.addResult()
-                this.player.setFree()
+                if( this.player.needToStopBattle() ){
+                    this.logger.log("홈런더비를 횟수만큼 다 돌았습니다.") 
+                    this.player.setBye()
+                }else{
+                    if( this.player.getRemainBattleCount() = "무한" ){
+                        this.logger.log("홈런 볼을 다 쓸때까지 돕니다." )
+                    }else{
+                        this.logger.log("홈런 더비를 " this.player.getRemainBattleCount() "번 더 돕니다." ) 
+                    }                    
+                    this.player.setFree()
+                }
                 return 1
             }
         }
         return 0 
     } 
+
     checkHomerunDerbyClose(){
         if ( this.gameController.searchImageFolder("홈런더비모드\화면_볼없음" ) ){		 
-            this.closeChecker++
-            this.logger.log("홈런더비 다 돌았네요. .." + this.closeChecker)
-            if( this.closeChecker > 2 ){
-                this.closeChecker:=0
-                this.player.setBye()
-            }else{
-                this.player.setFree() 
-            }
+            this.logger.log("볼이 없는거 보니 홈런더비 다 돌았네요. ..")
+            this.player.setBye()
             return 1
         }
         return 0 
+    }
+
+    moveMainPageForNextJob(){
+        if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){		
+            this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
+            if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
+                this.logger.log("무한 루프는 안된다") 
+                return 1
+            }
+        }
     }
 }
