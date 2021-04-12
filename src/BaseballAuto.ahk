@@ -91,8 +91,7 @@ Class BaseballAuto{
                             this.gameController.sleep(2)
 
                         ; this.logger.log( player.getAppTitle() " checker count=" localChecker)
-                        if ( !player.needToStay() ){ 
-                            ; this.logger.log( "AUTO_PLAYING 확인. " globalCurrentPlayer.getAppTitle())
+                        if ( player.needToNextPlayer() ){ 
                             break
                         }else{
                             ; Stay 를 벗어 나게 해주자

@@ -1,7 +1,9 @@
 ﻿class BaseballAutoPlayer{
-    static AVAILABLE_ROLES:=["리그","대전","랭대","홈런","친구","일꾼","기타"]
+    static AVAILABLE_ROLES:=["리그","대전","랭대","홈런","친구"]
     static AVAILABLE_PLAY_TYPE:=["전체","공격","수비"]
 
+    static NEXT_PLAYER_STATUS:=["Unknwon","자동중","리그종료","끝" ]
+    static STOP_PLAYER_STATUS:=["끝","완료"]
 
     __NEW( index , title:="(Main)", enabled:=false, role:="League" ){
         this.index:=index
@@ -56,9 +58,9 @@
         if(this.remainFriendsBattleCount<= 0){
             return true
         }Else
-            return false
+        return false
     }
-    
+
     getRemainRealTimeBattleCount(){
         return this.remainRealTimeBattleCount
     }
@@ -67,25 +69,17 @@
         if(this.remainRealTimeBattleCount<= 0){
             return true
         }Else
-            return false
+        return false
     }
 
-    
     getAppTitle(){
         return this.appTitle
     }
-    needToStay(){
-        if( this.status = "Unknwon" or this.status ="자동중" or this.status ="리그종료" or this.status ="끝")
-            return false
-        else
-            return true
+    needToNextPlayer(){
+        return this.hasValue(this.status,BaseballAutoPlayer.NEXT_PLAYER_STATUS) 
     }
     needToStop(){
-        if( this.status ="끝")
-            return true
-        else
-            return false
-        this.setStatusColor(2)
+        return this.hasValue(this.status,BaseballAutoPlayer.STOP_PLAYER_STATUS) 
     }
     setWantToWaitResult(){
         this.watingResult:=true
@@ -140,9 +134,9 @@
         this.AppTitle:=title 
     }
     setRole( role ){
-        if role not in 리그,대전,랭대,홈런,친구,일꾼,기타
+        if not ( this.hasValue( role, BaseballAutoPlayer.AVAILABLE_ROLES)) 
         { 
-            role:="리그"
+            role:=BaseballAutoPlayer.AVAILABLE_ROLES[1]
         }
         this.appRole:=role
     }
@@ -155,11 +149,10 @@
 
     }
     setBattleType( _battleType){
-        if _battleType not in 수비,공격,전체
-        {
-            _battleType:="전체"
+        if not ( this.hasValue( _battleType, BaseballAutoPlayer.AVAILABLE_PLAY_TYPE)) 
+        { 
+            _battleType:=BaseballAutoPlayer.AVAILABLE_PLAY_TYPE[1]
         }
-
         this.battleType:=_battleType
     }
 
@@ -188,5 +181,16 @@
 
     getWorkerRole(){
 
+    }
+    hasValue( target, stringArray){
+        result:=false
+        for index, value in stringArray
+        {
+            if( value = target){
+                result:=true
+                break
+            }
+        }
+        return result
     }
 }

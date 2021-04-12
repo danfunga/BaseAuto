@@ -1,5 +1,6 @@
 ﻿; #include %A_ScriptDir%\src\util\MC_GameController.ahk
 
+#include %A_ScriptDir%\src\player\BaseballAutoPlayer.ahk
 
 Class MC_ScanWindow {
 
@@ -95,8 +96,36 @@ Class MC_ScanWindow {
 }
 
 !F6::
+
+    player := new BaseballAutoPlayer(4)
+    ; role:="리그"
+    ; stringArray:=["리그","대전","랭대","홈런","친구","일꾼","기타"]
+    ; msg
+    ; if( !BaseballAutoPlayer.hasValue( role, BaseballAutoPlayer.AVAILABLE_ROLES) ){
+        MsgBox, % BaseballAutoPlayer.AVAILABLE_ROLES[1]
+    ; }else{
+    ;     MsgBox, % "찾았다"
+    ; }
+    ; find:=false
+    ; for index, value in stringArray
+    ; {
+    ;     if( value = role){
+    ;         find:=true
+    ;     }
+    ; }
+    ; if( !find ){
+    ;     MsgBox, % "이거 안들어가 : " role            
+    ; }
+    ; if role not in stringArray
+    ; {
+    ;     { 
+    ;         MsgBox, % "이거 안들어가 : " role            
+    ;     }
+    ; }  
+
+    player.setRole("바보")
     ; IfExist, A_ScriptDir
-    globalCurrentPlayer.setStay()
+    ; globalCurrentPlayer.setStay()
     ; targetX:=178
     ; targetY:=63
     ; MouseMove, %targetX%, %targetY%

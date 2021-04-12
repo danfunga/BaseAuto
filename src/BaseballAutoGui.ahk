@@ -1,4 +1,5 @@
 ﻿#include %A_ScriptDir%\src\gui\MC_GuiObject.ahk
+#include %A_ScriptDir%\src\player\BaseballAutoPlayer.ahk
 
 Class BaseballAutoGui{
     width:=330
@@ -98,10 +99,16 @@ Class BaseballAutoGui{
             this.guiMain.Add("Edit", player.getAppTitle(), option, guiLable,0)
         }
 
+
+        targetTitle:=""
+        for index, singleText in BaseballAutoPlayer.AVAILABLE_ROLES 
+        {
+            targetTitle:=targetTitle singleText "|"
+        }
         for index, player in baseballAutoConfig.players
         {
             guiType:="ComboBox"
-            guiTitle:="리그|대전|랭대|홈런|친구|일꾼|기타"
+            guiTitle:=targetTitle
             guiLable:=player.getKeyRole() 
             if ( index = 1 )
                 option:="xs+110 ys+15 +Center w50"
@@ -110,11 +117,18 @@ Class BaseballAutoGui{
 
             this.guiMain.Add(guiType, guiTitle, option, guiLable,0)
             this.guiMain.Controls[guiLable].select(player.getRole())
+        }        
+    
+        targetTitle:=""
+        for index, singleText in BaseballAutoPlayer.AVAILABLE_PLAY_TYPE 
+        {
+            targetTitle:=targetTitle singleText "|"
         }
+
         for index, player in baseballAutoConfig.players
         {
             guiType:="ComboBox"
-            guiTitle:="수비|공격|전체"
+            guiTitle:=targetTitle
             guiLable:=player.getKeyBattleType()
             option:="xp y+2 wp"
             if ( index = 1 ){
