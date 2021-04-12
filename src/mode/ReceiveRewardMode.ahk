@@ -63,7 +63,7 @@ Class ReceiveRewardMode{
             if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
                 this.logger.log("보내기 받기를 눌렀습니다.") 
                 this.checkPopup()
-                
+
                 this.moveMainPageForNextJob()
                 this.gameController.sleep(3)
                 return 1
@@ -143,21 +143,21 @@ Class ReceiveRewardMode{
                 this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼")
             }
             if ( this.gameController.searchImageFolder("보상모드\화면_앰블럼") ){
-                loop 5 {
+                loop 6 {
                     if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
                         this.logger.log("앰블럼 제작 - " A_INDEX) 
                         this.checkPopup()
                     }else{
                         if ( this.gameController.searchImageFolder("보상모드\화면_보상없음") ){
-                            this.logger.log("더이상 제작 불가능")                 
-                            this.moveMainPageForNextJob()
-                            this.player.setBye()
+                            this.logger.log("더이상 제작 불가능")                             
                             break
                         }
                     } 
                 } 
 
             }
+            this.moveMainPageForNextJob()
+            this.player.setBye()
             return 0
         }
         return 0
