@@ -11,7 +11,7 @@
 
     ; 일꾼 모드 설정
     static COUNT_PER_ASSIST_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2, "보상":1 }    
-    static ASSIST_MODE_ARRAY:=["실대","홈런","랭대","친구","보상"]
+    static ASSIST_MODE_ARRAY:=["홈런","랭대","친구","실대","보상"]
     static ASSIST_MODE_ENDLESS:=false
 
     ; 단독 모드 설정
