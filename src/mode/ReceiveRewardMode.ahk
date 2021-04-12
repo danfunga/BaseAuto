@@ -63,11 +63,16 @@ Class ReceiveRewardMode{
             if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
                 this.logger.log("보내기 받기를 눌렀습니다.") 
                 this.checkPopup()
+                
+                this.moveMainPageForNextJob()
+                this.gameController.sleep(3)
                 return 1
             }else{
                 if ( this.gameController.searchImageFolder("보상모드\화면_보상없음") ){		
                     this.logger.log("받을 보상이 없는것 같습니다.") 
                     this.moveMainPageForNextJob()
+                    this.gameController.sleep(3)
+                    
                 }
             }
         }
