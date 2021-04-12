@@ -42,9 +42,11 @@ Class LeagueRunningMode{
     {
 
         if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){		
-            if( this.player.getRemainBattleCount() = 0 ){
-                this.player.setBye()
-                return 1
+            if( this.player.getRole() = "단독" ){
+                if( this.player.getRemainBattleCount() = 0 ){
+                    this.player.setBye()
+                    return 1
+                }
             }
             this.logger.log(this.player.getAppTitle() " 리그를 돌겠습니다.")
             this.player.setStay()
@@ -62,11 +64,10 @@ Class LeagueRunningMode{
                 }else{
                     this.logger.log("리그 볼을 모두 소비하였습니다.")
                     this.player.setBye()
-                    return 0    
+                    return 0 
                 }
                 return 1
             }
-
 
             this.logger.log("경기 일정 화면을 넘어갑니다.")
             this.player.setStay()
@@ -81,6 +82,7 @@ Class LeagueRunningMode{
             }else{
                 this.player.setNeedSkip(false)
             }
+
             if ( this.player.getWaitingResult() ){				
                 if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
                     this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
@@ -92,9 +94,12 @@ Class LeagueRunningMode{
                     return 1
                 }
             }else{ 
-                if( this.player.getRemainBattleCount() = 0 ){
-                    this.player.setBye()
-                    return 0
+
+                if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
+                    if( this.player.getRemainBattleCount() = 0 ){
+                        this.player.setBye()
+                        return 0
+                    }
                 }
                 if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
                     return 1
@@ -244,16 +249,18 @@ Class LeagueRunningMode{
                 this.logger.log("경기 종료를 확인했습니다.") 
                 this.player.addResult()
                 this.player.setStay()
-
-                if( this.player.needToStopBattle() ){
-                    this.logger.log("리그를 횟수만큼 돌았습니다.") 
-                }else{
-                    if( this.player.getRemainBattleCount() = "무한" ){
-                        this.logger.log("볼을 모두 사용할 때까지 돕니다" )
+                if( this.player.getRole() = "단독" ){
+                    if( this.player.needToStopBattle() ){
+                        this.logger.log("리그를 횟수만큼 돌았습니다.") 
                     }else{
-                        this.logger.log("리그 " this.player.getRemainBattleCount() "번 더 돕니다." ) 
-                    } 
+                        if( this.player.getRemainBattleCount() = "무한" ){
+                            this.logger.log("볼을 모두 사용할 때까지 돕니다" )
+                        }else{
+                            this.logger.log("리그 " this.player.getRemainBattleCount() "번 더 돕니다." ) 
+                        } 
+                    }
                 }
+
                 return 1
             }			
         }else{
@@ -271,15 +278,17 @@ Class LeagueRunningMode{
                             this.logger.log("플레이 오프 경기가 종료 된거 같습니다")
                             this.player.addResult()
                             this.player.setStay()
-                            if( this.player.needToStopBattle() ){
-                                this.logger.log("리그를 설정 횟수만큼 다 돌았습니다.") 
-                            }else{
-                                if( this.player.getRemainBattleCount() = "무한" ){
-                                    this.logger.log("볼을 모두 사용할 때까지 돕니다" )
+                            if( this.player.getRole() = "단독" ){
+                                if( this.player.needToStopBattle() ){
+                                    this.logger.log("리그를 횟수만큼 돌았습니다.") 
                                 }else{
-                                    this.logger.log("리그 " this.player.getRemainBattleCount() "번 더 돕니다." )                                     
-                                } 
-                            }
+                                    if( this.player.getRemainBattleCount() = "무한" ){
+                                        this.logger.log("볼을 모두 사용할 때까지 돕니다" )
+                                    }else{
+                                        this.logger.log("리그 " this.player.getRemainBattleCount() "번 더 돕니다." ) 
+                                    } 
+                                }
+                            } 
                             return 1
                         }				
                     }
@@ -302,7 +311,7 @@ Class LeagueRunningMode{
         if ( this.gameController.searchImageFolder("1.공통\화면_경기_결과" ) ){		
             this.logger.log("경기 결과화면입니다..") 
             this.player.setStay()
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){                
+            if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){ 
                 return 1
             }
         }
@@ -312,7 +321,7 @@ Class LeagueRunningMode{
         if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){		
             this.logger.log("MVP 화면입니다.") 
             this.player.setStay()
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){                
+            if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){ 
                 this.logger.log("MVP 화면을 넘어갑니다") 
                 return 1
             }
