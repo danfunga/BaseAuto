@@ -16,7 +16,6 @@ Class BaseballAuto{
     logger:= new AutoLogger( "시 스 템" )
     gameController := new MC_GameController()
     typePerMode := Object()
-    
 
     init(){
         this.startMode:= new GameStartMode( this.gameController )
@@ -43,16 +42,12 @@ Class BaseballAuto{
 
         this.logger.log("BaseballAuto Ready !")
     }
- 
+
     start(){
-        global BaseballAutoGui, baseballAutoConfig, globalCurrentPlayer,globalContinueFlag
+        global BaseballAutoGui, baseballAutoConfig, globalCurrentPlayer, globalContinueFlag
         BaseballAutoGui.saveGuiConfigs()
-        currentEnablePlayers:=Array()
-        for index, player in baseballAutoConfig.enabledPlayers
-        {
-            currentEnablePlayers.Push(player.clone())
-        }
-        
+        this.currentEnablePlayers:=this.loadPlayerConfig()
+
         if ( ! this.started ){
             this.started:=true
             this.running:=true
@@ -60,18 +55,16 @@ Class BaseballAuto{
 
             BaseballAutoGui.started()
             while( this.running = true ){ 
-                if ( currentEnablePlayers.length() = 0 ){
+                if ( this.currentEnablePlayers.length() = 0 ){
                     this.running:=false
                     this.logger.log("가능한 AppPlayer가 없습니다.")
                 }
 
-                for playerIndex, player in currentEnablePlayers{
+                for playerIndex, player in this.currentEnablePlayers{
                     globalCurrentPlayer:=player
 
                     if( globalCurrentPlayer.needToStop()){
-                        currentEnablePlayers.remove(playerIndex)
-                        if( currentEnablePlayers.length() = 0 )
-                            this.running:=false
+                        this.stopPlayer(playerIndex)                 
                         continue
                     }
 
@@ -84,14 +77,10 @@ Class BaseballAuto{
                         localChecker:=0
                         if not ( this.gameController.checkAppPlayer() ){
                             this.logger.log("Application Title을 확인하세요 변경 후 save ")
-
-                            currentEnablePlayers.remove(playerIndex)
-                            if( currentEnablePlayers.length() = 0 )
-                                this.running:=false 
+                            this.stopPlayer()                           
                             break
                         } 
 
-                        ; msgbox % this.typePerMode[globalCurrentPlayer.getRole()]
                         modeList:= this.typePerMode[globalCurrentPlayer.getRole()]
                         for index, gameMode in modeList ; Enumeration is the recommended approach in most cases.
                         {
@@ -113,7 +102,7 @@ Class BaseballAuto{
                                         this.logger.log("ERROR : 어딘지 모르니 일단 뒤로가기!!!")
                                         this.startMode.setPlayer(player)
                                         this.startMode.goBackward()
-                                    }                                    
+                                    } 
                                     if ( loopCount > 90 ){
                                         this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 풀어주자")
                                         player.setUnknwon()
@@ -133,12 +122,29 @@ Class BaseballAuto{
                     globalCurrentPlayer.setCheckDone()
                 } 
             }
-
         }else{ 
             this.logger.log("BaseballAuto Already Started!!")
         }
         this.logger.log("BaseballAuto Done!!")
         this.stop()
+    }
+    loadPlayerConfig(){
+        global baseballAutoConfig
+        curruntPlayers:=Array()
+        for index, player in baseballAutoConfig.enabledPlayers
+        {
+            if not ( player.getAppTitle() = ""){
+                curruntPlayers.Push(player.clone())
+            }else{
+                this.logger.log( "ERROR : " index " 번째 설정의 값이 비었습니다" )
+            }
+        }
+        return curruntPlayers
+    }
+    stopPlayer(index){
+        this.currentEnablePlayers.remove(index)
+        if( this.currentEnablePlayers.length() = 0 )
+            this.running:=false
     }
     tryStop(){
         this.logger.log("try to stop!")
@@ -153,10 +159,14 @@ Class BaseballAuto{
 
         }else{
             this.logger.log("BaseballAuto Already Stopped!!")
-
         }
     }
-
+    setWantToResult(){
+        for index,player in this.currentEnablePlayers
+        {
+            player.setWantToWaitResult() 
+        }
+    }
     reload(){
         this.logger.log(" reload Call")
     }

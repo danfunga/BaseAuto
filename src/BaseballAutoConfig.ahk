@@ -79,13 +79,7 @@ class BaseballAutoConfig{
         baseballAutoGui.setJobOrder(loadedJobOrder)
 
     }
-    setWantToResult(){
-        for index,player in this.enabledPlayers
-        {
-            player.setWantToWaitResult() 
-        }
-
-    }
+    
     saveConfig(){
     global baseballAutoGui
         PLAYER_KEY:="PLAYERS_CONFIG"

@@ -355,11 +355,12 @@ Class BaseballAutoGui{
         ToolTip
     }
     waitingResultByGui(){
-        global baseballAutoConfig
+        global baseballAuto
+        ; global baseballAutoConfig
         ToolTip, 모든 경기가 종료되길 체크 합니다.
         Sleep , 1000
         ToolTip
-        baseballAutoConfig.setWantToResult()	
+        baseballAuto.setWantToResult()	
     }
     getGuiInfo(player){
         player.setEnabled(this.guiMain.Controls[player.getKeyEnable()].get())
