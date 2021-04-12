@@ -84,7 +84,7 @@ Class FriendsBattleMode{
             }else{
                 this.logger.log("친구가 없어서 시작하지 않습니다.") 
                 this.player.setBye()
-                return 1
+                return  0
             }
         }
         return 0		
