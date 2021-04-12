@@ -18,26 +18,26 @@ Class BaseballAuto{
     typePerMode := Object()
 
     init(){
-        this.startMode:= new GameStartMode( this.gameController )
+        this.startMode:= new GameStarterMode( this.gameController )
 
         this.typePerMode["리그"]:=[]
-        this.typePerMode["리그"].Push(new GameStartMode( this.gameController ) ) 
+        this.typePerMode["리그"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["리그"].Push(new LeagueRunningMode( this.gameController ) ) 
 
         this.typePerMode["대전"]:=[]
-        this.typePerMode["대전"].Push(new GameStartMode( this.gameController ) ) 
+        this.typePerMode["대전"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["대전"].Push(new RealTimeBattleMode( this.gameController ) ) 
 
         this.typePerMode["랭대"]:=[]
-        this.typePerMode["랭대"].Push(new GameStartMode( this.gameController ) ) 
+        this.typePerMode["랭대"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["랭대"].Push(new RankingBattleMode( this.gameController ) ) 
 
         this.typePerMode["친구"]:=[]
-        this.typePerMode["친구"].Push(new GameStartMode( this.gameController ) ) 
+        this.typePerMode["친구"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["친구"].Push(new FriendsBattleMode( this.gameController ) ) 
 
         this.typePerMode["홈런"]:=[]
-        this.typePerMode["홈런"].Push(new GameStartMode( this.gameController ) ) 
+        this.typePerMode["홈런"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["홈런"].Push(new HomrunDerbyMode( this.gameController ) ) 
 
         this.logger.log("BaseballAuto Ready !")
@@ -77,7 +77,7 @@ Class BaseballAuto{
                         localChecker:=0
                         if not ( this.gameController.checkAppPlayer() ){
                             this.logger.log("Application Title을 확인하세요 변경 후 save ")
-                            this.stopPlayer()                           
+                            this.stopPlayer(playerIndex)                           
                             break
                         } 
 
@@ -141,11 +141,13 @@ Class BaseballAuto{
         }
         return curruntPlayers
     }
+
     stopPlayer(index){
         this.currentEnablePlayers.remove(index)
         if( this.currentEnablePlayers.length() = 0 )
             this.running:=false
     }
+
     tryStop(){
         this.logger.log("try to stop!")
         this.running := false

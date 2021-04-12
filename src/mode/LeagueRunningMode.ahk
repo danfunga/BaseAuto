@@ -1,6 +1,4 @@
 ﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
-#include %A_ScriptDir%\src\util\MC_GameController.ahk
-
 Class LeagueRunningMode{
 
     logger:= new AutoLogger( "리그모드" ) 
@@ -63,8 +61,8 @@ Class LeagueRunningMode{
                 this.player.setNeedSkip(false)
             }
             if ( this.player.getWaitingResult() ){				
-                this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
                 if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
+                    this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
                     this.logger.log(this.player.getAppTitle() " 바이 바이.")
                     this.player.setBye()
                 }else if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){

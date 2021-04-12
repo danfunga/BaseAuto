@@ -2,7 +2,7 @@
 
 #include %A_ScriptDir%\src\external\Gdip_all.ahk
 #include %A_ScriptDir%\src\external\Gdip_ImageSearch.ahk
-#include %A_ScriptDir%\src\util\AutoLogger.ahk
+; #include %A_ScriptDir%\src\util\AutoLogger.ahk
 
 Class InActiveImageSearcher{
 

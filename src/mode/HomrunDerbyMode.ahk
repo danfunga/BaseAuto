@@ -1,5 +1,4 @@
 ﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
-#include %A_ScriptDir%\src\util\MC_GameController.ahk
 
 Class HomrunDerbyMode{
 

@@ -1,6 +1,4 @@
-﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
-
-Class ActiveImageSearcher{
+﻿Class ActiveImageSearcher{
 
     pathPrefix:="\Resource\Image\"
     percentage:=30

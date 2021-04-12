@@ -1,6 +1,4 @@
-﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
-
-class InActiveInputController{
+﻿class InActiveInputController{
 
     currentTargetTitle:=""
     __NEW( logger ){

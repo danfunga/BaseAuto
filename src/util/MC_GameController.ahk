@@ -1,7 +1,8 @@
 ﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
-#include %A_ScriptDir%\src\util\ActiveImageSearcher.ahk
+; #include %A_ScriptDir%\src\util\ActiveImageSearcher.ahk
 #include %A_ScriptDir%\src\util\InActiveImageSearcher.ahk
 #include %A_ScriptDir%\src\util\InActiveInputController.ahk
+; #include %A_ScriptDir%\src\player\BaseballAutoPlayer.ahk
 
 class MC_GameController{
     logger:= new AutoLogger( "Controll" ) 

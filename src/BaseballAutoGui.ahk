@@ -1,5 +1,4 @@
 ﻿#include %A_ScriptDir%\src\gui\MC_GuiObject.ahk
-; #include %A_ScriptDir%\src\gui\MC_MacroGui.ahk
 
 Class BaseballAutoGui{
     width:=330
@@ -18,9 +17,7 @@ Class BaseballAutoGui{
     }
 
     show( posX, posY){	
-        this.guiMain.Show( "x" posX . "y" . posY . "w" this.width . " h" . this.mainHeight )			
-        ; this.guiMain.Show(  )			
-        ; this.guiMain.Show( "w" this.width . " h" . totalHeight )			
+        this.guiMain.Show( "x" posX . "y" . posY . "w" this.width . " h" . this.mainHeight )
     }
     changeContents( onlyMain ){
         if( onlyMain ){

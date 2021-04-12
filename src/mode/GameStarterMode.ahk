@@ -1,7 +1,6 @@
 ﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
-#include %A_ScriptDir%\src\util\MC_GameController.ahk
 
-Class GameStartMode{
+Class GameStarterMode{
 
     logger:= new AutoLogger( "게임실행" ) 
     __NEW( controller ){

@@ -1,4 +1,6 @@
 ﻿; #include %A_ScriptDir%\src\util\MC_GameController.ahk
+
+
 Class MC_ScanWindow {
 
     static widthToScan=330

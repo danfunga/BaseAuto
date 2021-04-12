@@ -1,10 +1,8 @@
 ﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
-#include %A_ScriptDir%\src\util\MC_GameController.ahk
 
 Class FriendsBattleMode{
 
     logger:= new AutoLogger( "친구대전" ) 
-
     closeChecker:=0
 
     __NEW( controller )
@@ -26,7 +24,7 @@ Class FriendsBattleMode{
         counter:= this.selectTopFriends( )
         counter+=this.startFriendsBattle( )
         counter+=this.playFriendsBattle( ) 
-        ; counter+=this.checkSlowAndChance( ) 
+
         counter+=this.checkPlaying( )
 
         counter+=this.checkGameResultWindow( )
@@ -129,12 +127,7 @@ Class FriendsBattleMode{
     }
 
     checkPlaying(){
-        ; 자동체크를 하기에는 위험한거 같아 그냥 2초씩 쉰다.
-        ; if ( this.gameController.searchImageFolder("친구대전\화면_자동중" ) ){		
-        ; this.player.setStay()
-        this.gameController.sleep(2)
-        ; return 1
-        ; }
+        this.gameController.sleep(2)        
         return 0 
     }  
 
