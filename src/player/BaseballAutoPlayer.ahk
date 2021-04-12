@@ -17,8 +17,6 @@
     ; 단독 모드 설정
     static COUNT_PER_ALONE_MODE := { "리그":5, "랭대":-1, "홈런":-1, "친구":10, "실대":1,"보상":1 }    
     static ALONE_MODE_ARRAY:=["리그","홈런","랭대","친구","보상"]
-
-
  
     __NEW( index , title:="(Main)", enabled:=false, role:="리그" ){
         this.index:=index
