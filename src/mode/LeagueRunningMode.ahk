@@ -58,18 +58,7 @@ Class LeagueRunningMode{
     }
     skippLeagueSchedule(){
         if ( this.gameController.searchImageFolder("0.기본UI\1.리그모드_Base") ){
-            if ( this.gameController.searchImageFolder("리그모드\화면_볼없음") ){
-                if( this.player.getRole() = "리그"){
-                    this.player.setFree()
-                }else{
-                    this.logger.log("리그 볼을 모두 소비하였습니다.")
-                    this.player.setBye()
-                    return 0 
-                }
-                return 1
-            }
-
-            this.logger.log("경기 일정 화면을 넘어갑니다.")
+            this.logger.log("경기 일정 화면을 넘어갑니다.") 
             this.player.setStay()
             if ( this.gameController.searchImageFolder("리그모드\화면_도전과제_상태\초과1단계") ){
                 if ( this.gameController.searchImageFolder("리그모드\화면_도전과제_상태\화면_리그경기") ){
@@ -83,7 +72,19 @@ Class LeagueRunningMode{
                 this.player.setNeedSkip(false)
             }
 
-            if ( this.player.getWaitingResult() ){				
+            if ( this.gameController.searchImageFolder("리그모드\화면_볼없음") ){
+                this.logger.log("리그 볼을 모두 소비하였습니다.")
+
+                if( this.player.getRole() = "리그"){
+                    this.player.setFree()
+                }else{
+                    this.player.setBye()
+                    return 0 
+                }
+                return 1
+            }
+
+            if ( this.player.getWaitingResult() ){
                 if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
                     this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
                     this.logger.log(this.player.getAppTitle() " 바이 바이.")
@@ -94,7 +95,6 @@ Class LeagueRunningMode{
                     return 1
                 }
             }else{ 
-
                 if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
                     if( this.player.getRemainBattleCount() = 0 ){
                         this.player.setBye()
@@ -117,26 +117,11 @@ Class LeagueRunningMode{
         if ( this.gameController.searchImageFolder("리그모드\화면_상대전적") ){
             this.logger.log("전적 화면을 넘어갑니다.")
             this.player.setStay()
-            if ( this.player.getWaitingResult() ){								
-                if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
-                    this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인 하였습니다.")
-                    this.player.setBye()
-                }else if ( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
-                    this.logger.log("중단 된 경기가 있습니다.. 15초")					
-                    this.gameController.sleep(15)				
-                    return 1
-                }
-            }else{
-                if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
-                    this.logger.log("경기가 시작 됩니다. 15초 기다립니다.")
-                    this.gameController.sleep(15)
-                    return 1
-                }else if ( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
-                    this.logger.log("경기가 이어합니다. 15초 기다립니다.")
-                    this.gameController.sleep(15)				
-                    return 1
-                }
-            }		 
+            if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
+                this.logger.log("경기가 시작 됩니다. 15초 기다립니다.")
+                this.gameController.sleep(15)
+                return 1
+            }
         }
         return 0		
     }	
