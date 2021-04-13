@@ -5,19 +5,21 @@
 
     static NEXT_PLAYER_STATUS:=["Unknwon","자동중","리그종료","끝","다음임무"]
     static STOP_PLAYER_STATUS:=["끝","완료"]
-    
+
     ; 기본 모드든에 대한 설정 
     static COUNT_PER_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2,"리그":-1 }
 
     ; 일꾼 모드 설정
-    static COUNT_PER_ASSIST_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2, "보상":1 }    
+    static COUNT_PER_ASSIST_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2, "보상":1 } 
     static ASSIST_MODE_ARRAY:=["홈런","랭대","친구","실대","보상"]
     static ASSIST_MODE_ENDLESS:=false
 
     ; 단독 모드 설정
-    static COUNT_PER_ALONE_MODE := { "리그":5, "랭대":-1, "홈런":-1, "친구":10, "실대":1,"보상":1 }    
-    static ALONE_MODE_ARRAY:=["리그","홈런","랭대","친구","보상"]
- 
+    static COUNT_PER_ALONE_MODE := { "리그":5, "랭대":-1, "홈런":-1, "친구":10, "실대":1,"보상":1 } 
+    ; 친구대전을 계속 돌 필요 없으니
+    LOOP_PER_ALONE_MODE := { "리그":-1, "랭대":-1, "홈런":-1, "친구":5, "실대":1,"보상":2 } 
+    ALONE_MODE_ARRAY:=["리그","홈런","랭대","친구","실대","보상"]    
+
     __NEW( index , title:="(Main)", enabled:=false, role:="리그" ){
         this.index:=index
         this.appTitle:=title
@@ -30,14 +32,11 @@
         this.result:=0
         this.currentBattleRemainCount:=0
         this.remainFriendsBattleCount:=40
+
         this.remainRealTimeBattleCount:=2
+        this.countPerMode := { "리그":0, "랭대":0, "홈런":0, "친구":0, "실대":0,"보상":0 } 
     } 
-    getResult(){
-        return this.result
-    }
-    addResult(){ 
-        this.setResult( this.result + 1)
-    } 
+    
     setResult( result ){
         global baseballAutoGui, baseballAutoConfig
         if ( result ="" ){
@@ -47,6 +46,9 @@
 
         baseballAutoConfig.savePlayerResult(this)
         baseballAutoGui.updateStatus( this.getKeyResult(), this.result)
+    }
+    getCountPerMode(){
+        return this.countPerMode
     }
     setNeedSkip( needSkip:=false){
         if( needSkip )
@@ -76,6 +78,14 @@
         return false
     }
 
+    getResult(){
+        return this.result
+    }
+    addResult(){ 
+        this.setResult( this.result + 1)
+        this.countPerMode[this.appMode]++
+    } 
+
     getRemainBattleCount(){
         if( this.currentBattleRemainCount < 0 ){
             return "무한"
@@ -84,34 +94,25 @@
         }
     }
 
-    needToStopBattle(){
+    ; 도는것을 확인했을때 Call
+    needToStopBattle(){      
+
         if( this.currentBattleRemainCount < 0 ){
             return false
         }else{
             if( this.this.currentBattleRemainCount = 0 ){
                 return true
             }else{
-                this.currentBattleRemainCount--    
+                this.currentBattleRemainCount-- 
                 if(this.currentBattleRemainCount<= 0){
                     return true
                 }else{
                     return false
-                }                
-            }            
+                } 
+            } 
         }
     }
-    
-    getRemainRealTimeBattleCount(){
-        return this.remainRealTimeBattleCount
-    }
-    needToStopRealTimeBattle(){
-        this.remainRealTimeBattleCount--
-        if(this.remainRealTimeBattleCount<= 0){
-            return true
-        }Else
-        return false
-    }
-    
+
     getAppTitle(){
         return this.appTitle
     }
@@ -137,15 +138,15 @@
         this.setStatus("조작중")
     }
     setBye(){
-        if( this.appRole ="일꾼" or this.appRole="단독"){            
+        if( this.appRole ="일꾼" or this.appRole="단독"){ 
             if( this.setMode("next") ){
-                this.setStatus("다음임무")                   
+                this.setStatus("다음임무") 
             }else{
-                this.setStatus("끝")     
+                this.setStatus("끝") 
             }
         }else{
-            this.setStatus("끝")         
-        }        
+            this.setStatus("끝") 
+        } 
     }
     setRealFree(){
         this.setStatus("리그종료")		
@@ -198,37 +199,54 @@
             }else{
                 if( targetMode = "next" ){
                     currentIndex:=this.getIndex(this.appMode,BaseballAutoPlayer.ASSIST_MODE_ARRAY)
+                            
                     currentIndex++
                     if( currentIndex > BaseballAutoPlayer.ASSIST_MODE_ARRAY.length() ){
                         if( BaseballAutoPlayer.ASSIST_MODE_ENDLESS ){
                             currentIndex:=1
                         }else{
                             return false
-                        }                        
+                        } 
                     }
-                    targetMode:=BaseballAutoPlayer.ASSIST_MODE_ARRAY[currentIndex]                                           
+                    targetMode:=BaseballAutoPlayer.ASSIST_MODE_ARRAY[currentIndex] 
                 }
-            }       
+            } 
             this.appMode:=targetMode
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_ASSIST_MODE[this.appMode]
             return true
         }else if( this.appRole ="단독" ){
             if( targetMode = "단독" ){
-                targetMode:=BaseballAutoPlayer.ALONE_MODE_ARRAY[1]
+                targetMode:=this.ALONE_MODE_ARRAY[1]
             }else{
                 if( targetMode = "next" ){
-                    currentIndex:=this.getIndex(this.appMode,BaseballAutoPlayer.ALONE_MODE_ARRAY)
-                    currentIndex++
-                    if( currentIndex > BaseballAutoPlayer.ALONE_MODE_ARRAY.length() ){
+                    currentIndex:=this.getIndex(this.appMode,this.ALONE_MODE_ARRAY)
+                    
+                    if( this.LOOP_PER_ALONE_MODE[this.appMode] < 0 ){
+                        currentIndex++
+                    }else{
+                        this.LOOP_PER_ALONE_MODE[this.appMode]--
+                        if( this.LOOP_PER_ALONE_MODE[this.appMode] <= 0 ){
+                            this.ALONE_MODE_ARRAY.remove(currentIndex)
+                        }else{
+                            currentIndex++    
+                        }
+                    }
+                    
+                    if( currentIndex > this.ALONE_MODE_ARRAY.length() ){
                         currentIndex:=1
                     }
-                    targetMode:=BaseballAutoPlayer.ALONE_MODE_ARRAY[currentIndex]                                           
+                    if( this.ALONE_MODE_ARRAY.length() = 0 ){
+                        this.setStatus("끝") 
+                        return false
+                    }
+                    targetMode:=this.ALONE_MODE_ARRAY[currentIndex] 
                 }
-            }       
+            } 
             this.appMode:=targetMode
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_ALONE_MODE[this.appMode]
+            ; this.modeLoopCount:=this.LOOP_PER_ALONE_MODE[this.appMode]
             return true
-        }       
+        } 
         else{
             this.appMode:=this.appRole
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_MODE[this.appMode]

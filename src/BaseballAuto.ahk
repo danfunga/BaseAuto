@@ -9,7 +9,6 @@
 #include %A_ScriptDir%\src\mode\HomrunDerbyMode.ahk
 #include %A_ScriptDir%\src\mode\ReceiveRewardMode.ahk
 
-
 Class BaseballAuto{
     __NEW(){
         this.init()
@@ -70,7 +69,8 @@ Class BaseballAuto{
                     globalCurrentPlayer:=player
 
                     if( globalCurrentPlayer.needToStop()){
-                        this.stopPlayer(playerIndex)                 
+                        this.logger.log( "STOP " this.getPlayerResult(player)) 
+                        this.stopPlayer(playerIndex) 
                         continue
                     }
 
@@ -83,7 +83,7 @@ Class BaseballAuto{
                         localChecker:=0
                         if not ( this.gameController.checkAppPlayer() ){
                             this.logger.log("Application Title을 확인하세요 변경 후 save ")
-                            this.stopPlayer(playerIndex)                           
+                            this.stopPlayer(playerIndex) 
                             break
                         } 
 
@@ -130,7 +130,7 @@ Class BaseballAuto{
         }else{ 
             this.logger.log("BaseballAuto Already Started!!")
         }
-        this.logger.log("BaseballAuto Done!!")
+        ; this.logger.log("BaseballAuto Done!!")
         this.stop()
     }
     loadPlayerConfig(){
@@ -139,12 +139,22 @@ Class BaseballAuto{
         for index, player in baseballAutoConfig.enabledPlayers
         {
             if not ( player.getAppTitle() = ""){
-                curruntPlayers.Push(player.clone())
+                curruntPlayers.Push(this.objectFullClone(player))
             }else{
                 this.logger.log( "ERROR : " index " 번째 설정의 값이 비었습니다" )
             }
         }
         return curruntPlayers
+    }
+    objectFullClone( target ){
+        newObject := target.Clone()
+        for key,value in newObject
+        {
+            if ( isObject(value) ){
+                newObject[key]:= this.objectFullClone(value)
+            }
+        }
+        return newObject
     }
 
     stopPlayer(index){
@@ -157,10 +167,24 @@ Class BaseballAuto{
         this.logger.log("try to stop!")
         this.running := false
     }
+    getPlayerResult( targetPlayer ){
+        targetCounterPerMode:=targetPlayer.getCountPerMode() 
+        result:=""
+        for key,value in targetCounterPerMode
+        {
+            result:= result "`n`t" key " : " value " 회"
+        }
+        return targetPlayer.getAppTitle() " Runs :" result
+
+    }
     stop(){
-        global BaseballAutoGui
+        global BaseballAutoGui, globalCurrentPlayer
         if ( this.started ){
             this.started:=false
+
+            for playerIndex, player in this.currentEnablePlayers{
+                this.logger.log( this.getPlayerResult(player)) 
+            }
             this.logger.log("BaseballAuto Stopped!!")
             BaseballAutoGui.stopped()
 
