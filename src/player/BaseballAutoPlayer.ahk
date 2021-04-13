@@ -12,13 +12,15 @@
     ; 일꾼 모드 설정
     static COUNT_PER_ASSIST_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2, "보상":1 } 
     static ASSIST_MODE_ARRAY:=["홈런","랭대","친구","실대","보상"]
+	; static ASSIST_MODE_ARRAY:=["홈런","랭대","친구","보상"]
     static ASSIST_MODE_ENDLESS:=false
 
     ; 단독 모드 설정
     static COUNT_PER_ALONE_MODE := { "리그":5, "랭대":-1, "홈런":-1, "친구":10, "실대":1,"보상":1 } 
     ; 친구대전을 계속 돌 필요 없으니
     LOOP_PER_ALONE_MODE := { "리그":-1, "랭대":-1, "홈런":-1, "친구":5, "실대":1,"보상":2 } 
-    ALONE_MODE_ARRAY:=["리그","홈런","랭대","친구","실대","보상"]    
+    ; ALONE_MODE_ARRAY:=["리그","홈런","랭대","친구","실대","보상"]    
+	ALONE_MODE_ARRAY:=["리그","홈런","랭대","친구","보상"]    
 
     __NEW( index , title:="(Main)", enabled:=false, role:="리그" ){
         this.index:=index
