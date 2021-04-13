@@ -72,7 +72,7 @@ Class ReceiveRewardMode{
                     this.logger.log("받을 보상이 없는것 같습니다.") 
                     this.moveMainPageForNextJob()
                     this.gameController.sleep(3)
-                    
+
                 }
             }
         }
@@ -110,6 +110,9 @@ Class ReceiveRewardMode{
             this.player.setStay()
             if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_도전과제_팀별") ){
                 return 1
+            }else{
+                this.logger.log(this.player.getAppTitle() "도전 과제 팀별을 못찾으면 보상을 못받아..")
+                this.player.setBye()
             }
         }
         return 0
@@ -149,7 +152,7 @@ Class ReceiveRewardMode{
                         this.checkPopup()
                     }else{
                         if ( this.gameController.searchImageFolder("보상모드\화면_보상없음") ){
-                            this.logger.log("더이상 제작 불가능")                             
+                            this.logger.log("더이상 제작 불가능") 
                             break
                         }
                     } 
