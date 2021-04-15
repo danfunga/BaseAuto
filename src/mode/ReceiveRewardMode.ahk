@@ -1,36 +1,36 @@
-﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
+﻿#include %A_ScriptDir%\src\mode\0.DefulatGameMode.ahk
 
-Class ReceiveRewardMode{
-
-    logger:= new AutoLogger( "보상받기" ) 
-    closeChecker:=0
+Class ReceiveRewardMode extends AutoGameMode{
 
     __NEW( controller )
     {
-        this.gameController :=controller
+        base.__NEW("보상받기", controller)
     }
 
     setPlayer( _player )
     {
-        this.player:=_player
+        base.setPlayer(_player)
+        this.receiveFriendsPoint:=false
+        this.receiveDailyReward:=false
     }
 
     checkAndRun()
     {
+        ; local AutoGameMode
         counter:=0
-
-        counter+=this.startReceiveFriendsShip( ) 	
-        counter+=this.selectFriendsList( )
-        counter+=this.receiveAndSendFriendPoint()
-
-        counter+=this.startReceiveReward( )
-        counter+=this.receiveRewardLoop( )
-
-        counter+=this.checkPopup()
-
-        if( counter = 0 ){
-            counter+=this.moveMainPageForNextJob()
+        if( !this.receiveFriendsPoint ){
+            counter+=this.startReceiveFriendsShip( ) 	
+            counter+=this.selectFriendsList( )
+            counter+=this.receiveAndSendFriendPoint()
         }
+        if( !this.receiveDailyReward ){
+            counter+=this.startReceiveReward( )
+            counter+=this.receiveRewardLoop( )
+        }
+        counter+=this.checkPopup()
+        
+        counter+=this.checkAndGoHome(counter)
+
         ; this.logger.log("나는 보상모드 " counter)
         return counter
     }
@@ -75,6 +75,7 @@ Class ReceiveRewardMode{
 
                 }
             }
+            receiveFriendsPoint:=true
         }
         return 0		
     }
@@ -159,19 +160,13 @@ Class ReceiveRewardMode{
                 } 
 
             }
+            this.receiveDailyReward:=true
             this.moveMainPageForNextJob()
             this.player.setBye()
             return 0
         }
         return 0
     }
-    moveMainPageForNextJob(){
-        if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){		
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
-                this.logger.log("홈화면으로 이동") 
-                return 1
-            }
-        }
-    }
+   
 }
 

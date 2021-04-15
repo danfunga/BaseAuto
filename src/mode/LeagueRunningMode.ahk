@@ -1,17 +1,10 @@
-﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
-Class LeagueRunningMode{
+﻿#include %A_ScriptDir%\src\mode\0.DefulatGameMode.ahk
 
-    logger:= new AutoLogger( "리그모드" ) 
-    modeStatus:= "START"
+Class LeagueRunningMode extends AutoGameMode{
 
     __NEW( controller )
     {
-        this.gameController :=controller
-    }
-
-    setPlayer( _player )
-    {
-        this.player:=_player
+        base.__NEW("리그모드", controller)
     }
 
     checkAndRun()
@@ -32,9 +25,7 @@ Class LeagueRunningMode{
         counter+=this.checkMVPWindow()
         counter+=this.checkTotalLeagueEnd()
 
-        if( counter = 0 ){
-            counter+=this.moveMainPageForNextJob()
-        }
+        counter+=this.checkAndGoHome(counter)
         return counter
     }
 
@@ -314,13 +305,4 @@ Class LeagueRunningMode{
         return 0 
     }	
 
-    moveMainPageForNextJob(){
-        if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){		
-            this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
-                this.logger.log("무한 루프는 안된다") 
-                return 1
-            }
-        }
-    }
 }

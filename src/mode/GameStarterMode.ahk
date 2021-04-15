@@ -1,10 +1,10 @@
-﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
+﻿#include %A_ScriptDir%\src\mode\0.DefulatGameMode.ahk
 
-Class GameStarterMode{
+Class GameStarterMode extends AutoGameMode{
 
-    logger:= new AutoLogger( "게임실행" ) 
-    __NEW( controller ){
-        this.gmaeController :=controller
+    __NEW( controller )
+    {
+        base.__NEW("게임실행", controller)
     }
 
     checkAndRun(){
@@ -14,16 +14,13 @@ Class GameStarterMode{
         counter+=this.skipPopupAndAds()
         return counter
     }
-    setPlayer( _player )
-    {
-        this.player:=_player
-    }
+    
     checkGameDown(){
-        if ( this.gmaeController.searchImageFolder("게임실행모드\Button_GameIcon") ){
+        if ( this.gameController.searchImageFolder("게임실행모드\Button_GameIcon") ){
             this.player.setStay()
             this.logger.log("컴프야 게임을 실행합니다.: 15초 wait ")
-            if( this.gmaeController.searchAndClickFolder("게임실행모드\Button_GameIcon") ){
-                this.gmaeController.sleep(15)					
+            if( this.gameController.searchAndClickFolder("게임실행모드\Button_GameIcon") ){
+                this.gameController.sleep(15)					
                 return 1
             } 
         }
@@ -32,10 +29,10 @@ Class GameStarterMode{
 
     skipAndroidAds(){
 
-        if ( this.gmaeController.searchImageFolder("게임실행모드\Button_AdroidAds") ){
+        if ( this.gameController.searchImageFolder("게임실행모드\Button_AdroidAds") ){
             this.player.setStay() 
             this.logger.log("안드로이드 광고를 클릭합니다.") 
-            if( this.gmaeController.searchAndClickFolder("게임실행모드\Button_AdroidAds") ){
+            if( this.gameController.searchAndClickFolder("게임실행모드\Button_AdroidAds") ){
                 return 1
             } 
         }
@@ -43,10 +40,10 @@ Class GameStarterMode{
     }
     skipPopupAndAds(){
         result:=0
-        if ( this.gmaeController.searchImageFolder("게임실행모드\Button_NoMoreAds") ){
+        if ( this.gameController.searchImageFolder("게임실행모드\Button_NoMoreAds") ){
             this.player.setStay()
             this.logger.log("팝업 광고 등을 취소합니다..") 
-            if ( this.gmaeController.searchAndClickFolder("게임실행모드\Button_NoMoreAds") = true ){
+            if ( this.gameController.searchAndClickFolder("게임실행모드\Button_NoMoreAds") = true ){
                 result+=1
                 result+=this.skipPopupAndAds()			
             }		
@@ -55,16 +52,9 @@ Class GameStarterMode{
     }
     goBackward(){
 
-        this.gmaeController.clickESC()
+        this.gameController.clickESC()
         this.logger.log(this.player.getAppTitle() " 뒤로가기 - ESC ") 
-        this.gmaeController.sleep(3)
-        ; ControlSend, , ^a, 제목 없음 - 메모장
-        ; if ( this.gmaeController.searchImageFolder("게임실행모드\Buuon_Backward") ){
-        ;     this.logger.log("뒤로 가기를 눌러 봅니다") 
-        ;     if ( this.gmaeController.searchAndClickFolder("게임실행모드\Buuon_Backward") = true ){                
-        ;         this.logger.log(this.player.getAppTitle() " 뒤로가기!! 클릭") 
-        ;         this.gmaeController.sleep(3)
-        ;     }		
-        ; }
+        this.gameController.sleep(3)
+    
     }
 }
