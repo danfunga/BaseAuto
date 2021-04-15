@@ -29,7 +29,7 @@ Class RankingBattleMode extends AutoGameMode{
         return counter
     }
 
-    selectBattleMode()
+    startBattleMode()
     {
         if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){
             this.logger.log(this.player.getAppTitle() "랭킹 대전 을 시작합니다")
@@ -42,8 +42,11 @@ Class RankingBattleMode extends AutoGameMode{
     }
 
     setBattleEquips(){
-      global Equips
-      if(Equips==1){
+      global baseballAutoGui
+
+      this.logger.log(baseballAutoGui.getUseEquip())
+
+      if(baseballAutoGui.getUseEquip()=1){
           if ( this.gameController.searchImageFolder("0.기본UI\2-1.랭킹대전_Base") ){
           this.player.setStay()
           if ( this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비없음") ){
@@ -57,7 +60,10 @@ Class RankingBattleMode extends AutoGameMode{
              return 1
           }
         }
+      } else {
+          this.unsetBattleEquips()
       }
+      
       return 0
     }
 
