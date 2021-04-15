@@ -1,15 +1,10 @@
-﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
-Class StageMode{
-    logger:= new AutoLogger( "스테이지모드" ) 
-    
+﻿#include %A_ScriptDir%\src\mode\0.DefulatGameMode.ahk
+
+Class StageMode extends AutoGameMode{
+
     __NEW( controller )
     {
-        this.gameController :=controller
-    }
-
-    setPlayer( _player )
-    {
-        this.player:=_player
+        base.__NEW("스테이지모드", controller)
     }
 
     checkAndRun() 
@@ -28,9 +23,8 @@ Class StageMode{
         counter+=this.checkPopup( )
         counter+=this.checkStageModeClose( )
 
-        if( counter = 0 ){
-            counter+=this.moveMainPageForNextJob()
-        }
+        counter+=this.checkAndGoHome(counter)
+
         return counter
     }
 
@@ -157,7 +151,7 @@ Class StageMode{
                         this.logger.log("스테이지 볼을 다 쓸때까지 돕니다." )
                     }else{
                         this.logger.log("스테이지 모드를 " this.player.getRemainBattleCount() "번 더 돕니다." ) 
-                    }                    
+                    }
                     this.player.setFree()
                 }
                 return 1
@@ -174,16 +168,5 @@ Class StageMode{
         }
         return 0 
     }
-
-    moveMainPageForNextJob(){
-        if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){		
-            this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
-                this.logger.log("무한 루프는 안된다.") 
-                return 1
-            }
-        }
-    }
-
 
 }
