@@ -1,17 +1,10 @@
-﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
+﻿#include %A_ScriptDir%\src\mode\0.DefulatGameMode.ahk
 
-Class HomrunDerbyMode{
+Class HomrunDerbyMode extends AutoGameMode{
 
-    logger:= new AutoLogger( "홈런더비" ) 
-    
     __NEW( controller )
     {
-        this.gameController :=controller
-    }
-
-    setPlayer( _player )
-    {
-        this.player:=_player
+        base.__NEW("홈런더비", controller)
     }
 
     checkAndRun()
@@ -27,11 +20,9 @@ Class HomrunDerbyMode{
         counter+=this.checkMVPWindow( )
         counter+=this.checkPopup( )
         counter+=this.checkHomerunDerbyClose( )
-
-        if( counter = 0 ){
-            counter+=this.moveMainPageForNextJob()
-        }
-        ; this.logger.log("나는 홈런대전" counter)
+        counter+=this.checkPopupClose( )
+        
+        counter+=this.checkAndGoHome(counter)
         return counter
     }
 
@@ -108,6 +99,17 @@ Class HomrunDerbyMode{
         }
         return localCounter
     }
+    checkPopupClose(){      
+        ; 아직 아래 없음
+        if ( this.gameController.searchImageFolder("홈런더비모드\화면_종료팝업" ) ){		
+            this.logger.log("그만돌아야 하는 팝업이 떴습니다.") 
+            if( this.gameController.searchAndClickFolder("홈런더비모드\화면_종료팝업\버튼_확인" ) ){
+                this.player.setBye()
+                return 1
+            }			
+        }
+        return 0
+    }
 
     checkPlaying(){
         if ( this.gameController.searchImageFolder("홈런더비모드\화면_진행중" ) ){		
@@ -160,13 +162,4 @@ Class HomrunDerbyMode{
         return 0 
     }
 
-    moveMainPageForNextJob(){
-        if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){		
-            this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
-                this.logger.log("무한 루프는 안된다") 
-                return 1
-            }
-        }
-    }
 }

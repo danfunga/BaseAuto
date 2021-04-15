@@ -1,26 +1,24 @@
 ﻿class BaseballAutoPlayer{
-    static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","친구","보상"]
-    static AVAILABLE_MODES:=["리그","실대","랭대","홈런","친구","보상"]
+    static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","친구","보상","스테"]
+    static AVAILABLE_MODES:=["리그","실대","랭대","홈런","친구","보상","스테"]
     static AVAILABLE_PLAY_TYPE:=["전체","공격","수비"]
 
     static NEXT_PLAYER_STATUS:=["Unknwon","자동중","리그종료","끝","다음임무"]
     static STOP_PLAYER_STATUS:=["끝","완료"]
 
     ; 기본 모드든에 대한 설정 
-    static COUNT_PER_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2,"리그":-1 }
+    static COUNT_PER_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2,"리그":-1, "스테":-1 }
 
     ; 일꾼 모드 설정
     static COUNT_PER_ASSIST_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2, "보상":1 } 
-    static ASSIST_MODE_ARRAY:=["홈런","랭대","친구","실대","보상"]
-	; static ASSIST_MODE_ARRAY:=["홈런","랭대","친구","보상"]
+    static ASSIST_MODE_ARRAY:=["홈런","랭대","친구","보상"]
     static ASSIST_MODE_ENDLESS:=false
 
     ; 단독 모드 설정
-    static COUNT_PER_ALONE_MODE := { "리그":5, "랭대":-1, "홈런":-1, "친구":10, "실대":1,"보상":1 } 
+    static COUNT_PER_ALONE_MODE := { "리그":5,  "랭대":-1, "홈런":-1, "친구":10, "실대":1, "스테":-1, "보상":1 } 
     ; 친구대전을 계속 돌 필요 없으니
-    LOOP_PER_ALONE_MODE := { "리그":-1, "랭대":-1, "홈런":-1, "친구":5, "실대":1,"보상":2 } 
-    ; ALONE_MODE_ARRAY:=["리그","홈런","랭대","친구","실대","보상"]    
-	ALONE_MODE_ARRAY:=["리그","홈런","랭대","친구","보상"]    
+    LOOP_PER_ALONE_MODE :=         { "리그":-1, "랭대":-1, "홈런":-1, "친구":5,  "실대":1, "스테":1, "보상":2 } 
+	ALONE_MODE_ARRAY:=["리그","홈런","랭대","친구","보상"] 
 
     __NEW( index , title:="(Main)", enabled:=false, role:="리그" ){
         this.index:=index
@@ -291,13 +289,6 @@
         return % "player" this.index "Status"
     }
 
-    setWorkerNext(){
-
-    }
-
-    getWorkerRole(){
-
-    }
     hasValue( target, stringArray){
         result:=false
         for index, value in stringArray

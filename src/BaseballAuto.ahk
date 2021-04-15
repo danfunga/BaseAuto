@@ -8,6 +8,7 @@
 #include %A_ScriptDir%\src\mode\FriendsBattleMode.ahk
 #include %A_ScriptDir%\src\mode\HomrunDerbyMode.ahk
 #include %A_ScriptDir%\src\mode\ReceiveRewardMode.ahk
+#include %A_ScriptDir%\src\mode\StageMode.ahk
 
 Class BaseballAuto{
     __NEW(){
@@ -44,6 +45,10 @@ Class BaseballAuto{
         this.typePerMode["보상"]:=[]
         this.typePerMode["보상"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["보상"].Push(new ReceiveRewardMode( this.gameController ) ) 
+
+        this.typePerMode["스테"]:=[]
+        this.typePerMode["스테"].Push(new GameStarterMode( this.gameController ) ) 
+        this.typePerMode["스테"].Push(new StageMode( this.gameController ) ) 
 
         this.logger.log("BaseballAuto Ready !")
     }

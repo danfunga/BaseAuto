@@ -1,22 +1,15 @@
-﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
-Class RankingBattleMode{
+﻿#include %A_ScriptDir%\src\mode\0.DefulatGameMode.ahk
 
-    logger:= new AutoLogger( "랭킹대전" )
+Class RankingBattleMode extends AutoGameMode{
 
     __NEW( controller )
     {
-        this.gameController :=controller
-    }
-
-    setPlayer( _player )
-    {
-        this.player:=_player
+        base.__NEW("랭킹대전", controller)
     }
 
     checkAndRun()
     {
         counter:=0
-
         counter+=this.startBattleMode( )
         counter+=this.selectRankingBattle( )
         counter+=this.startRankingBattle( )
@@ -29,14 +22,14 @@ Class RankingBattleMode{
         counter+=this.checkPlaying( )
         counter+=this.checkRankingClose( )
 
-        if( counter = 0 ){
-            counter+=this.moveMainPageForNextJob()
-        }
+        counter+=this.checkAndGoHome(counter)
+
+
         ; this.logger.log("나는 랭킹대전" counter)
         return counter
     }
 
-    startBattleMode()
+    selectBattleMode()
     {
         if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){
             this.logger.log(this.player.getAppTitle() "랭킹 대전 을 시작합니다")
@@ -79,7 +72,6 @@ Class RankingBattleMode{
       }
       return 0
     }
-
 
     ransleep(min, max)
     {
@@ -226,16 +218,5 @@ Class RankingBattleMode{
         }
         return 0
     }
-
-    moveMainPageForNextJob(){
-        if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){
-            this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.")
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
-                this.logger.log("무한 루프는 안된다")
-                return 1
-            }
-        }
-    }
-
-
+    
 }

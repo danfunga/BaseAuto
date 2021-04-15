@@ -1,18 +1,12 @@
-﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
+﻿#include %A_ScriptDir%\src\mode\0.DefulatGameMode.ahk
 
-Class RealTimeBattleMode{
-
-    logger:= new AutoLogger( "실시간배틀" ) 
+Class RealTimeBattleMode extends AutoGameMode{
 
     __NEW( controller )
     {
-        this.gameController :=controller
+        base.__NEW("실대모드", controller)
     }
 
-    setPlayer( _player )
-    {
-        this.player:=_player
-    }
 
     checkAndRun()
     {
@@ -29,11 +23,8 @@ Class RealTimeBattleMode{
         counter+=this.runStrike( )
         counter+=this.checkPopup( )
         counter+=this.checkGameResultWindow( )
-
-        if( counter = 0 ){
-            counter+=this.moveMainPageForNextJob()
-        }
-        ; this.logger.log("나는 실시간배틀" counter)
+        
+        counter+=this.checkAndGoHome(counter)
         return counter
     }
 
@@ -177,16 +168,5 @@ Class RealTimeBattleMode{
                 return 1
             }			
         }		
-    }
-
-    moveMainPageForNextJob(){
-        if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){		
-            this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
-                this.logger.log("무한 루프는 안된다") 
-                return 1
-            }
-        }
-    }
-
+    }    
 }
