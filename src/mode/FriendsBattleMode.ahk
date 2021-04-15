@@ -1,18 +1,10 @@
-﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
+﻿#include %A_ScriptDir%\src\mode\0.DefulatGameMode.ahk
 
-Class FriendsBattleMode{
-
-    logger:= new AutoLogger( "친구대전" ) 
-    moveHomeChecker:=0
+Class FriendsBattleMode extends AutoGameMode{
 
     __NEW( controller )
     {
-        this.gameController :=controller
-    }
-
-    setPlayer( _player )
-    {
-        this.player:=_player
+        base.__NEW("친구대전", controller)
     }
 
     checkAndRun()
@@ -176,14 +168,4 @@ Class FriendsBattleMode{
         return 0 
     }
 
-    moveMainPageForNextJob(){
-        if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){		
-            this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
-                this.moveHomeChecker:= 0
-                this.logger.log("나도 가끔 홈으로 간다") 
-                return 1
-            }
-        }
-    }
 }

@@ -1,17 +1,10 @@
-﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
+﻿#include %A_ScriptDir%\src\mode\0.DefulatGameMode.ahk
 
-Class HomrunDerbyMode{
+Class HomrunDerbyMode extends AutoGameMode{
 
-    logger:= new AutoLogger( "홈런더비" ) 
-    moveHomeChecker:=0
     __NEW( controller )
     {
-        this.gameController :=controller
-    }
-
-    setPlayer( _player )
-    {
-        this.player:=_player
+        base.__NEW("홈런더비", controller)
     }
 
     checkAndRun()
@@ -28,14 +21,8 @@ Class HomrunDerbyMode{
         counter+=this.checkPopup( )
         counter+=this.checkHomerunDerbyClose( )
         counter+=this.checkPopupClose( )
-
-        if( counter = 0 ){
-            this.moveHomeChecker++
-            if( this.moveHomeChecker >= 2 && this.moveHomeChecker <= 5 ){ 
-                counter+=this.moveMainPageForNextJob()
-            }
-        }
-        ; this.logger.log("나는 홈런대전" counter)
+        
+        counter+=this.checkAndGoHome(counter)
         return counter
     }
 
@@ -175,14 +162,4 @@ Class HomrunDerbyMode{
         return 0 
     }
 
-    moveMainPageForNextJob(){
-        if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){		
-            this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
-                this.moveHomeChecker:= 0
-                this.logger.log("나도 가끔 홈으로 간다") 
-                return 1
-            }
-        }
-    }
 }

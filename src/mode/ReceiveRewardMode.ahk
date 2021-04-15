@@ -1,6 +1,5 @@
 ﻿#include %A_ScriptDir%\src\mode\0.DefulatGameMode.ahk
 
-
 Class ReceiveRewardMode extends AutoGameMode{
 
     __NEW( controller )
@@ -29,6 +28,7 @@ Class ReceiveRewardMode extends AutoGameMode{
             counter+=this.receiveRewardLoop( )
         }
         counter+=this.checkPopup()
+        
         counter+=this.checkAndGoHome(counter)
 
         ; this.logger.log("나는 보상모드 " counter)
