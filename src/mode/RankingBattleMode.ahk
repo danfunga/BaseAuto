@@ -2,6 +2,7 @@
 Class RankingBattleMode{
 
     logger:= new AutoLogger( "랭킹대전" )
+    moveHomeChecker:=0
 
     __NEW( controller )
     {
@@ -30,8 +31,12 @@ Class RankingBattleMode{
         counter+=this.checkRankingClose( )
 
         if( counter = 0 ){
-            counter+=this.moveMainPageForNextJob()
+            this.moveHomeChecker++
+            if( this.moveHomeChecker >= 2 && this.moveHomeChecker <= 5 ){ 
+                counter+=this.moveMainPageForNextJob()
+            }
         }
+
         ; this.logger.log("나는 랭킹대전" counter)
         return counter
     }
@@ -76,7 +81,6 @@ Class RankingBattleMode{
       }
       return 0
     }
-
 
     ransleep(min, max)
     {
@@ -228,11 +232,11 @@ Class RankingBattleMode{
         if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){
             this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.")
             if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
-                this.logger.log("무한 루프는 안된다")
+                this.moveHomeChecker:= 0
+                this.logger.log("나도 가끔 홈으로 간다") 
                 return 1
             }
         }
     }
-
 
 }

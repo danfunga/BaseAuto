@@ -3,7 +3,7 @@
 Class HomrunDerbyMode{
 
     logger:= new AutoLogger( "홈런더비" ) 
-    
+    moveHomeChecker:=0
     __NEW( controller )
     {
         this.gameController :=controller
@@ -27,9 +27,13 @@ Class HomrunDerbyMode{
         counter+=this.checkMVPWindow( )
         counter+=this.checkPopup( )
         counter+=this.checkHomerunDerbyClose( )
+        counter+=this.checkPopupClose( )
 
         if( counter = 0 ){
-            counter+=this.moveMainPageForNextJob()
+            this.moveHomeChecker++
+            if( this.moveHomeChecker >= 2 && this.moveHomeChecker <= 5 ){ 
+                counter+=this.moveMainPageForNextJob()
+            }
         }
         ; this.logger.log("나는 홈런대전" counter)
         return counter
@@ -108,6 +112,17 @@ Class HomrunDerbyMode{
         }
         return localCounter
     }
+    checkPopupClose(){      
+        ; 아직 아래 없음
+        if ( this.gameController.searchImageFolder("홈런더비모드\화면_종료팝업" ) ){		
+            this.logger.log("그만돌아야 하는 팝업이 떴습니다.") 
+            if( this.gameController.searchAndClickFolder("홈런더비모드\화면_종료팝업\버튼_확인" ) ){
+                this.player.setBye()
+                return 1
+            }			
+        }
+        return 0
+    }
 
     checkPlaying(){
         if ( this.gameController.searchImageFolder("홈런더비모드\화면_진행중" ) ){		
@@ -164,7 +179,8 @@ Class HomrunDerbyMode{
         if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){		
             this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
             if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
-                this.logger.log("무한 루프는 안된다") 
+                this.moveHomeChecker:= 0
+                this.logger.log("나도 가끔 홈으로 간다") 
                 return 1
             }
         }
