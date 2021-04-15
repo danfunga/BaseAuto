@@ -53,8 +53,10 @@ Class RankingBattleMode{
         return 0
     }
 
-    setBattleItems(){
-      if ( this.gameController.searchImageFolder("0.기본UI\2-1.랭킹대전_Base") ){
+    setBattleEquips(){
+      global Equips
+      if(Equips==1){
+          if ( this.gameController.searchImageFolder("0.기본UI\2-1.랭킹대전_Base") ){
           this.player.setStay()
           if ( this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비없음") ){
             this.logger.log("대전 장비를 착용합니다")
@@ -66,11 +68,12 @@ Class RankingBattleMode{
               this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비\닫기")
              return 1
           }
+        }
       }
       return 0
     }
 
-    unsetBattleItems(){
+    unsetBattleEquips(){
       if ( this.gameController.searchImageFolder("0.기본UI\2-1.랭킹대전_Base") ){
           if ( this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비있음") ){
             this.logger.log("대전 장비를 해제합니다.")
@@ -102,7 +105,7 @@ Class RankingBattleMode{
         if ( this.gameController.searchImageFolder("0.기본UI\2-1.랭킹대전_Base") ){
 
             if ( this.gameController.searchImageFolder("랭대모드\화면_상대있음") ){
-                this.setBattleItems()
+                this.setBattleEquips()
                 this.player.setStay()
                 this.logger.log("랭킹 대전을 시작합니다")
                 if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
@@ -110,7 +113,7 @@ Class RankingBattleMode{
                 }
             }else{
                 this.logger.log("상대가 없는거 보니 다 돌았습니다.")
-                this.unsetBattleItems()
+                this.unsetBattleEquips()
                 this.player.setBye()
                 return 1
             }
@@ -212,7 +215,7 @@ Class RankingBattleMode{
                 this.player.addResult()
                 if( this.player.needToStopBattle() ){
                     this.logger.log("랭킹대전을 횟수만큼 돌았습니다.")
-                    this.unsetBattleItems()
+                    this.unsetBattleEquips()
                     this.player.setBye()
                 }else{
                     if( this.player.getRemainBattleCount() = "무한" ){

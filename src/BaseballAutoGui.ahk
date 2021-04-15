@@ -6,9 +6,9 @@ Class BaseballAutoGui{
     maxGroupWidth := this.width-20
 
     __NEW( title ){
-        this.guiMain := new MC_GuiObj(title)	
+        this.guiMain := new MC_GuiObj(title)
         this.mainHeight:=this.init()
-        ; this.guiMain.Show()			
+        ; this.guiMain.Show()
         this.guiMain.OnEvent("Close", "this.guiClosed")
         ; myGui.OnEvent("Close", "myGui_Close")
         ; myGui_Close(thisGui) {  ; Declaring this parameter is optional.
@@ -17,14 +17,14 @@ Class BaseballAutoGui{
 
     }
 
-    show( posX, posY){	
+    show( posX, posY){
         this.guiMain.Show( "x" posX . "y" . posY . "w" this.width . " h" . this.mainHeight )
     }
     changeContents( onlyMain ){
         if( onlyMain ){
-            this.guiMain.Show( "w" . this.width . " h" . this.mainHeight )			
-        }else{		
-            this.guiMain.Show( "w" . this.width . " h" . this.totalHeight )			
+            this.guiMain.Show( "w" . this.width . " h" . this.mainHeight )
+        }else{
+            this.guiMain.Show( "w" . this.width . " h" . this.totalHeight )
         }
 
     }
@@ -37,10 +37,11 @@ Class BaseballAutoGui{
 
     init(){
         mainHeight:=5
-        mainHeight+=this.initConfigButton(mainHeight)		
-        mainHeight+=this.initPlayerWindow(mainHeight)		
+        mainHeight+=this.initConfigButton(mainHeight)
+        mainHeight+=this.initPlayerWindow(mainHeight)
+        mainHeight+=this.initOptionWindow(mainHeight)
         mainHeight+=this.initButtonWindow(mainHeight)
-        mainHeight+=this.initLogWindow(mainHeight)		
+        mainHeight+=this.initLogWindow(mainHeight)
 
         this.totalHeight:=mainHeight+this.initConfigWindow(mainHeight)+5
         return mainHeight
@@ -56,7 +57,7 @@ Class BaseballAutoGui{
         ; this.guiMain.Add("Button", "Hi", "x" this.maxGroupWidth -150 " y0 w50", "HiButton",0)
         this.guiMain.Add("Button", "Clear", "x" this.maxGroupWidth -90 " y0 w50", "StatClearButton",0)
         this.guiMain.Add("Button", "Save", "x" this.maxGroupWidth -40 " y0 w50", "RoleSaveButton",0)
-        
+
         ; this.guiMain.Add("Button", "pass", "x" this.maxGroupWidth -30 " y+10", "RolePassButton",0)
         ; this.guiMain.Add("Button", "OK", "x" this.maxGroupWidth -30 " y+10", "RoleAllowButton",0)
         ; this.guiMain.Controls["ByeButton"].BindMethod(this.byePlayerFunction.Bind(this))
@@ -101,7 +102,7 @@ Class BaseballAutoGui{
 
 
         targetTitle:=""
-        for index, singleText in BaseballAutoPlayer.AVAILABLE_ROLES 
+        for index, singleText in BaseballAutoPlayer.AVAILABLE_ROLES
         {
             targetTitle:=targetTitle singleText "|"
         }
@@ -109,7 +110,7 @@ Class BaseballAutoGui{
         {
             guiType:="ComboBox"
             guiTitle:=targetTitle
-            guiLable:=player.getKeyRole() 
+            guiLable:=player.getKeyRole()
             if ( index = 1 )
                 option:="xs+110 ys+15 +Center w50"
             else
@@ -117,10 +118,10 @@ Class BaseballAutoGui{
 
             this.guiMain.Add(guiType, guiTitle, option, guiLable,0)
             this.guiMain.Controls[guiLable].select(player.getRole())
-        }        
-    
+        }
+
         targetTitle:=""
-        for index, singleText in BaseballAutoPlayer.AVAILABLE_PLAY_TYPE 
+        for index, singleText in BaseballAutoPlayer.AVAILABLE_PLAY_TYPE
         {
             targetTitle:=targetTitle singleText "|"
         }
@@ -141,10 +142,10 @@ Class BaseballAutoGui{
         for index, player in baseballAutoConfig.players
         {
             guiType:="Text"
-            guiTitle:=player.getResult() 
+            guiTitle:=player.getResult()
             guiLable:=player.getKeyResult()
             option:="xp y+10 wp hp Right"
-            if( index = 1 ){			
+            if( index = 1 ){
                 option:="xs+220 ys+20 w20 Right"
             }
             this.guiMain.Add(guiType, guiTitle, option, guiLable,0)
@@ -173,7 +174,7 @@ Class BaseballAutoGui{
         {
             ; if( index =2 )
             ; break
-            keyForPlayer:=% "player" index 
+            keyForPlayer:=% "player" index
             ; ToolTip, % keyForPlayer "Enabled key and value =" isObject(element) "   " element["ENABLE"]
 
             this.guiMain.Controls[ keyForPlayer "Enabled" ].Set(element["ENABLE"])
@@ -201,7 +202,7 @@ Class BaseballAutoGui{
         this.guiMain.Add("Picture", vIcon_pause, "w24 h24 xp yp +Hidden", "GuiPauseButton", 0)
 
         this.guiMain.Controls["GuiResumeButton"].BindMethod(this.resumeByGui.Bind(this))
-        this.guiMain.Controls["GuiPauseButton"].BindMethod(this.pauseByGui.Bind(this))	
+        this.guiMain.Controls["GuiPauseButton"].BindMethod(this.pauseByGui.Bind(this))
 
         this.guiMain.Add("Button", "리로드[F12]", "w80 h30 X+5 yp-4 ", "GuiReloadButton", 0)
         this.guiMain.Controls["GuiReloadButton"].BindMethod(this.reloadByGui.Bind(this))
@@ -216,17 +217,17 @@ Class BaseballAutoGui{
 
     }
     updateStatusColor( statusLabel, status , changeColor:=0 ){
-        if( changeColor = 1 ){			
-            this.guiMain.Controls[statusLabel].SetOptions("+cRed")		
-        }else if( changeColor = 2 ){			
-            this.guiMain.Controls[statusLabel].SetOptions("+cGreen")		
+        if( changeColor = 1 ){
+            this.guiMain.Controls[statusLabel].SetOptions("+cRed")
+        }else if( changeColor = 2 ){
+            this.guiMain.Controls[statusLabel].SetOptions("+cGreen")
         }else{
-            this.guiMain.Controls[statusLabel].SetOptions("+cBlack")		
+            this.guiMain.Controls[statusLabel].SetOptions("+cBlack")
         }
-        this.guiMain.Controls[statusLabel].setText(status)	
+        this.guiMain.Controls[statusLabel].setText(status)
     }
-    updateStatus( statusLabel, status ){		
-        this.guiMain.Controls[statusLabel].setText(status)	
+    updateStatus( statusLabel, status ){
+        this.guiMain.Controls[statusLabel].setText(status)
     }
     initLogWindow(_height){
         currentWindowHeight=200
@@ -239,7 +240,7 @@ Class BaseballAutoGui{
         return currentWindowHeight+5
     }
 
-    guiLog( title, subTitle, logMessage ){        
+    guiLog( title, subTitle, logMessage ){
         currentLog:=this.guiMain.Controls["GuiLoggerLogging"].get()
         StringLen, length, currentLog
         if( length > 1000000 ){
@@ -259,10 +260,27 @@ Class BaseballAutoGui{
         return currentWindowHeight
     }
 
-    getPaused(){	
+    initOptionWindow( _height ){
+      currentWindowHeight=40
+      this.guiMain.addGroupBox("Options", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
+      this.guiMain.Add("Checkbox", "랭대장비", "xs+10 ys+20", "GuiTestChk", 0)
+      this.guiMain.Controls["GuiTestChk"].BindMethod(this.setEquipByGui.Bind(this))
+      
+      return currentWindowHeight
+    }
+    setEquipByGui(){
+        global Equips
+        if(Equips==1){
+            Equips:=0
+        }else{
+            Equips:=1
+        }
+    }
+
+    getPaused(){
         return this.BoolPaused
     }
-    startByGui() { 
+    startByGui() {
         global baseballAuto
 
         baseballAuto.start()
@@ -271,7 +289,7 @@ Class BaseballAutoGui{
 
         msgbox "Closed"
     }
-    stopByGui() { 
+    stopByGui() {
         global baseballAuto
         baseballAuto.tryStop()
     }
@@ -286,7 +304,7 @@ Class BaseballAutoGui{
         global globalCurrentPlayer, baseballAutoConfig
         targetAppTiile:=globalCurrentPlayer.getAppTitle()
         if( targetAppTiile = "" ){
-            
+
             player:=baseballAutoConfig.getDefaultPlayer()
             targetAppTiile:=player.getAppTitle()
         }
@@ -295,30 +313,30 @@ Class BaseballAutoGui{
         }
         ; MsgBox, % "Target App=" targetAppTiile
 
-        
-    
+
+
     }
 
     hiPlayerFunction(){
           global globalCurrentPlayer, baseballAutoConfig
         targetAppTiile:=globalCurrentPlayer.getAppTitle()
         if( targetAppTiile = "" ){
-            
+
             player:=baseballAutoConfig.getDefaultPlayer()
             targetAppTiile:=player.getAppTitle()
         }
         if not ( targetAppTiile =""){
             winmove, %targetAppTiile%,,0,0
         }
-        ; winmove, %targetAppTiile%,,0,0    
+        ; winmove, %targetAppTiile%,,0,0
     }
 
-    reloadByGui() { 
+    reloadByGui() {
         global baseballAuto, baseballAutoConfig
         baseballAuto.reload()
 
-        title := this.getTitle() 
-        WinGetPos, posx, posy, width, height, %title% 
+        title := this.getTitle()
+        WinGetPos, posx, posy, width, height, %title%
         baseballAutoConfig.setLastGuiPosition(posx, posy)
 
         Reload
@@ -330,10 +348,11 @@ Class BaseballAutoGui{
         for index,player in baseballAutoConfig.players
         {
             player.setResult(0)
-        } 
+        }
     }
     roleSaveByGui(){
         this.saveGuiConfigs()
+        this.saveGuiOptions()
         ToolTip, Role Saved
         Sleep , 500
         ToolTip
@@ -344,11 +363,11 @@ Class BaseballAutoGui{
         baseballAutoConfig.enabledPlayers:=[]
         for index,player in baseballAutoConfig.players
         {
-            this.getGuiInfo(player) 
+            this.getGuiInfo(player)
             if( player.getEnabled() ){
                 baseballAutoConfig.enabledPlayers.push(player)
             }
-        }            
+        }
         baseballAutoConfig.saveConfig()
     }
     rolePassByGui(){
@@ -371,7 +390,7 @@ Class BaseballAutoGui{
         ToolTip, 모든 경기가 종료되길 체크 합니다.
         Sleep , 1000
         ToolTip
-        baseballAuto.setWantToResult()	
+        baseballAuto.setWantToResult()
     }
     getGuiInfo(player){
         player.setEnabled(this.guiMain.Controls[player.getKeyEnable()].get())
@@ -393,23 +412,23 @@ Class BaseballAutoGui{
         this.statusPaused:=false
 
         this.guiMain.Controls["GuiStopButton"].show()
-        this.guiMain.Controls["GuiPauseButton"].show()		
-        ; this.guiMain.Controls["GuiResumeButton"].show()		
+        this.guiMain.Controls["GuiPauseButton"].show()
+        ; this.guiMain.Controls["GuiResumeButton"].show()
         this.guiMain.Controls["GuiStartButton"].hide()
     }
     pauseByGui(){
         if( this.statusPaused = false ){
             this.statusPaused:= true
-            this.guiMain.Controls["GuiPauseButton"].hide()		
-            this.guiMain.Controls["GuiResumeButton"].show()					
+            this.guiMain.Controls["GuiPauseButton"].hide()
+            this.guiMain.Controls["GuiResumeButton"].show()
             pause
         }
     }
     resumeByGui(){
         if( this.statusPaused = true ){
             this.statusPaused:= false
-            this.guiMain.Controls["GuiPauseButton"].show()		
-            this.guiMain.Controls["GuiResumeButton"].hide()		
+            this.guiMain.Controls["GuiPauseButton"].show()
+            this.guiMain.Controls["GuiResumeButton"].hide()
             pause
         }
     }
@@ -419,7 +438,7 @@ Class BaseballAutoGui{
         this.guiMain.Controls["GuiResumeButton"].hide()
         this.guiMain.Controls["GuiStartButton"].show()
     }
-    Activate(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:="") { 
+    Activate(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:="") {
         MsgBox % "You've really done it now.`r`nCtrlHwnd= " CtrlHwnd "`r`nGuiEvent = " GuiEvent "`r`nEventInfo = " EventInfo "`r`nErrLevel = " ErrLevel
     }
 
