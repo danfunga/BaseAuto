@@ -59,7 +59,7 @@ class BaseballAutoConfig{
 
                 if (playerBattleType="")	
                     player.setBattleType("전체")
-            }
+            }   
             if( player.getEnabled() ){
                 this.enabledPlayers.push(player)
 
@@ -72,12 +72,18 @@ class BaseballAutoConfig{
 
     }
     loadConfig(){
-         global baseballAutoGui
+        global baseballAutoGui
         loadedJobOrder:=this.configFile.loadValue("GLOBAL_CONFIG","JobOrder")
         if( loadedJobOrder = ""){
             loadedJobOrder:="홈런,랭킹,친구"
         }
         baseballAutoGui.setJobOrder(loadedJobOrder)
+
+        loadedUseBooster:=this.configFile.loadValue("GLOBAL_CONFIG","UseBooster")
+        if( loadedUseBooster = ""){
+            loadedUseBooster:=0
+        }
+        baseballAutoGui.setUseBooster(loadedUseBooster)
     }
     
     saveConfig(){
@@ -90,7 +96,8 @@ class BaseballAutoConfig{
             this.configFile.saveValue(PLAYER_KEY,element.getKeyRole(), element.getRole()) 
             this.configFile.saveValue(PLAYER_KEY,element.getKeyBattleType(), element.getBattleType()) 
         }
-        this.configFile.saveValue("GLOBAL_CONFIG","JobOrder",baseballAutoGui.getJobOrder())        
+        this.configFile.saveValue("GLOBAL_CONFIG","JobOrder",baseballAutoGui.getJobOrder())
+        this.configFile.saveValue("GLOBAL_CONFIG","UseBooster",baseballAutoGui.getUseBooster())       
     }
     savePlayerResult( player ){
         this.configFile.saveValue("PLAYERS_CONFIG",player.getKeyResult(), player.getResult()) 

@@ -14,7 +14,6 @@ Class BaseballAutoGui{
         ; myGui_Close(thisGui) {  ; Declaring this parameter is optional.
         ; if MsgBox("Are you sure you want to close the GUI?",, "y/n") = "No"
         ; return true  ; true = 1
-
     }
 
     show( posX, posY){
@@ -261,12 +260,17 @@ Class BaseballAutoGui{
     }
 
     initOptionWindow( _height ){
-      currentWindowHeight=40
-      this.guiMain.addGroupBox("Options", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
-      this.guiMain.Add("Checkbox", "랭대장비", "xs+10 ys+20", "GuiTestChk", 0)
-      this.guiMain.Controls["GuiTestChk"].BindMethod(this.setEquipByGui.Bind(this))
+        global baseballAutoConfig
+
+        currentWindowHeight=40
+        this.guiMain.addGroupBox("Options", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
+        this.guiMain.Add("Checkbox", "랭대장비", "xs+10 ys+20", "EquipChk", 0)
+        this.guiMain.Controls["EquipChk"].BindMethod(this.setEquipByGui.Bind(this))
+
+        baseballAutoConfig.get
+        this.guiMain.Add("Checkbox", "부스터", "X+1", "BoosterChk", 0)
       
-      return currentWindowHeight
+        return currentWindowHeight
     }
     setEquipByGui(){
         global Equips
@@ -275,6 +279,14 @@ Class BaseballAutoGui{
         }else{
             Equips:=1
         }
+    }
+
+    getUseBooster() {
+        return this.guiMain.Controls["BoosterChk"].get()
+    }
+    setUseBooster( bool ) {
+        ; configFile 에서 설정되는 부분
+        this.guiMain.Controls["BoosterChk"].set(bool)
     }
 
     getPaused(){

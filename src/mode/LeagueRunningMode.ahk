@@ -117,13 +117,28 @@ Class LeagueRunningMode{
         if ( this.gameController.searchImageFolder("리그모드\화면_상대전적") ){
             this.logger.log("전적 화면을 넘어갑니다.")
             this.player.setStay()
+
+            global baseballAutoGui
+
+            if (baseballAutoGui.getUseBooster()=1) {
+                this.logger.log("도전과제 부스터를 사용합니다.")
+                if ( this.gameController.searchAndClickFolder("1.공통\버튼_도전과제부스터\부스터_미사용") ){
+                    this.gameController.sleep(3)
+                }
+            } else {
+                this.logger.log("도전과제 부스터를 사용하지 않습니다.")
+                if ( this.gameController.searchAndClickFolder("1.공통\버튼_도전과제부스터\부스터_사용") ){
+                    this.gameController.sleep(3)
+                }
+            }
+
             if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
                 this.logger.log("경기가 시작 됩니다. 15초 기다립니다.")
                 this.gameController.sleep(15)
                 return 1
             }
         }
-        return 0		
+        return 0
     }	
     choicePlayType(){
         if ( this.gameController.searchImageFolder("리그모드\Window_ChoicePlayType") ){

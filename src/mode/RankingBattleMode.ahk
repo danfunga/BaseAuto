@@ -18,9 +18,9 @@ Class RankingBattleMode{
         counter:=0
 
         counter+=this.startBattleMode( )
-        counter+=this.selectFriendsBattle( )
-        counter+=this.startFriendsBattle( )
-        counter+=this.playFriendsBattle( )
+        counter+=this.selectRankingBattle( )
+        counter+=this.startRankingBattle( )
+        counter+=this.playRankingBattle( )
         counter+=this.checkSlowAndChance( )
 
         counter+=this.checkGameResultWindow( )
@@ -87,7 +87,7 @@ Class RankingBattleMode{
       sleep, rand
     }
 
-    selectFriendsBattle(){
+    selectRankingBattle(){
         if ( this.gameController.searchImageFolder("0.기본UI\2.대전모드_Base") ){
             this.player.setStay()
             this.logger.log("랭킹 대전을 선택합니다")
@@ -97,7 +97,7 @@ Class RankingBattleMode{
         }
         return 0
     }
-    startFriendsBattle(){
+    startRankingBattle(){
         if ( this.gameController.searchImageFolder("0.기본UI\2-1.랭킹대전_Base") ){
 
             if ( this.gameController.searchImageFolder("랭대모드\화면_상대있음") ){
@@ -116,7 +116,7 @@ Class RankingBattleMode{
         }
         return 0
     }
-    playFriendsBattle(){
+    playRankingBattle(){
         if ( this.gameController.searchImageFolder("랭대모드\화면_랭킹대전준비") ){
             this.player.setStay()
             this.logger.log("경기를 시작합니다")

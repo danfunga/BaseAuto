@@ -34,7 +34,6 @@
         this.result:=0
         this.currentBattleRemainCount:=0
         this.remainFriendsBattleCount:=40
-
         this.remainRealTimeBattleCount:=2
         this.countPerMode := { "리그":0, "랭대":0, "홈런":0, "친구":0, "실대":0,"보상":0 } 
     } 
