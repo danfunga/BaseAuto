@@ -110,6 +110,10 @@ Class RankingBattleMode extends AutoGameMode{
     }
     playRankingBattle(){
         if ( this.gameController.searchImageFolder("랭대모드\화면_랭킹대전준비") ){
+            this.logger.log("도전과제 부스터를 사용하지 않습니다.")
+            if ( this.gameController.searchAndClickFolder("1.공통\버튼_도전과제부스터\부스터_사용") ){
+                this.gameController.sleep(3)
+            }
             this.player.setStay()
             this.logger.log("경기를 시작합니다")
             if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
