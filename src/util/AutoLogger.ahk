@@ -27,7 +27,7 @@
         FileAppend, %formattedContent%, % this.directory "\log(" sFileName ").txt",UTF-8 
 
         global BaseballAutoGui
-        formattedContent:="[" TimeString "]: " content "`n"
+        formattedContent:="[" TimeString "][" this.module "]: " content "`n"
 
         if( BaseballAutoGui != "" ){
             BaseballAutoGui.guiLog( this.module, "How", formattedContent)

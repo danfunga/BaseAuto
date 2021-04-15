@@ -4,7 +4,7 @@ Class StageMode extends AutoGameMode{
 
     __NEW( controller )
     {
-        base.__NEW("스테이지모드", controller)
+        base.__NEW("스테이지", controller)
     }
 
     checkAndRun() 

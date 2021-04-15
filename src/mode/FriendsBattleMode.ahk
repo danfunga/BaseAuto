@@ -2,55 +2,45 @@
 
 Class FriendsBattleMode extends AutoGameMode{
 
-    __NEW( controller )
-    {
+    __NEW( controller ){
         base.__NEW("친구대전", controller)
     }
 
-    checkAndRun()
-    {
+    checkAndRun(){
         counter:=0
 
-        counter+=this.startBattleMode( ) 	
-        counter+=this.selectFriendsBattle( )
+        counter+=this.isMainWindow( this.selectBattleMode )
+        counter+=this.isBattleWindow( this.selectFriendsBattle ) 	
+
         counter:= this.selectTopFriends( )
         counter+=this.startFriendsBattle( )
         counter+=this.playFriendsBattle( ) 
 
         counter+=this.checkPlaying( )
 
-        counter+=this.checkGameResultWindow( )
+        counter+=this.isGameResultWindow( this.clickNextAndConfirmButton )
         counter+=this.checkMVPWindow( )
 
         counter+=this.checkPopup( ) 
         counter+=this.receiveReward( ) 	
 
         counter+=this.checkAndGoHome(counter)
-        
+
         ; this.logger.log("나는 친구대전" counter)
         return counter
     }
 
-    startBattleMode(){
-        if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){
-            this.logger.log(this.player.getAppTitle() "친구 대전 을 시작합니다")
-            this.player.setStay()
-            if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_대전_팀별") ){
-                return 1
-            }
+    selectBattleMode(){
+        this.logger.log(this.player.getAppTitle() "친구 대전 을 시작합니다")
+        if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_대전_팀별") ){
+            return 1
         }
-        return 0
     }
-
     selectFriendsBattle(){
-        if ( this.gameController.searchImageFolder("0.기본UI\2.대전모드_Base") ){		
-            this.player.setStay()
-            this.logger.log("친구 대전을 선택합니다") 
-            if ( this.gameController.searchAndClickFolder("0.기본UI\2.대전모드_버튼_친구대전") ){
-                return 1
-            }		 
-        }
-        return 0		
+        this.logger.log("친구 대전을 선택합니다") 
+        if ( this.gameController.searchAndClickFolder("0.기본UI\2.대전모드_버튼_친구대전") ){
+            return 1
+        }		 
     }		
 
     selectTopFriends(){
@@ -75,7 +65,7 @@ Class FriendsBattleMode extends AutoGameMode{
             }else{
                 this.logger.log("친구가 없어서 시작하지 않습니다.") 
                 this.player.setBye()
-                return  0
+                return 0
             }
         }
         return 0		
@@ -124,21 +114,11 @@ Class FriendsBattleMode extends AutoGameMode{
         return 0 
     } 
 
-    checkGameResultWindow(){
-        if ( this.gameController.searchImageFolder("1.공통\화면_경기_결과" ) ){		
-            this.logger.log("경기 결과를 확인했습니다.") 
-            this.player.setStay()
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){
-                return 1
-            }
-        }
-        return 0 
-    }
 
     checkMVPWindow(){
         if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){		
             this.logger.log("MVP 를 확인했습니다.") 
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){
+            if( this.clickNextAndConfirmButton() ){
                 this.player.addResult()
                 if( this.player.needToStopBattle() ){
                     this.logger.log("친구대전을 다 돌았습니다.") 
@@ -148,7 +128,7 @@ Class FriendsBattleMode extends AutoGameMode{
                         this.logger.log("친구대전을 계속 돌겠다니.... 이건 잘못된 선택입니다." )
                     }else{
                         this.logger.log("친구대전을 " this.player.getRemainBattleCount() "번 더 돕니다." ) 
-                    }                    
+                    } 
                     this.player.setFree()
                 }
                 return 1

@@ -11,7 +11,7 @@ Class RankingBattleMode extends AutoGameMode{
     {
         counter:=0
 
-        counter+=this.startBattleMode( )
+        counter+=this.selectBattleMode( )
         counter+=this.selectFriendsBattle( )
         counter+=this.startFriendsBattle( )
         counter+=this.playFriendsBattle( )
@@ -30,7 +30,7 @@ Class RankingBattleMode extends AutoGameMode{
         return counter
     }
 
-    startBattleMode()
+    selectBattleMode()
     {
         if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){
             this.logger.log(this.player.getAppTitle() "랭킹 대전 을 시작합니다")

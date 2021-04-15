@@ -4,7 +4,7 @@ Class RealTimeBattleMode extends AutoGameMode{
 
     __NEW( controller )
     {
-        base.__NEW("실시간배틀", controller)
+        base.__NEW("실대모드", controller)
     }
 
 
