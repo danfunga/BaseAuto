@@ -1,6 +1,6 @@
-#include %A_ScriptDir%\src\util\AutoLogger.ahk
+ï»¿#include %A_ScriptDir%\src\util\AutoLogger.ahk
 Class StageMode{
-    logger:= new AutoLogger( "½ºÅ×ÀÌÁö¸ğµå" ) 
+    logger:= new AutoLogger( "ìŠ¤í…Œì´ì§€ëª¨ë“œ" ) 
     
     __NEW( controller )
     {
@@ -12,7 +12,7 @@ Class StageMode{
         this.player:=_player
     }
 
-    checkAndRun()
+    checkAndRun() 
     {
         counter:=0
 
@@ -35,10 +35,10 @@ Class StageMode{
     }
 
     startSpecialMode(){
-        if ( this.gameController.searchImageFolder("0.±âº»UI\0.¸ŞÀÎÈ­¸é_Base") ){
-            this.logger.log(this.player.getAppTitle() "½ºÅ×ÀÌÁö¸ğµå¸¦ ½ÃÀÛÇÕ´Ï´Ù!")
+        if ( this.gameController.searchImageFolder("0.ê¸°ë³¸UI\0.ë©”ì¸í™”ë©´_Base") ){
+            this.logger.log(this.player.getAppTitle() "ìŠ¤í…Œì´ì§€ëª¨ë“œë¥¼ ì‹œì‘í•©ë‹ˆë‹¤!")
             this.player.setStay()
-            if ( this.gameController.searchAndClickFolder("0.±âº»UI\0.¸ŞÀÎÈ­¸é_¹öÆ°_½ºÆä¼È_ÆÀº°") ){
+            if ( this.gameController.searchAndClickFolder("0.ê¸°ë³¸UI\0.ë©”ì¸í™”ë©´_ë²„íŠ¼_ìŠ¤í˜ì…œ_íŒ€ë³„") ){
                 return 1
             }
         }
@@ -46,10 +46,10 @@ Class StageMode{
     }
 
     selectStageMode(){
-        if ( this.gameController.searchImageFolder("0.±âº»UI\3.½ºÆä¼È¸ğµå_Base") ){		
+        if ( this.gameController.searchImageFolder("0.ê¸°ë³¸UI\3.ìŠ¤í˜ì…œëª¨ë“œ_Base") ){		
             this.player.setStay()
-            this.logger.log("½ºÅ×ÀÌÁö ¸ğµå¸¦ ¼±ÅÃÇÕ´Ï´Ù~") 
-            if ( this.gameController.searchAndClickFolder("0.±âº»UI\3.½ºÆä¼È¸ğµå_¹öÆ°_½ºÅ×ÀÌÁö¸ğµå") ){
+            this.logger.log("ìŠ¤í…Œì´ì§€ ëª¨ë“œë¥¼ ì„ íƒí•©ë‹ˆë‹¤~") 
+            if ( this.gameController.searchAndClickFolder("0.ê¸°ë³¸UI\3.ìŠ¤í˜ì…œëª¨ë“œ_ë²„íŠ¼_ìŠ¤í…Œì´ì§€ëª¨ë“œ") ){
                 return 1
             }		 
         }
@@ -57,10 +57,10 @@ Class StageMode{
     }
 
     selectStageLevel(){
-        if ( this.gameController.searchImageFolder("0.±âº»UI\3-3.½ºÅ×ÀÌÁö¸ğµå_Base") ){		
+        if ( this.gameController.searchImageFolder("0.ê¸°ë³¸UI\3-3.ìŠ¤í…Œì´ì§€ëª¨ë“œ_Base") ){		
             this.player.setStay()
-            this.logger.log("ÀÔÀåÇÕ´Ï´Ù") 
-            if ( this.gameController.searchAndClickFolder("½ºÅ×ÀÌÁö¸ğµå\È­¸é_ÀÔÀå") ){
+            this.logger.log("ì…ì¥í•©ë‹ˆë‹¤") 
+            if ( this.gameController.searchAndClickFolder("ìŠ¤í…Œì´ì§€ëª¨ë“œ\í™”ë©´_ì…ì¥") ){
                 return 1
             }		 
         }
@@ -68,17 +68,17 @@ Class StageMode{
     }
 
     startStageMode(){
-        if ( this.gameController.searchImageFolder("0.±âº»UI\3-3.½ºÅ×ÀÌÁö¸ğµå_Base") ){		 
+        if ( this.gameController.searchImageFolder("0.ê¸°ë³¸UI\3-3.ìŠ¤í…Œì´ì§€ëª¨ë“œ_Base") ){		 
             if(this.checkStageModeClose()){
                 return 1
             }else{
                 this.player.setStay()
-                this.logger.log("½ºÅ×ÀÌÁö ¸ğµå¸¦ ½ÃÀÛÇÕ´Ï´Ù~")
-                if ( this.gameController.searchAndClickFolder("1.°øÅë\¹öÆ°_°ÔÀÓ½ÃÀÛ") ){ 
-                    this.logger.log("°í°íº¯ ¹Ş¾ÆºÃÀÚ Ä¸Æ¾ ¾È³ª¿È¤»")
+                this.logger.log("ìŠ¤í…Œì´ì§€ ëª¨ë“œë¥¼ ì‹œì‘í•©ë‹ˆë‹¤~")
+                if ( this.gameController.searchAndClickFolder("1.ê³µí†µ\ë²„íŠ¼_ê²Œì„ì‹œì‘") ){ 
+                    this.logger.log("ê³ ê³ ë³€ ë°›ì•„ë´¤ì ìº¡í‹´ ì•ˆë‚˜ì˜´ã…‹")
                 }
-                if ( this.gameController.searchAndClickFolder("1.°øÅë\¹öÆ°_°ÔÀÓ½ÃÀÛ") ){ 
-                    this.logger.log("6ÃÊ ±â´Ù¸³´Ï´Ù") 
+                if ( this.gameController.searchAndClickFolder("1.ê³µí†µ\ë²„íŠ¼_ê²Œì„ì‹œì‘") ){ 
+                    this.logger.log("6ì´ˆ ê¸°ë‹¤ë¦½ë‹ˆë‹¤") 
                     this.gameController.sleep(6)
                     return 1
                 }		 
@@ -88,11 +88,11 @@ Class StageMode{
     }
 
     skipPlayerProfile(){
-        if ( this.gameController.searchAndClickFolder("½ºÅ×ÀÌÁö¸ğµå\È­¸é_Åõ¼öÇÁ·ÎÇÊ") ){		 
+        if ( this.gameController.searchAndClickFolder("ìŠ¤í…Œì´ì§€ëª¨ë“œ\í™”ë©´_íˆ¬ìˆ˜í”„ë¡œí•„") ){		 
             this.player.setStay()
-            this.logger.log("½ºÅ×ÀÌÁö ¸ğµå ÇÁ·ÎÇÊ Å¬¸¯ ÇÕ´Ï´Ù~") 
+            this.logger.log("ìŠ¤í…Œì´ì§€ ëª¨ë“œ í”„ë¡œí•„ í´ë¦­ í•©ë‹ˆë‹¤~") 
             this.gameController.sleep(1)
-            this.logger.log("½ºÅ×ÀÌÁö ¸ğµå ½ÃÀÛ ÇÏÀÚ!!") 
+            this.logger.log("ìŠ¤í…Œì´ì§€ ëª¨ë“œ ì‹œì‘ í•˜ì!!") 
             this.gameController.clickRatioPos(0.5, 0.6, 80)
         }
         return 0		
@@ -100,8 +100,8 @@ Class StageMode{
 
     checkPopup(counter:=0){
         localCounter:=counter
-        if ( this.gameController.searchImageFolder("1.°øÅë\¹öÆ°_ÆË¾÷½ºÅµ" ) ){		
-            if( this.gameController.searchAndClickFolder("1.°øÅë\¹öÆ°_ÆË¾÷½ºÅµ" ) ){
+        if ( this.gameController.searchImageFolder("1.ê³µí†µ\ë²„íŠ¼_íŒì—…ìŠ¤í‚µ" ) ){		
+            if( this.gameController.searchAndClickFolder("1.ê³µí†µ\ë²„íŠ¼_íŒì—…ìŠ¤í‚µ" ) ){
                 if( localCounter > 5 ){
                     return localCounter
                 }
@@ -109,10 +109,10 @@ Class StageMode{
                 this.checkPopup(localCounter)
             }
         }
-        ; ¾ÆÁ÷ ¾Æ·¡ ¾øÀ½
-        if ( this.gameController.searchImageFolder("½ºÅ×ÀÌÁö¸ğµå\È­¸é_ÆË¾÷Ã¼Å©" ) ){		
-            this.logger.log("ÆË¾÷À» Á¦°ÅÇÕ´Ï´Ù. º¸»óÀ» ¾È¹Ş¾Ò³ª.") 
-            if( this.gameController.searchAndClickFolder("½ºÅ×ÀÌÁö¸ğµå\È­¸é_ÆË¾÷Ã¼Å©\¹öÆ°_È®ÀÎ" ) ){
+        ; ì•„ì§ ì•„ë˜ ì—†ìŒ
+        if ( this.gameController.searchImageFolder("ìŠ¤í…Œì´ì§€ëª¨ë“œ\í™”ë©´_íŒì—…ì²´í¬" ) ){		
+            this.logger.log("íŒì—…ì„ ì œê±°í•©ë‹ˆë‹¤. ë³´ìƒì„ ì•ˆë°›ì•˜ë‚˜.") 
+            if( this.gameController.searchAndClickFolder("ìŠ¤í…Œì´ì§€ëª¨ë“œ\í™”ë©´_íŒì—…ì²´í¬\ë²„íŠ¼_í™•ì¸" ) ){
                 if( localCounter > 5 ){
                     return localCounter
                 }
@@ -124,19 +124,19 @@ Class StageMode{
     }
 
     checkPlaying(){
-        if ( this.gameController.searchImageFolder("½ºÅ×ÀÌÁö¸ğµå\È­¸é_ÁøÇàÁß" ) ){		
+        if ( this.gameController.searchImageFolder("ìŠ¤í…Œì´ì§€ëª¨ë“œ\í™”ë©´_ì§„í–‰ì¤‘" ) ){		
             this.player.setStay()
-            this.logger.log("°í°íº¯À» ÇâÇÏ¿©..")
+            this.logger.log("ê³ ê³ ë³€ì„ í–¥í•˜ì—¬..")
             
         } 
         return 0 
     }
 
     checkGameResultWindow(){
-        if ( this.gameController.searchImageFolder("1.°øÅë\È­¸é_°æ±â_°á°ú" ) ){		
-            this.logger.log("°æ±â °á°úÈ­¸éÀÔ´Ï´Ù..") 
+        if ( this.gameController.searchImageFolder("1.ê³µí†µ\í™”ë©´_ê²½ê¸°_ê²°ê³¼" ) ){		
+            this.logger.log("ê²½ê¸° ê²°ê³¼í™”ë©´ì…ë‹ˆë‹¤..") 
             this.player.setStay()
-            if( this.gameController.searchAndClickFolder("1.°øÅë\¹öÆ°_´ÙÀ½_È®ÀÎ" ) ){ 
+            if( this.gameController.searchAndClickFolder("1.ê³µí†µ\ë²„íŠ¼_ë‹¤ìŒ_í™•ì¸" ) ){ 
                 return 1
             }
         }
@@ -144,19 +144,19 @@ Class StageMode{
     }
 
     checkMVPWindow(){
-        if ( this.gameController.searchImageFolder("1.°øÅë\È­¸é_MVP" ) ){		
+        if ( this.gameController.searchImageFolder("1.ê³µí†µ\í™”ë©´_MVP" ) ){		
             this.player.setStay()
-            this.logger.log("½ºÅ×ÀÌÁö¸ğµå Á¾·á¸¦ È®ÀÎÇß½À´Ï´Ù.") 
-            if( this.gameController.searchAndClickFolder("1.°øÅë\¹öÆ°_´ÙÀ½_È®ÀÎ" ) ){
+            this.logger.log("ìŠ¤í…Œì´ì§€ëª¨ë“œ ì¢…ë£Œë¥¼ í™•ì¸í–ˆìŠµë‹ˆë‹¤.") 
+            if( this.gameController.searchAndClickFolder("1.ê³µí†µ\ë²„íŠ¼_ë‹¤ìŒ_í™•ì¸" ) ){
                 this.player.addResult()
                 if( this.player.needToStopBattle() ){
-                    this.logger.log("½ºÅ×ÀÌÁö¸ğµå¸¦ È½¼ö¸¸Å­ ´Ù µ¹¾Ò½À´Ï´Ù.") 
+                    this.logger.log("ìŠ¤í…Œì´ì§€ëª¨ë“œë¥¼ íšŸìˆ˜ë§Œí¼ ë‹¤ ëŒì•˜ìŠµë‹ˆë‹¤.") 
                     this.player.setBye()
                 }else{
-                    if( this.player.getRemainBattleCount() = "¹«ÇÑ" ){
-                        this.logger.log("½ºÅ×ÀÌÁö º¼À» ´Ù ¾µ¶§±îÁö µ½´Ï´Ù." )
+                    if( this.player.getRemainBattleCount() = "ë¬´í•œ" ){
+                        this.logger.log("ìŠ¤í…Œì´ì§€ ë³¼ì„ ë‹¤ ì“¸ë•Œê¹Œì§€ ë•ë‹ˆë‹¤." )
                     }else{
-                        this.logger.log("½ºÅ×ÀÌÁö ¸ğµå¸¦ " this.player.getRemainBattleCount() "¹ø ´õ µ½´Ï´Ù." ) 
+                        this.logger.log("ìŠ¤í…Œì´ì§€ ëª¨ë“œë¥¼ " this.player.getRemainBattleCount() "ë²ˆ ë” ë•ë‹ˆë‹¤." ) 
                     }                    
                     this.player.setFree()
                 }
@@ -167,8 +167,8 @@ Class StageMode{
     } 
 
     checkStageModeClose(){
-        if ( this.gameController.searchImageFolder("½ºÅ×ÀÌÁö¸ğµå\È­¸é_º¼¾øÀ½" ) ){		 
-            this.logger.log("º¼ÀÌ ¾ø´Â°Å º¸´Ï ½ºÅ×ÀÌÁö¸ğµå ´Ù µ¹¾Ò³×¿ä. ..")
+        if ( this.gameController.searchImageFolder("ìŠ¤í…Œì´ì§€ëª¨ë“œ\í™”ë©´_ë³¼ì—†ìŒ" ) ){		 
+            this.logger.log("ë³¼ì´ ì—†ëŠ”ê±° ë³´ë‹ˆ ìŠ¤í…Œì´ì§€ëª¨ë“œ ë‹¤ ëŒì•˜ë„¤ìš”. ..")
             this.player.setBye()
             return 1
         }
@@ -176,10 +176,10 @@ Class StageMode{
     }
 
     moveMainPageForNextJob(){
-        if ( this.gameController.searchImageFolder("1.°øÅë\¹öÆ°_È¨À¸·Î" ) ){		
-            this.logger.log("´ÙÀ½ ÀÓ¹«¸¦ À§ÇØ ½ÃÀÛ È­¸éÀ¸·Î °©´Ï´Ù.") 
-            if( this.gameController.searchAndClickFolder("1.°øÅë\¹öÆ°_È¨À¸·Î" ) ){
-                this.logger.log("¹«ÇÑ ·çÇÁ´Â ¾ÈµÈ´Ù.") 
+        if ( this.gameController.searchImageFolder("1.ê³µí†µ\ë²„íŠ¼_í™ˆìœ¼ë¡œ" ) ){		
+            this.logger.log("ë‹¤ìŒ ì„ë¬´ë¥¼ ìœ„í•´ ì‹œì‘ í™”ë©´ìœ¼ë¡œ ê°‘ë‹ˆë‹¤.") 
+            if( this.gameController.searchAndClickFolder("1.ê³µí†µ\ë²„íŠ¼_í™ˆìœ¼ë¡œ" ) ){
+                this.logger.log("ë¬´í•œ ë£¨í”„ëŠ” ì•ˆëœë‹¤.") 
                 return 1
             }
         }
