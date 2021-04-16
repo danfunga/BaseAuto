@@ -184,7 +184,7 @@ Class RankingBattleMode extends AutoGameMode{
         if ( this.player.getWaitingResult() ){
             this.logger.log( "종료 요청이 확인되었습니다.") 
             this.unsetBattleEquips()
-            this.player.setWantToResult(false)
+            this.player.setWantToWaitResult(false)
             this.player.setBye() 
             return 1
         }else{

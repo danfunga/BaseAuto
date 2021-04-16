@@ -83,7 +83,7 @@ Class LeagueRunningMode extends AutoGameMode{
                 if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
                     this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
                     this.logger.log(this.player.getAppTitle() " 바이 바이.")
-                    this.player.setWantToResult(false)
+                    this.player.setWantToWaitResult(false)
                     this.player.setBye()
                 }else if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
                     this.logger.log("정상 요청이지만 이어하기를 수행했습니다.")
