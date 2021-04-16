@@ -8,7 +8,7 @@ class BaseballAutoPlayer{
     static AVAILABLE_PLAY_TYPE:=["전체","공격","수비"]
 
     static NEXT_PLAYER_STATUS:=["Unknwon","자동중","리그종료","끝","다음임무"]
-    static STOP_PLAYER_STATUS:=["끝","완료"]
+    static STOP_PLAYER_STATUS:=["끝","리그종료"]
 
     ; 기본 모드든에 대한 설정 
     static COUNT_PER_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2,"리그":-1, "스테":-1 }
@@ -162,17 +162,9 @@ class BaseballAutoPlayer{
     setRealFree(){
         if( this.appRole ="일꾼" or this.appRole="단독"){ 
             this.LOOP_PER_ALONE_MODE[this.appMode]:=0
-            this.logger.log("아마 이 화면을 못벗어 날거 같지만 행운을 빕니다.")
-            this.logger.log("운이 좋아 튕긴다면 다음 모드만 돌것입니다.")
-
-            if( this.setMode("next") ){
-                this.setStatus("다음임무") 
-            }else{
-                this.setStatus("리그종료")		
-            }
-        }else{
-            this.setStatus("리그종료")		
-        } 
+            this.logger.log("어찌됐건 이 곳을 못 빠져나갑니다. 종료시킵니다")        
+        }
+        this.setStatus("리그종료")		        
     }
     setFree(){
         this.setStatus("자동중")		
