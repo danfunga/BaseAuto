@@ -10,57 +10,54 @@ Class HomrunDerbyMode extends AutoGameMode{
     checkAndRun()
     {
         counter:=0
+        counter+=this.isMainWindow( this.selectSpecialMode )	
+        counter+=this.isSpecialWindow( this.selectHomrunDerby )	
+        counter+=this.isHomerunDerbyWindow( this.startHomerunDerby )	
 
-        counter+=this.startSpecialMode( ) 	
-        counter+=this.selectHomrunDerby( )
-        counter+=this.startHomerunDerby( )
         counter+=this.skipPlayerProfile( )
 
         counter+=this.checkPlaying( )
-        counter+=this.checkMVPWindow( )
-        counter+=this.checkPopup( )
+        counter+=this.afterSkipMVPWindow(this.checkModeRunMore )
+        counter+=this.skipCommonPopup( )
+        counter+=this.checkLocalModePopup( )
         counter+=this.checkHomerunDerbyClose( )
         counter+=this.checkPopupClose( )
-        
+
         counter+=this.checkAndGoHome(counter)
         return counter
     }
 
-    startSpecialMode(){
-        if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){
-            this.logger.log(this.player.getAppTitle() "홈런더비를 시작합니다")
-            this.player.setStay()
-            if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_스페셜_팀별") ){
-                return 1
-            }
+    selectSpecialMode(){ 
+        if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_스페셜_팀별") ){
+            this.logger.log(this.player.getAppTitle() "홈런더비를 위해 스페셜 버튼을 클릭합니다.")
+            return 1
+        }else{
+            this.logger.log(this.player.getAppTitle() "스페셜 버튼을 못찾았습니다")
+            return 0
         }
-        return 0
     }
 
     selectHomrunDerby(){
-        if ( this.gameController.searchImageFolder("0.기본UI\3.스페셜모드_Base") ){		
-            this.player.setStay()
-            this.logger.log("홈런 더비를 선택합니다") 
-            if ( this.gameController.searchAndClickFolder("0.기본UI\3.스페셜모드_버튼_홈런더비") ){
-                return 1
-            }		 
-        }
-        return 0		
+        this.logger.log("홈런 더비를 선택합니다") 
+        if ( this.gameController.searchAndClickFolder("0.기본UI\3.스페셜모드_버튼_홈런더비") ){
+            return 1
+        }else{
+            this.logger.log(this.player.getAppTitle() "홈런더비 버튼을 못찾았습니다")
+            return 0
+        }		 
     }		
 
     startHomerunDerby(){
-        if ( this.gameController.searchImageFolder("0.기본UI\3-1.홈런더비_Base") ){		 
-            if(this.checkHomerunDerbyClose()){
+        if(this.checkHomerunDerbyClose()){
+            this.player.setBye()
+            return 1
+        }else{
+            this.logger.log("홈런 더비를 시작합니다") 
+            if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
+                this.logger.log("6초 기다립니다") 
+                this.gameController.sleep(6)
                 return 1
-            }else{
-                this.player.setStay()
-                this.logger.log("홈런 더비를 시작합니다") 
-                if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
-                    this.logger.log("6초 기다립니다") 
-                    this.gameController.sleep(6)
-                    return 1
-                }		 
-            }
+            }		 
         }
         return 0		
     }
@@ -75,17 +72,8 @@ Class HomrunDerbyMode extends AutoGameMode{
         return 0		
     }
 
-    checkPopup(counter:=0){
-        localCounter:=counter
-        if ( this.gameController.searchImageFolder("1.공통\버튼_팝업스킵" ) ){		
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_팝업스킵" ) ){
-                if( localCounter > 5 ){
-                    return localCounter
-                }
-                localCounter++ 
-                this.checkPopup(localCounter)
-            }
-        }
+    checkLocalModePopup(counter:=0){
+        localCounter:=counter 
         ; 아직 아래 없음
         if ( this.gameController.searchImageFolder("홈런더비모드\화면_팝업체크" ) ){		
             this.logger.log("팝업을 제거합니다. 보상을 안받았나.") 
@@ -94,12 +82,12 @@ Class HomrunDerbyMode extends AutoGameMode{
                     return localCounter
                 }
                 localCounter++ 
-                this.checkPopup(localCounter)
+                this.checkLocalModePopup(localCounter)
             }			
         }
         return localCounter
     }
-    checkPopupClose(){      
+    checkPopupClose(){ 
         ; 아직 아래 없음
         if ( this.gameController.searchImageFolder("홈런더비모드\화면_종료팝업" ) ){		
             this.logger.log("그만돌아야 하는 팝업이 떴습니다.") 
@@ -130,27 +118,28 @@ Class HomrunDerbyMode extends AutoGameMode{
         return 0 
     }
 
-    checkMVPWindow(){
-        if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){		
-            this.player.setStay()
-            this.logger.log("홈런더비 종료를 확인했습니다.") 
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){
-                this.player.addResult()
-                if( this.player.needToStopBattle() ){
-                    this.logger.log("홈런더비를 횟수만큼 다 돌았습니다.") 
-                    this.player.setBye()
+    checkModeRunMore(){
+        this.player.addResult()
+        if ( this.player.getWaitingResult() ){
+            this.logger.log( "종료 요청이 확인되었습니다.") 
+            this.player.setWantToResult(false)
+            this.player.setBye() 
+            return 1
+        }else{
+
+            if( this.player.needToStopBattle() ){
+                this.logger.log( "다 돌아 종료 하겠습니다.") 
+                this.player.setBye()
+            }else{
+                if( this.player.getRemainBattleCount() = "무한" ){
+                    this.logger.log( "돌 수 없을 때까지 돌게 됩니다.") 
                 }else{
-                    if( this.player.getRemainBattleCount() = "무한" ){
-                        this.logger.log("홈런 볼을 다 쓸때까지 돕니다." )
-                    }else{
-                        this.logger.log("홈런 더비를 " this.player.getRemainBattleCount() "번 더 돕니다." ) 
-                    }                    
-                    this.player.setFree()
-                }
-                return 1
+                    this.logger.log( this.player.getRemainBattleCount() " 번 더 돌겠습니다.") 
+                } 
+                this.player.setFree()
             }
+            return 1
         }
-        return 0 
     } 
 
     checkHomerunDerbyClose(){

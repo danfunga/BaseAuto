@@ -206,8 +206,8 @@ Class BaseballAutoGui{
         this.guiMain.Add("Button", "리로드[F12]", "w80 h30 X+5 yp-4 ", "GuiReloadButton", 0)
         this.guiMain.Controls["GuiReloadButton"].BindMethod(this.reloadByGui.Bind(this))
 
-        this.guiMain.Add("Button", "설정", "w60 h30 X+5 ", "GuiConfigButton", 0)
-        this.guiMain.Add("Button", "W", "w20 h30 X+5 ", "GuiWaitResultButton", 0)
+        this.guiMain.Add("Button", "설정", "w40 h30 X+5 ", "GuiConfigButton", 0)
+        this.guiMain.Add("Button", "패스", "w40 h30 X+5 ", "GuiWaitResultButton", 0)
 
         this.guiMain.Controls["GuiConfigButton"].BindMethod(this.configByGui.Bind(this))
         this.guiMain.Controls["GuiWaitResultButton"].BindMethod(this.waitingResultByGui.Bind(this))
@@ -398,10 +398,10 @@ Class BaseballAutoGui{
     waitingResultByGui(){
         global baseballAuto
         ; global baseballAutoConfig
-        ToolTip, 모든 경기가 종료되길 체크 합니다.
-        Sleep , 1000
+        ToolTip, 종료 또는 Mode Skip을 요청합니다.
+        Sleep , 2000
         ToolTip
-        baseballAuto.setWantToResult()
+        baseballAuto.setWantToResult(true)
     }
     getGuiInfo(player){
         player.setEnabled(this.guiMain.Controls[player.getKeyEnable()].get())

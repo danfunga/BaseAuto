@@ -33,6 +33,36 @@ Class AutoGameMode{
         }
         return 0		
     }	
+    isSpecialWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\3.스페셜모드_Base") ){		
+            this.player.setStay()
+            return callback.Call(this)
+        }
+        return 0		
+    }
+    isHomerunDerbyWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\3-1.홈런더비_Base") ){		 
+            this.player.setStay()
+            return callback.Call(this)
+        }
+        return 0		
+    }
+
+    isRankingBattleWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\2-1.랭킹대전_Base") ){
+            this.player.setStay()
+            return callback.Call(this)
+        }
+        return 0		
+    }
+    isFriendsBattleWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\2-2.친구대전_Base") ){
+            this.player.setStay()
+            return callback.Call(this)
+        }
+        return 0		
+    }
+
     isGameResultWindow( callback ){
         if ( this.gameController.searchImageFolder("1.공통\화면_경기_결과" ) ){	
             this.logger.log("경기 결과를 확인했습니다.") 	
@@ -40,7 +70,7 @@ Class AutoGameMode{
             return callback.Call(this)
         }
         return 0 
-    }
+    } 
 
     isMVPWindow( callback ){
         if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){		
@@ -50,17 +80,62 @@ Class AutoGameMode{
         return 0 
     }
 
+    skipGameResultWindow(){
+        if ( this.gameController.searchImageFolder("1.공통\화면_경기_결과" ) ){		
+            this.logger.log("경기 결과화면입니다..") 
+            this.player.setStay()
+            if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){ 
+                return 1
+            }
+        }
+        return 0 
+    }
+    skipMVPWindow(){
+        if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){		
+            this.logger.log("MVP 화면입니다.") 
+            this.player.setStay()
+            if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){ 
+                this.logger.log("MVP 화면을 넘어갑니다") 
+                return 1
+            }
+        }
+        return 0 
+    }	
+
+    afterSkipGameResultWindow( callback ){
+        if( this.skipGameResultWindow() ){
+            callback.Call(this)
+            return 1
+        }
+        return 0
+    }
+    afterSkipMVPWindow( callback ){
+        if( this.skipMVPWindow() ){
+            callback.Call(this)
+            return 1
+        }
+        return 0
+    }
+    skipCommonPopup(){
+        if ( this.gameController.searchImageFolder("1.공통\화면_팝업스킵" ) ){		
+            this.logger.log("레벨업이나 성장을 팝업등을 무시합니다.") 
+            ; this.player.setStay()
+            if ( this.gameController.searchAndClickFolder("1.공통\버튼_팝업스킵" ) ){
+                return 1
+            }
+        }
+        return 0 
+    } 
+
     clickNextAndConfirmButton(){
         if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){
             return 1
         } 
     }
 
-    checkAndGoHome( searchCounter ){        
-        this.logger.debug("checkAndGoHome => SearchCounter: " searchCounter ", moveHomeChecker: " this.moveHomeChecker ) 
+    checkAndGoHome( searchCounter ){ 
         if( searchCounter = 0 ){
             this.moveHomeChecker++
-            this.logger.log("Home 이동 여부를 체크, moveHomeChecker: " this.moveHomeChecker ) 
             if( this.moveHomeChecker >= 2 ){ 
                 return this.moveMainPageForNextJob()
             }

@@ -10,43 +10,47 @@ Class LeagueRunningMode extends AutoGameMode{
     checkAndRun()
     {
         counter:=0
-        counter+=this.startLeagueInMainWindow( ) 	
+        ; default
+        counter+=this.isMainWindow( this.selectLeagueButton )
+	
         counter+=this.skippLeagueSchedule( )
         counter+=this.skippBattleHistory( )
         counter+=this.choicePlayType( )
         counter+=this.checkSpeedUp()
-        counter+=this.skippPlayLineupStatus(0)		
+        counter+=this.skippPlayLineupStatus()		
         counter+=this.checkSpeedUp()	
         counter+=this.skippChanceStatus( )		
         counter+=this.activateAutoPlay( )				
-        counter+=this.skipLevelUpOrPopUp()
+        ; default
+        counter+=this.skipCommonPopup()
         counter+=this.checkAutoPlayEnding() 
-        counter+=this.checkGameResultWindow()
-        counter+=this.checkMVPWindow()
+        ; default
+        counter+=this.skipGameResultWindow()
+        counter+=this.skipMVPWindow()
+
         counter+=this.checkTotalLeagueEnd()
 
+        ; default
         counter+=this.checkAndGoHome(counter)
         return counter
     }
 
-    startLeagueInMainWindow()
-    {
-
-        if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){		
-            if( this.player.getRole() = "단독" ){
-                if( this.player.getRemainBattleCount() = 0 ){
-                    this.player.setBye()
-                    return 1
-                }
+    selectLeagueButton(){
+        if( this.player.getRole() = "단독" ){
+            if( this.player.getRemainBattleCount() = 0 ){
+                this.player.setBye()
+                return 0
             }
-            this.logger.log(this.player.getAppTitle() " 리그를 돌겠습니다.")
-            this.player.setStay()
-            if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_리그_팀별") ){
-                return 1
-            }			
         }
-        return 0		
+        if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_리그_팀별") ){
+            this.logger.log(this.player.getAppTitle() " 리그를 돌겠습니다.")
+            return 1
+        }else{
+            this.logger.log(this.player.getAppTitle() " 리그를 버튼을 찾지 못하였습니다.")
+            return 0
+        }			
     }
+   
     skippLeagueSchedule(){
         if ( this.gameController.searchImageFolder("0.기본UI\1.리그모드_Base") ){
             this.logger.log("경기 일정 화면을 넘어갑니다.") 
@@ -79,6 +83,7 @@ Class LeagueRunningMode extends AutoGameMode{
                 if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
                     this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
                     this.logger.log(this.player.getAppTitle() " 바이 바이.")
+                    this.player.setWantToResult(false)
                     this.player.setBye()
                 }else if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
                     this.logger.log("정상 요청이지만 이어하기를 수행했습니다.")
@@ -157,7 +162,7 @@ Class LeagueRunningMode extends AutoGameMode{
         return 0		
     }
 
-    skippPlayLineupStatus(before){
+    skippPlayLineupStatus(before:=0){
         result:=before
         if ( this.gameController.searchImageFolder("리그모드\Button_skipBeforePlay") ){
             this.logger.log(this.player.getAppTitle() " 라인업 등을 넘어갑니다.") 
@@ -182,6 +187,7 @@ Class LeagueRunningMode extends AutoGameMode{
     checkTotalLeagueEnd(){
         if ( this.gameController.searchImageFolder("리그모드\화면_리그_완전종료") ){
             this.logger.log(this.player.getAppTitle() " 리그가 종료 되었습니다. 우승했길....") 
+
             this.player.setRealFree()
         }
         return 0				
@@ -288,36 +294,6 @@ Class LeagueRunningMode extends AutoGameMode{
         }
         return 0
     }
-    skipLevelUpOrPopUp(){
-        if ( this.gameController.searchImageFolder("1.공통\화면_팝업스킵" ) ){		
-            this.logger.log("레벨업이나 성장을 팝업등을 무시합니다.") 
-            this.player.setStay()
-            if ( this.gameController.searchAndClickFolder("1.공통\버튼_팝업스킵" ) ){
-                return 1
-            }
-        }
-        return 0 
-    }
-    checkGameResultWindow(){
-        if ( this.gameController.searchImageFolder("1.공통\화면_경기_결과" ) ){		
-            this.logger.log("경기 결과화면입니다..") 
-            this.player.setStay()
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){ 
-                return 1
-            }
-        }
-        return 0 
-    }
-    checkMVPWindow(){
-        if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){		
-            this.logger.log("MVP 화면입니다.") 
-            this.player.setStay()
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){ 
-                this.logger.log("MVP 화면을 넘어갑니다") 
-                return 1
-            }
-        }
-        return 0 
-    }	
+    
 
 }

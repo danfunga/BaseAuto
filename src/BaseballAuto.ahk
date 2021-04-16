@@ -197,10 +197,10 @@ Class BaseballAuto{
             this.logger.log("BaseballAuto Already Stopped!!")
         }
     }
-    setWantToResult(){
+    setWantToResult( want:=true ){
         for index,player in this.currentEnablePlayers
         {
-            player.setWantToWaitResult() 
+            player.setWantToWaitResult(want) 
         }
     }
     reload(){

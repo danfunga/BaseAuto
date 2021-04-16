@@ -15,10 +15,10 @@
     static ASSIST_MODE_ENDLESS:=false
 
     ; 단독 모드 설정
-    static COUNT_PER_ALONE_MODE := { "리그":5,  "랭대":-1, "홈런":-1, "친구":10, "실대":1, "스테":-1, "보상":1 } 
+    static COUNT_PER_ALONE_MODE := { "리그":5, "랭대":-1, "홈런":-1, "친구":10, "실대":1, "스테":-1, "보상":1 } 
     ; 친구대전을 계속 돌 필요 없으니
-    LOOP_PER_ALONE_MODE :=         { "리그":-1, "랭대":-1, "홈런":-1, "친구":5,  "실대":1, "스테":1, "보상":2 } 
-	ALONE_MODE_ARRAY:=["리그","홈런","랭대","친구","보상"] 
+    LOOP_PER_ALONE_MODE := { "리그":-1, "랭대":-1, "홈런":-1, "친구":5, "실대":1, "스테":1, "보상":2 } 
+    ALONE_MODE_ARRAY:=["리그","홈런","랭대","친구","보상"] 
 
     __NEW( index , title:="(Main)", enabled:=false, role:="리그" ){
         this.index:=index
@@ -35,7 +35,7 @@
         this.remainRealTimeBattleCount:=2
         this.countPerMode := { "리그":0, "랭대":0, "홈런":0, "친구":0, "실대":0,"보상":0 } 
     } 
-    
+
     setResult( result ){
         global baseballAutoGui, baseballAutoConfig
         if ( result ="" ){
@@ -94,7 +94,7 @@
     }
 
     ; 도는것을 확인했을때 Call
-    needToStopBattle(){      
+    needToStopBattle(){ 
 
         if( this.currentBattleRemainCount < 0 ){
             return false
@@ -121,8 +121,9 @@
     needToStop(){
         return this.hasValue(this.status,BaseballAutoPlayer.STOP_PLAYER_STATUS) 
     }
-    setWantToWaitResult(){
-        this.watingResult:=true
+    
+    setWantToWaitResult( want:=true){
+        this.watingResult:=want
     }
     getWaitingResult(){
         return this.watingResult
@@ -148,7 +149,19 @@
         } 
     }
     setRealFree(){
-        this.setStatus("리그종료")		
+        if( this.appRole ="일꾼" or this.appRole="단독"){ 
+            this.LOOP_PER_ALONE_MODE[this.appMode]:=0
+            this.logger.log("아마 이 화면을 못벗어 날거 같지만 행운을 빕니다.")
+            this.logger.log("운이 좋아 튕긴다면 다음 모드만 돌것입니다.")
+
+            if( this.setMode("next") ){
+                this.setStatus("다음임무") 
+            }else{
+                this.setStatus("리그종료")		
+            }
+        }else{
+            this.setStatus("리그종료")		
+        } 
     }
     setFree(){
         this.setStatus("자동중")		
@@ -198,7 +211,7 @@
             }else{
                 if( targetMode = "next" ){
                     currentIndex:=this.getIndex(this.appMode,BaseballAutoPlayer.ASSIST_MODE_ARRAY)
-                            
+
                     currentIndex++
                     if( currentIndex > BaseballAutoPlayer.ASSIST_MODE_ARRAY.length() ){
                         if( BaseballAutoPlayer.ASSIST_MODE_ENDLESS ){
@@ -219,7 +232,7 @@
             }else{
                 if( targetMode = "next" ){
                     currentIndex:=this.getIndex(this.appMode,this.ALONE_MODE_ARRAY)
-                    
+
                     if( this.LOOP_PER_ALONE_MODE[this.appMode] < 0 ){
                         currentIndex++
                     }else{
@@ -227,10 +240,10 @@
                         if( this.LOOP_PER_ALONE_MODE[this.appMode] <= 0 ){
                             this.ALONE_MODE_ARRAY.remove(currentIndex)
                         }else{
-                            currentIndex++    
+                            currentIndex++ 
                         }
                     }
-                    
+
                     if( currentIndex > this.ALONE_MODE_ARRAY.length() ){
                         currentIndex:=1
                     }
