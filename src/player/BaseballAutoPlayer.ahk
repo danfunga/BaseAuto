@@ -1,4 +1,8 @@
-﻿class BaseballAutoPlayer{
+﻿#include %A_ScriptDir%\src\util\AutoLogger.ahk
+
+class BaseballAutoPlayer{
+    static logger:= new AutoLogger( "Player" ) 
+
     static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","친구","보상","스테"]
     static AVAILABLE_MODES:=["리그","실대","랭대","홈런","친구","보상","스테"]
     static AVAILABLE_PLAY_TYPE:=["전체","공격","수비"]
@@ -121,8 +125,15 @@
     needToStop(){
         return this.hasValue(this.status,BaseballAutoPlayer.STOP_PLAYER_STATUS) 
     }
-    
+
     setWantToWaitResult( want:=true){
+        if( want ){
+            if( this.appRole ="일꾼" or this.appRole="단독"){ 
+                this.logger.log(this.appTitle "의 [" this.appMode "] 모드의 스킵을 요청합니다. ")
+            }else{
+                this.logger.log(this.appTitle "의 [" this.appMode "] 모드의 종료를 요청합니다.")
+            }
+        }
         this.watingResult:=want
     }
     getWaitingResult(){
@@ -221,6 +232,7 @@
                         } 
                     }
                     targetMode:=BaseballAutoPlayer.ASSIST_MODE_ARRAY[currentIndex] 
+                    this.logger.log(this.appTitle "가 [" this.appRole "][" targetMode "] 모드로 동작합니다.. ")
                 }
             } 
             this.appMode:=targetMode
@@ -252,17 +264,15 @@
                         return false
                     }
                     targetMode:=this.ALONE_MODE_ARRAY[currentIndex] 
+                    this.logger.log(this.appTitle "가 [" this.appRole "][" targetMode "] 모드로 동작합니다.. ")
                 }
             } 
-            this.logger.log("[" this.appRole "]이 [" targetMode "] 모드로 변경합니다. ")
             this.appMode:=targetMode
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_ALONE_MODE[this.appMode]
-            ; this.modeLoopCount:=this.LOOP_PER_ALONE_MODE[this.appMode]
             return true
         } 
         else{
             this.appMode:=this.appRole
-            this.logger.log("[" this.appRole "] 모드 입니다. ")
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_MODE[this.appMode]
         }
     }

@@ -48,6 +48,9 @@ Class HomrunDerbyMode extends AutoGameMode{
     }		
 
     startHomerunDerby(){
+        if( this.checkWantToModeQuit() ){
+            return 0
+        }
         if(this.checkHomerunDerbyClose()){
             this.player.setBye()
             return 1

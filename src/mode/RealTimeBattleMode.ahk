@@ -52,6 +52,10 @@ Class RealTimeBattleMode extends AutoGameMode{
 
     startRealTimeBattle(){
         if ( this.gameController.searchImageFolder("0.기본UI\2-3.실시간대전_Base") ){		
+            if( this.checkWantToModeQuit() ){
+                return 0
+            }
+
             this.player.setStay()
             this.logger.log("실시간 대전을 시작합니다") 
             if ( this.gameController.searchAndClickFolder("실시간대전\버튼_실시간대전_시작") ){

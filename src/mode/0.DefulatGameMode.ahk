@@ -132,6 +132,16 @@ Class AutoGameMode{
             return 1
         } 
     }
+    checkWantToModeQuit(){
+        if ( this.player.getWaitingResult() ){
+            this.logger.log( "종료 요청이 확인되었습니다.") 
+            this.player.setWantToWaitResult(false)
+            this.player.setBye() 
+            return true
+        }else{
+            return false
+        }
+    }
 
     checkAndGoHome( searchCounter ){ 
         if( searchCounter = 0 ){

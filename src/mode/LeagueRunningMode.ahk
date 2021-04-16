@@ -78,7 +78,7 @@ Class LeagueRunningMode extends AutoGameMode{
                 }
                 return 1
             }
-
+            
             if ( this.player.getWaitingResult() ){
                 if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
                     this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")

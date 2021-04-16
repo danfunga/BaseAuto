@@ -396,12 +396,12 @@ Class BaseballAutoGui{
         ToolTip
     }
     waitingResultByGui(){
-        global baseballAuto
-        ; global baseballAutoConfig
-        ToolTip, 종료 또는 Mode Skip을 요청합니다.
-        Sleep , 2000
-        ToolTip
+        global baseballAuto        
         baseballAuto.setWantToResult(true)
+
+        ToolTip, 종료 또는 Mode Skip을 요청합니다.
+        Sleep , 1000
+        ToolTip
     }
     getGuiInfo(player){
         player.setEnabled(this.guiMain.Controls[player.getKeyEnable()].get())

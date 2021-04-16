@@ -37,6 +37,9 @@ Class ReceiveRewardMode extends AutoGameMode{
 
     startReceiveFriendsShip(){
         if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){
+            if( this.checkWantToModeQuit() ){
+                return 0
+            }
             this.logger.log(this.player.getAppTitle() "우정포인트 받기를 시작합니다")
             this.player.setStay()
             if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
@@ -107,6 +110,9 @@ Class ReceiveRewardMode extends AutoGameMode{
 
     startReceiveReward(){
         if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){
+            if( this.checkWantToModeQuit() ){
+                return 0
+            }
             this.logger.log(this.player.getAppTitle() "도전과제로 이동합니다.")
             this.player.setStay()
             if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_도전과제_팀별") ){
