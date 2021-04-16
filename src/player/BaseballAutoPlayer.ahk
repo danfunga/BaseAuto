@@ -213,7 +213,7 @@
             this.appMode:=targetMode
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_ASSIST_MODE[this.appMode]
             return true
-        }else if( this.appRole ="단독" ){
+        }else if( this.appRole = "단독" ){
             if( targetMode = "단독" ){
                 targetMode:=this.ALONE_MODE_ARRAY[1]
             }else{
@@ -241,6 +241,7 @@
                     targetMode:=this.ALONE_MODE_ARRAY[currentIndex] 
                 }
             } 
+            this.logger.log("[" this.appRole "]이 [" targetMode "] 모드로 변경합니다. ")
             this.appMode:=targetMode
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_ALONE_MODE[this.appMode]
             ; this.modeLoopCount:=this.LOOP_PER_ALONE_MODE[this.appMode]
@@ -248,6 +249,7 @@
         } 
         else{
             this.appMode:=this.appRole
+            this.logger.log("[" this.appRole "] 모드 입니다. ")
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_MODE[this.appMode]
         }
     }

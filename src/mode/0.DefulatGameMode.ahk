@@ -7,7 +7,7 @@
 Class AutoGameMode{
 
     moveHomeChecker:=0
-    
+
     __NEW( modeName, controller )
     {
         this.logger:= new AutoLogger( modeName ) 
@@ -19,38 +19,49 @@ Class AutoGameMode{
         this.player:=_player
     }
 
-    isMainWindow( script ){
+    isMainWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){ 
             this.player.setStay()
-            return script.Call(this)
+            return callback.Call(this)
         }
         return 0
     }
-    isBattleWindow( script ){
+    isBattleWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\2.대전모드_Base") ){		
             this.player.setStay()
-            return script.Call(this)
+            return callback.Call(this)
         }
         return 0		
     }	
-    isGameResultWindow( script ){
+    isGameResultWindow( callback ){
         if ( this.gameController.searchImageFolder("1.공통\화면_경기_결과" ) ){	
             this.logger.log("경기 결과를 확인했습니다.") 	
             this.player.setStay()
-            return script.Call(this)
+            return callback.Call(this)
         }
         return 0 
     }
+
+    isMVPWindow( callback ){
+        if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){		
+            this.logger.log("MVP 를 확인했습니다.") 
+            return callback.Call(this)
+        }
+        return 0 
+    }
+
     clickNextAndConfirmButton(){
         if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){
             return 1
         } 
     }
 
-    checkAndGoHome( searchCounter ){
+    checkAndGoHome( searchCounter ){        
+        this.logger.debug("checkAndGoHome => SearchCounter: " searchCounter ", moveHomeChecker: " this.moveHomeChecker ) 
         if( searchCounter = 0 ){
             this.moveHomeChecker++
-            if( this.moveHomeChecker >= 2 && this.moveHomeChecker <= 5 ){ 
+            this.logger.log("Home 이동 여부를 체크, moveHomeChecker: " this.moveHomeChecker ) 
+            if( this.moveHomeChecker >= 2 ){ 
                 return this.moveMainPageForNextJob()
             }
         }
