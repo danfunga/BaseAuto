@@ -28,7 +28,8 @@ Class ReceiveRewardMode extends AutoGameMode{
             counter+=this.receiveRewardLoop( )
         }
         counter+=this.checkPopup()
-        
+        ; 혹시 모르는 skip을 위해
+        counter+=this.skipMVPWindow()
         counter+=this.checkAndGoHome(counter)
 
         ; this.logger.log("나는 보상모드 " counter)
