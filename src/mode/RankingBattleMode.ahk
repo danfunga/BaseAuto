@@ -9,21 +9,26 @@ Class RankingBattleMode extends AutoGameMode{
 
     checkAndRun()
     {
+		this.returnFlag:=false
         counter:=0
         counter+=this.isMainWindow( this.selectBattleMode )
         counter+=this.isBattleWindow( this.selectRankingBattle ) 	
         counter+=this.isRankingBattleWindow( this.startRankingBattle ) 	
-
+		if(this.returnFlag){
+			return counter
+		}
         counter+=this.playRankingBattle( )
         counter+=this.checkSlowAndChance( )
 
         counter+=this.skipGameResultWindow()
         counter+=this.afterSkipMVPWindow(this.checkModeRunMore )
+		if(this.returnFlag){
+			return counter
+		}
         counter+=this.skipCommonPopup( )
         counter+=this.checkLocalModePopup( )
         counter+=this.checkPlaying( )
         counter+=this.checkRankingClose( )
-
         counter+=this.checkAndGoHome(counter)
 
         ; this.logger.log("나는 랭킹대전" counter)
@@ -59,6 +64,7 @@ Class RankingBattleMode extends AutoGameMode{
             this.logger.log("상대가 없는거 보니 다 돌았습니다.")
             this.unsetBattleEquips()
             this.player.setBye()
+			this.returnFlag:=true
             return 1
         }
     }
@@ -190,6 +196,7 @@ Class RankingBattleMode extends AutoGameMode{
             this.unsetBattleEquips()
             this.player.setWantToWaitResult(false)
             this.player.setBye() 
+			this.returnFlag:=true
             return 1
         }else{
 
@@ -197,6 +204,7 @@ Class RankingBattleMode extends AutoGameMode{
                 this.logger.log( "다 돌아 종료 하겠습니다.") 
                 this.unsetBattleEquips()
                 this.player.setBye()
+				this.returnFlag:=true
             }else{
                 if( this.player.getRemainBattleCount() = "무한" ){
                     this.logger.log( "돌 수 없을 때까지 돌게 됩니다.") 

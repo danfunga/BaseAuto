@@ -8,6 +8,7 @@ Class FriendsBattleMode extends AutoGameMode{
     }
 
     checkAndRun(){
+		this.returnFlag:=false
         counter:=0
 
         counter+=this.isMainWindow( this.selectBattleMode )
@@ -15,14 +16,18 @@ Class FriendsBattleMode extends AutoGameMode{
 
         counter+=this.isFriendsBattleWindow( this.selectTopFriends ) 	
         counter+=this.isFriendsBattleWindow( this.startFriendsBattle ) 	
-
+		if(this.returnFlag){
+			return counter
+		}
         counter+=this.playFriendsBattle( ) 
 
         counter+=this.checkPlaying( )
 
         counter+=this.skipGameResultWindow()
         counter+=this.afterSkipMVPWindow(this.checkModeRunMore )
-
+		if(this.returnFlag){
+			return counter
+		}
         counter+=this.skipCommonPopup( )
         counter+=this.checkLocalModePopup( )
         counter+=this.receiveReward( ) 	
@@ -71,6 +76,8 @@ Class FriendsBattleMode extends AutoGameMode{
         }else{
             this.logger.log("친구가 더이상 없어 시작하지 않습니다.") 
             this.player.setBye()
+			this.returnFlag:=true
+		
             return 0
         }
     }
@@ -115,6 +122,7 @@ Class FriendsBattleMode extends AutoGameMode{
             this.receiveFlag:=true
             this.player.setWantToWaitResult(false)
             this.player.setBye() 
+			this.returnFlag:=true
             return 1
         }else{
 
@@ -122,6 +130,7 @@ Class FriendsBattleMode extends AutoGameMode{
                 this.logger.log( "다 돌아 종료 하겠습니다.") 
                 this.receiveFlag:=true
                 this.player.setBye()
+				this.returnFlag:=true
             }else{
                 if( this.player.getRemainBattleCount() = "무한" ){
                     this.logger.log( "친구대전을 계속 돌겠다니.... 이건 잘못된 선택입니다.") 

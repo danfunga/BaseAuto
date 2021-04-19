@@ -207,7 +207,8 @@ class BaseballAutoPlayer{
         this.setMode(role)
     }
 
-    setMode( targetMode ){ 
+    setMode( targetMode ){
+
         if( this.appRole ="일꾼" ){
             if( targetMode = "일꾼" ){
                 targetMode:=BaseballAutoPlayer.ASSIST_MODE_ARRAY[1]
@@ -235,8 +236,8 @@ class BaseballAutoPlayer{
                 targetMode:=this.ALONE_MODE_ARRAY[1]
             }else{
                 if( targetMode = "next" ){
+					
                     currentIndex:=this.getIndex(this.appMode,this.ALONE_MODE_ARRAY)
-
                     if( this.LOOP_PER_ALONE_MODE[this.appMode] < 0 ){
                         currentIndex++
                     }else{
