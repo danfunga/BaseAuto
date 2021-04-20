@@ -121,12 +121,22 @@ Class BaseballAuto{
                                     } 
                                     if ( loopCount > 90 ){
                                         this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 풀어주자")
-                                        player.setUnknwon()
+                                        if( this.currentEnablePlayers.length() <= 1 ){
+                                            this.logger.log("여기다 이녀석을 재기동 시켜주세요")
+                                            player.setStatus("끝")
+                                        }else{
+                                            player.setUnknwon()
+                                        }                                        
                                     }
                                 }else{
                                     if ( loopCount > 180 ){
                                         this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 풀어주자")
-                                        player.setUnknwon()
+                                        if( this.currentEnablePlayers.length() <= 1 ){
+                                            this.logger.log("여기다 이녀석을 재기동 시켜주세요")
+                                            player.setStatus("끝")
+                                        }else{
+                                            player.setUnknwon()
+                                        }                                        
                                     }
                                 }
                                 loopCount+=1
