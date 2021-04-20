@@ -114,17 +114,17 @@ Class BaseballAuto{
                                 loopCount++
                                 if( player.getMode() ="리그"){
                                     
-                                    if( loopCount!=0 and mod(loopCount,10) = 0 ){
+                                    if( loopCount!=0 and mod(loopCount,30) = 0 ){
                                         this.logger.log(player.getAppTitle() "[" player.getMode() "] 이미지 없음 " loopCount "회")
                                     }                                    
                                     this.gameController.sleep(2) 
 
-                                    if( loopCount = 80 or loopCount = 90){
+                                    if( loopCount = 90 or loopCount = 120){
                                         this.logger.log("ERROR : 어딘지 모르니 일단 뒤로가기!!!")
                                         this.startMode.setPlayer(player)
                                         this.startMode.goBackward()
                                     } 
-                                    if ( loopCount > 100 ){
+                                    if ( loopCount > 120 ){
                                         this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 풀어주자")
                                         if( this.currentEnablePlayers.length() <= 1 ){
                                             this.logger.log("여기다 이녀석을 재기동 시켜주세요")
@@ -134,16 +134,16 @@ Class BaseballAuto{
                                         } 
                                     }
                                 }else{
-                                    if( loopCount!=0 and mod(loopCount,30) = 0 ){
+                                    if( loopCount!=0 and mod(loopCount,60) = 0 ){
                                         this.logger.log(player.getAppTitle() "[" player.getMode() "] 이미지 없음 " loopCount "회")
                                     }
-                                    if( loopCount = 180 or loopCount = 210){
+                                    if( loopCount = 180 or loopCount = 240){
                                         this.logger.log("ERROR : 어딘지 모르니 일단 뒤로가기!!!")
                                         this.startMode.setPlayer(player)
                                         this.startMode.goBackward()
                                     } 
 
-                                    if ( loopCount > 210 ){
+                                    if ( loopCount > 240 ){
                                         this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 풀어주자")
                                         if( this.currentEnablePlayers.length() <= 1 ){
                                             this.logger.log("여기다 이녀석을 재기동 시켜주세요")
