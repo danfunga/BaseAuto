@@ -101,9 +101,6 @@ Class BaseballAuto{
                         if ( AUTO_RUNNING = false )
                             break
 
-                        if( globalCurrentPlayer.getMode() ="리그")
-                            this.gameController.sleep(2)
-
                         ; this.logger.log( player.getAppTitle() " checker count=" localChecker)                                           
                         if( player.needToStop()){
                             this.logger.log( "STOP " this.getPlayerResult(player)) 
@@ -112,9 +109,11 @@ Class BaseballAuto{
                         }else if( player.needToNextPlayer() and this.currentEnablePlayers.length() > 1 ){
                             break
                         }else{
-                            ; Stay 를 벗어 나게 해주자
+                            ; 조작권을 쥐고 있을 경우                     
                             if ( localChecker = 0 ){
                                 if( globalCurrentPlayer.getMode() ="리그"){
+                                    this.gameController.sleep(2)
+
                                     if( loopCount = 80 || loopCount = 90){
                                         this.logger.log("ERROR : 어딘지 모르니 일단 뒤로가기!!!")
                                         this.startMode.setPlayer(player)

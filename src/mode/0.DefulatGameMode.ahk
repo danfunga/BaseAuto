@@ -50,12 +50,12 @@ Class AutoGameMode{
             methodLength:=method.Length()
             if( methodLength = 1 ){
                 if( method[1].name = "AutoGameMode.checkAndGoHome") {
-                    method[1].call(this, counter)
+                    counter+=method[1].call(this, counter)
                 }else{
-                    method[1].call(this)
+                    counter+=method[1].call(this)
                 } 
             }else if ( methodLength = 2 ){
-                method[1].call(this, method[2])
+                counter+=method[1].call(this, method[2])
             }
         }
         return counter 
