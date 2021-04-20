@@ -104,10 +104,7 @@ Class BaseballAuto{
                         if( globalCurrentPlayer.getMode() ="리그")
                             this.gameController.sleep(2)
 
-                        ; this.logger.log( player.getAppTitle() " checker count=" localChecker)
-                        if( this.currentEnablePlayers.length() = 1 )
-                        
-                        
+                        ; this.logger.log( player.getAppTitle() " checker count=" localChecker)                                           
                         if( player.needToStop()){
                             this.logger.log( "STOP " this.getPlayerResult(player)) 
                             this.stopPlayer(playerIndex) 
