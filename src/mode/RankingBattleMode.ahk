@@ -9,7 +9,6 @@ Class RankingBattleMode extends AutoGameMode{
 
     checkAndRun()
     {
-		this.returnFlag:=false
         counter:=0
         counter+=this.isMainWindow( this.selectBattleMode )
         counter+=this.isBattleWindow( this.selectRankingBattle ) 	

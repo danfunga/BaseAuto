@@ -7,7 +7,7 @@
 Class AutoGameMode{
 
     moveHomeChecker:=0
-	returnFlag:=false
+    returnFlag:=false
 
     __NEW( modeName, controller )
     {
@@ -18,6 +18,7 @@ Class AutoGameMode{
     setPlayer( _player )
     {
         this.player:=_player
+        this.returnFlag:=false
     }
 
     isMainWindow( callback ){
@@ -138,7 +139,7 @@ Class AutoGameMode{
             this.logger.log( "종료 요청이 확인되었습니다.") 
             this.player.setWantToWaitResult(false)
             this.player.setBye() 
-			this.returnFlag:=true
+            this.returnFlag:=true
             return true
         }else{
             return false
