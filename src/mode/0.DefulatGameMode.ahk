@@ -13,13 +13,53 @@ Class AutoGameMode{
     {
         this.logger:= new AutoLogger( modeName ) 
         this.gameController :=controller
+        this.actionList:=[]
+        this.initMode()
+    }
+    initMode(){
     }
 
     setPlayer( _player )
     {
         this.player:=_player
         this.returnFlag:=false
+        this.initForThisPlayer()
     }
+    initForThisPlayer(){
+    }
+    addAction( firstMethod, secondMethod:="" ){
+        if( secondMethod = ""){
+            this.actionList.push( [firstMethod] )
+        }else{
+            this.actionList.push( [firstMethod,secondMethod] )
+        }
+    }
+    checkAndRun()
+    {
+        global AUTO_RUNNING
+
+        counter:=0
+        for index, method in this.actionList
+        {
+
+            if( this.returnFlag or AUTO_RUNNING=false){
+                this.logger.log("모드를 종료합니다") 
+                return counter
+            }
+
+            methodLength:=method.Length()
+            if( methodLength = 1 ){
+                if( method[1].name = "AutoGameMode.checkAndGoHome") {
+                    method[1].call(this, counter)
+                }else{
+                    method[1].call(this)
+                } 
+            }else if ( methodLength = 2 ){
+                method[1].call(this, method[2])
+            }
+        }
+        return counter 
+    } 
 
     isMainWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){ 

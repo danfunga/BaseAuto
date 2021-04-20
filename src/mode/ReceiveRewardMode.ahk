@@ -7,47 +7,33 @@ Class ReceiveRewardMode extends AutoGameMode{
         base.__NEW("보상받기", controller)
     }
 
-    setPlayer( _player )
-    {
-        base.setPlayer(_player)
+    initForThisPlayer(){
         this.receiveFriendsPoint:=false
         this.receiveDailyReward:=false
     }
 
-    checkAndRun()
-    {
-        ; local AutoGameMode
-        counter:=0
-        if( !this.receiveFriendsPoint ){
-            counter+=this.startReceiveFriendsShip( ) 	
-            counter+=this.selectFriendsList( )
-            counter+=this.receiveAndSendFriendPoint()
-        }
-        if( !this.receiveDailyReward ){
-            counter+=this.startReceiveReward( )
-            counter+=this.receiveRewardLoop( )
-        }
-        counter+=this.checkPopup()
-        ; 혹시 모르는 skip을 위해
-        counter+=this.skipMVPWindow()
-        counter+=this.checkAndGoHome(counter)
-
-        ; this.logger.log("나는 보상모드 " counter)
-        return counter
+    initMode(){
+        this.addAction(this.isMainWindow,this.selectFriendButton)
+        this.addAction(this.selectFriendsList)
+        this.addAction(this.receiveAndSendFriendPoint)
+        this.addAction(this.startReceiveReward)
+        this.addAction(this.receiveRewardLoop)
+        this.addAction(this.checkPopup)
+        this.addAction(this.skipMVPWindow)
+        this.addAction(this.checkAndGoHome)             
     }
-
-    startReceiveFriendsShip(){
-        if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){
-            if( this.checkWantToModeQuit() ){
-                return 0
-            }
-            this.logger.log(this.player.getAppTitle() "우정포인트 받기를 시작합니다")
-            this.player.setStay()
-            if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
-                return 1
-            }
+    
+    selectFriendButton(){ 
+        if( this.checkWantToModeQuit() ){
+            return 0
         }
-        return 0
+        if ( this.receiveFriendsPoint ){
+            return 0
+        }
+        this.logger.log(this.player.getAppTitle() "우정포인트 받기를 시작합니다")
+        if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
+            return 1
+        } 
     }
 
     selectFriendsList(){
@@ -79,7 +65,7 @@ Class ReceiveRewardMode extends AutoGameMode{
 
                 }
             }
-            receiveFriendsPoint:=true
+            this.receiveFriendsPoint:=true
         }
         return 0		
     }
@@ -174,6 +160,6 @@ Class ReceiveRewardMode extends AutoGameMode{
         }
         return 0
     }
-   
+
 }
 

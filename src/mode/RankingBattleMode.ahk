@@ -7,31 +7,22 @@ Class RankingBattleMode extends AutoGameMode{
         base.__NEW("랭킹대전", controller)
     }
 
-    checkAndRun()
-    {
-        counter:=0
-        counter+=this.isMainWindow( this.selectBattleMode )
-        counter+=this.isBattleWindow( this.selectRankingBattle ) 	
-        counter+=this.isRankingBattleWindow( this.startRankingBattle ) 	
-		if(this.returnFlag){
-			return counter
-		}
-        counter+=this.playRankingBattle( )
-        counter+=this.checkSlowAndChance( )
+    initMode(){
+        this.addAction(this.isMainWindow,this.selectBattleMode)
+        this.addAction(this.isBattleWindow,this.selectRankingBattle)
+        this.addAction(this.isRankingBattleWindow,this.startRankingBattle)
 
-        counter+=this.skipGameResultWindow()
-        counter+=this.afterSkipMVPWindow(this.checkModeRunMore )
-		if(this.returnFlag){
-			return counter
-		}
-        counter+=this.skipCommonPopup( )
-        counter+=this.checkLocalModePopup( )
-        counter+=this.checkPlaying( )
-        counter+=this.checkRankingClose( )
-        counter+=this.checkAndGoHome(counter)
+        this.addAction(this.playRankingBattle)
+        this.addAction(this.checkSlowAndChance)
 
-        ; this.logger.log("나는 랭킹대전" counter)
-        return counter
+        this.addAction(this.skipGameResultWindow)
+        this.addAction(this.afterSkipMVPWindow,this.checkModeRunMore)
+
+        this.addAction(this.skipCommonPopup)
+        this.addAction(this.checkLocalModePopup)
+        this.addAction(this.checkPlaying)
+        this.addAction(this.checkRankingClose)
+        this.addAction(this.checkAndGoHome) 
     }
 
     selectBattleMode(){
@@ -53,6 +44,10 @@ Class RankingBattleMode extends AutoGameMode{
         }
     }
     startRankingBattle(){
+        if( this.checkWantToModeQuit() ){
+            this.unsetBattleEquips()
+            return 0
+        }
         if ( this.gameController.searchImageFolder("랭대모드\화면_상대있음") ){
             this.setBattleEquips()
             this.logger.log("랭킹 대전을 시작합니다")
@@ -63,7 +58,7 @@ Class RankingBattleMode extends AutoGameMode{
             this.logger.log("상대가 없는거 보니 다 돌았습니다.")
             this.unsetBattleEquips()
             this.player.setBye()
-			this.returnFlag:=true
+            this.returnFlag:=true
             return 1
         }
     }
@@ -113,10 +108,6 @@ Class RankingBattleMode extends AutoGameMode{
     }
 
     playRankingBattle(){
-        if( this.checkWantToModeQuit() ){
-            this.unsetBattleEquips()
-            return 0
-        }
         if ( this.gameController.searchImageFolder("랭대모드\화면_랭킹대전준비") ){
             this.logger.log("도전과제 부스터를 사용하지 않습니다.")
             if ( this.gameController.searchAndClickFolder("1.공통\버튼_도전과제부스터\부스터_사용") ){
@@ -195,7 +186,7 @@ Class RankingBattleMode extends AutoGameMode{
             this.unsetBattleEquips()
             this.player.setWantToWaitResult(false)
             this.player.setBye() 
-			this.returnFlag:=true
+            this.returnFlag:=true
             return 1
         }else{
 
@@ -203,7 +194,7 @@ Class RankingBattleMode extends AutoGameMode{
                 this.logger.log( "다 돌아 종료 하겠습니다.") 
                 this.unsetBattleEquips()
                 this.player.setBye()
-				this.returnFlag:=true
+                this.returnFlag:=true
             }else{
                 if( this.player.getRemainBattleCount() = "무한" ){
                     this.logger.log( "돌 수 없을 때까지 돌게 됩니다.") 

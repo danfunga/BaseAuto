@@ -7,14 +7,12 @@ Class GameStarterMode extends AutoGameMode{
         base.__NEW("게임실행", controller)
     }
 
-    checkAndRun(){
-        counter:=0
-        counter+=this.skipAndroidAds()
-        counter+=this.checkGameDown()
-        counter+=this.skipPopupAndAds()
-        return counter
+    initMode(){
+        this.addAction(this.skipAndroidAds)
+        this.addAction(this.checkGameDown)
+        this.addAction(this.skipPopupAndAds)
     }
-    
+
     checkGameDown(){
         if ( this.gameController.searchImageFolder("게임실행모드\Button_GameIcon") ){
             this.player.setStay()
@@ -55,6 +53,6 @@ Class GameStarterMode extends AutoGameMode{
         this.gameController.clickESC()
         this.logger.log(this.player.getAppTitle() " 뒤로가기 - ESC ") 
         this.gameController.sleep(3)
-    
+
     }
 }

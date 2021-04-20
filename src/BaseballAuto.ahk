@@ -54,37 +54,37 @@ Class BaseballAuto{
     }
 
     start(){
-        global BaseballAutoGui, baseballAutoConfig, globalCurrentPlayer, globalContinueFlag
+        global BaseballAutoGui, baseballAutoConfig, globalCurrentPlayer, globalContinueFlag, AUTO_RUNNING
         BaseballAutoGui.saveGuiConfigs()
         this.currentEnablePlayers:=this.loadPlayerConfig()
 
         if ( ! this.started ){
             this.started:=true
-            this.running:=true
+            AUTO_RUNNING:=true
             this.logger.log("BaseballAuto Started!!")
 
             BaseballAutoGui.started()
-            while( this.running = true ){ 
+            while( AUTO_RUNNING = true ){ 
                 if ( this.currentEnablePlayers.length() = 0 ){
-                    this.running:=false
+                    AUTO_RUNNING:=false
                     this.logger.log("가능한 AppPlayer가 없습니다.")
                 }
 
                 for playerIndex, player in this.currentEnablePlayers{
                     globalCurrentPlayer:=player
 
-                    if( globalCurrentPlayer.needToStop()){
-                        this.logger.log( "STOP " this.getPlayerResult(player)) 
-                        this.stopPlayer(playerIndex) 
-                        continue
-                    }
+                    ; if( globalCurrentPlayer.needToStop()){
+                    ;     this.logger.log( "STOP " this.getPlayerResult(player)) 
+                    ;     this.stopPlayer(playerIndex) 
+                    ;     continue
+                    ; }
 
                     globalCurrentPlayer.setCheck()
                     this.gameController.setActiveId(player.getAppTitle())
                     globalContinueFlag:=false
 
                     loopCount:=0
-                    while( this.running = true ){
+                    while( AUTO_RUNNING = true ){
                         localChecker:=0
                         if not ( this.gameController.checkAppPlayer() ){
                             this.logger.log("Application Title을 확인하세요 변경 후 save ")
@@ -98,11 +98,21 @@ Class BaseballAuto{
                             gameMode.setPlayer(player) 
                             localChecker+=gameMode.checkAndRun()
                         } 
+                        if ( AUTO_RUNNING = false )
+                            break
+
                         if( globalCurrentPlayer.getMode() ="리그")
                             this.gameController.sleep(2)
 
                         ; this.logger.log( player.getAppTitle() " checker count=" localChecker)
-                        if ( player.needToNextPlayer() ){ 
+                        if( this.currentEnablePlayers.length() = 1 )
+                        
+                        
+                        if( player.needToStop()){
+                            this.logger.log( "STOP " this.getPlayerResult(player)) 
+                            this.stopPlayer(playerIndex) 
+                            break
+                        }else if( player.needToNextPlayer() and this.currentEnablePlayers.length() > 1 ){
                             break
                         }else{
                             ; Stay 를 벗어 나게 해주자
@@ -163,14 +173,16 @@ Class BaseballAuto{
     }
 
     stopPlayer(index){
+        global AUTO_RUNNING
         this.currentEnablePlayers.remove(index)
         if( this.currentEnablePlayers.length() = 0 )
-            this.running:=false
+            AUTO_RUNNING:=false
     }
 
     tryStop(){
+        global AUTO_RUNNING
         this.logger.log("try to stop!")
-        this.running := false
+        AUTO_RUNNING := false
     }
     getPlayerResult( targetPlayer ){
         targetCounterPerMode:=targetPlayer.getCountPerMode() 

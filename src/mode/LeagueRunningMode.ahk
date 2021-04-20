@@ -7,32 +7,22 @@ Class LeagueRunningMode extends AutoGameMode{
         base.__NEW("리그모드", controller)
     }
 
-    checkAndRun()
-    {
-        counter:=0
-        ; default
-        counter+=this.isMainWindow( this.selectLeagueButton )
-	
-        counter+=this.skippLeagueSchedule( )
-        counter+=this.skippBattleHistory( )
-        counter+=this.choicePlayType( )
-        counter+=this.checkSpeedUp()
-        counter+=this.skippPlayLineupStatus()		
-        counter+=this.checkSpeedUp()	
-        counter+=this.skippChanceStatus( )		
-        counter+=this.activateAutoPlay( )				
-        ; default
-        counter+=this.skipCommonPopup()
-        counter+=this.checkAutoPlayEnding() 
-        ; default
-        counter+=this.skipGameResultWindow()
-        counter+=this.skipMVPWindow()
-
-        counter+=this.checkTotalLeagueEnd()
-
-        ; default
-        counter+=this.checkAndGoHome(counter)
-        return counter
+    initMode(){
+        this.addAction(this.isMainWindow, this.selectLeagueButton)
+        this.addAction(this.skippLeagueSchedule)
+        this.addAction(this.skippBattleHistory)
+        this.addAction(this.choicePlayType)
+        this.addAction(this.checkSpeedUp)
+        this.addAction(this.skippPlayLineupStatus)
+        this.addAction(this.checkSpeedUp)
+        this.addAction(this.skippChanceStatus)
+        this.addAction(this.activateAutoPlay)
+        this.addAction(this.skipCommonPopup)
+        this.addAction(this.checkAutoPlayEnding)
+        this.addAction(this.skipGameResultWindow)
+        this.addAction(this.skipMVPWindow)
+        this.addAction(this.checkTotalLeagueEnd)
+        this.addAction(this.checkAndGoHome) 
     }
 
     selectLeagueButton(){
@@ -50,7 +40,7 @@ Class LeagueRunningMode extends AutoGameMode{
             return 0
         }			
     }
-   
+
     skippLeagueSchedule(){
         if ( this.gameController.searchImageFolder("0.기본UI\1.리그모드_Base") ){
             this.logger.log("경기 일정 화면을 넘어갑니다.") 
@@ -78,7 +68,7 @@ Class LeagueRunningMode extends AutoGameMode{
                 }
                 return 1
             }
-            
+
             if ( this.player.getWaitingResult() ){
                 if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
                     this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
@@ -293,6 +283,5 @@ Class LeagueRunningMode extends AutoGameMode{
         }
         return 0
     }
-    
 
 }

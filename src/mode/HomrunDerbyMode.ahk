@@ -1,40 +1,27 @@
 ﻿#include %A_ScriptDir%\src\mode\0.DefulatGameMode.ahk
 
 Class HomrunDerbyMode extends AutoGameMode{
-	
+
     __NEW( controller )
     {
         base.__NEW("홈런더비", controller)
     }
 
-    checkAndRun()
-    {
-		this.returnFlag:=false
-        counter:=0
-        counter+=this.isMainWindow( this.selectSpecialMode )	
-        counter+=this.isSpecialWindow( this.selectHomrunDerby )	
-        counter+=this.isHomerunDerbyWindow( this.startHomerunDerby )
-		if(this.returnFlag){
-			return counter
-		}
+    initMode(){
+        this.addAction(this.isMainWindow,this.selectSpecialMode)
+        this.addAction(this.isSpecialWindow,this.selectHomrunDerby)
+        this.addAction(this.isHomerunDerbyWindow,this.startHomerunDerby)
 
-        counter+=this.skipPlayerProfile( )
+        this.addAction(this.skipPlayerProfile)
+        this.addAction(this.checkPlaying)
+        this.addAction(this.skipGameResultWindow)
+        this.addAction(this.afterSkipMVPWindow,this.checkModeRunMore)
 
-        counter+=this.checkPlaying( )
-        counter+=this.afterSkipMVPWindow(this.checkModeRunMore )
-		if(this.returnFlag){
-			return counter
-		}
-
-        counter+=this.skipCommonPopup( )
-        counter+=this.checkLocalModePopup( )
-        counter+=this.checkHomerunDerbyClose( )
-		if(this.returnFlag){
-			return counter
-		}        
-		counter+=this.checkPopupClose( )
-		counter+=this.checkAndGoHome(counter)
-        return counter
+        this.addAction(this.skipCommonPopup)
+        this.addAction(this.checkLocalModePopup)
+        this.addAction(this.checkHomerunDerbyClose)
+        this.addAction(this.checkPopupClose) 
+        this.addAction(this.checkAndGoHome) 
     }
 
     selectSpecialMode(){ 
@@ -61,7 +48,7 @@ Class HomrunDerbyMode extends AutoGameMode{
         if( this.checkWantToModeQuit() ){
             return 0
         }
-        if(this.checkHomerunDerbyClose()){            
+        if(this.checkHomerunDerbyClose()){ 
             return 1
         }else{
             this.logger.log("홈런 더비를 시작합니다") 
@@ -105,7 +92,7 @@ Class HomrunDerbyMode extends AutoGameMode{
             this.logger.log("그만돌아야 하는 팝업이 떴습니다.") 
             if( this.gameController.searchAndClickFolder("홈런더비모드\화면_종료팝업\버튼_확인" ) ){
                 this.player.setBye()
-				this.returnFlag:=true
+                this.returnFlag:=true
                 return 1
             }			
         }
@@ -137,14 +124,14 @@ Class HomrunDerbyMode extends AutoGameMode{
             this.logger.log( "종료 요청이 확인되었습니다.") 
             this.player.setWantToWaitResult(false)
             this.player.setBye() 
-			this.returnFlag:=true
+            this.returnFlag:=true
             return 1
         }else{
 
             if( this.player.needToStopBattle() ){
                 this.logger.log( "다 돌아 종료 하겠습니다.") 
                 this.player.setBye()
-				this.returnFlag:=true
+                this.returnFlag:=true
             }else{
                 if( this.player.getRemainBattleCount() = "무한" ){
                     this.logger.log( "돌 수 없을 때까지 돌게 됩니다.") 
@@ -161,7 +148,7 @@ Class HomrunDerbyMode extends AutoGameMode{
         if ( this.gameController.searchImageFolder("홈런더비모드\화면_볼없음" ) ){		 
             this.logger.log("볼이 없는거 보니 홈런더비 다 돌았네요. ..")
             this.player.setBye()
-			this.returnFlag:=true
+            this.returnFlag:=true
             return 1
         }
         return 0 

@@ -7,25 +7,21 @@ Class StageMode extends AutoGameMode{
         base.__NEW("스테이지", controller)
     }
 
-    checkAndRun() 
-    {
-        counter:=0
+    initMode(){
 
-        counter+=this.startSpecialMode( )
-        counter+=this.selectStageMode( )
-        counter+=this.selectStageLevel( )
-        counter+=this.startStageMode( )
+        this.addAction(this.startSpecialMode)
+        this.addAction(this.selectStageMode)
+        this.addAction(this.selectStageLevel)
+        this.addAction(this.startStageMode)
 
-        counter+=this.skipPlayerProfile( )
-        counter+=this.checkPlaying( )
-        counter+=this.checkGameResultWindow( )
-        counter+=this.checkMVPWindow( )
-        counter+=this.checkPopup( )
-        counter+=this.checkStageModeClose( )
+        this.addAction(this.skipPlayerProfile)
+        this.addAction(this.checkPlaying)
+        this.addAction(this.checkGameResultWindow)
+        this.addAction(this.checkMVPWindow)
 
-        counter+=this.checkAndGoHome(counter)
-
-        return counter
+        this.addAction(this.checkPopup)
+        this.addAction(this.checkStageModeClose)
+        this.addAction(this.checkAndGoHome) 
     }
 
     startSpecialMode(){
@@ -121,7 +117,7 @@ Class StageMode extends AutoGameMode{
         if ( this.gameController.searchImageFolder("스테이지모드\화면_진행중" ) ){		
             this.player.setStay()
             this.logger.log("고고변을 향하여..")
-            
+
         } 
         return 0 
     }

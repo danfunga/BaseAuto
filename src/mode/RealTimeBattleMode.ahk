@@ -7,25 +7,23 @@ Class RealTimeBattleMode extends AutoGameMode{
         base.__NEW("실대모드", controller)
     }
 
-
-    checkAndRun()
-    {
-        counter:=0
-        counter+=this.startLeagueInMainWindow( ) 	
-        counter+=this.selectRealTimeBattle( )
-        counter+=this.startRealTImeBattle( )
-        counter+=this.playStartRealTimeBattle( ) 
-        counter+=this.runBunt( )
-        counter+=this.runStrike( )
-        counter+=this.skippBeforeGameStart( ) 
-        counter+=this.skippPlayLineupStatus( )
-        counter+=this.runBunt( )
-        counter+=this.runStrike( )
-        counter+=this.checkPopup( )
-        counter+=this.checkGameResultWindow( )
-        
-        counter+=this.checkAndGoHome(counter)
-        return counter
+     initMode(){
+        this.addAction(this.startLeagueInMainWindow)
+        this.addAction(this.selectRealTimeBattle)
+        this.addAction(this.startRealTImeBattle)
+        this.addAction(this.playStartRealTimeBattle)
+        this.addAction(this.runBunt)
+        this.addAction(this.runStrike)
+        this.addAction(this.skippBeforeGameStart)
+        this.addAction(this.skippPlayLineupStatus)
+        this.addAction(this.runBunt)
+        this.addAction(this.runStrike)
+        this.addAction(this.checkPopup)
+        this.addAction(this.checkGameResultWindow)
+        this.addAction(this.checkAndGoHome)
+        this.addAction(this.startLeagueInMainWindow)
+        this.addAction(this.startLeagueInMainWindow)
+        this.addAction(this.startLeagueInMainWindow)        
     }
 
     startLeagueInMainWindow()

@@ -6,36 +6,21 @@ Class FriendsBattleMode extends AutoGameMode{
     __NEW( controller ){
         base.__NEW("친구대전", controller)
     }
+    initMode(){
+        this.addAction(this.isMainWindow,this.selectBattleMode)
+        this.addAction(this.isBattleWindow,this.selectFriendsBattle)
+        this.addAction(this.isFriendsBattleWindow,this.selectTopFriends)
+        this.addAction(this.isFriendsBattleWindow,this.startFriendsBattle)
+        
+        this.addAction(this.playFriendsBattle)
+        this.addAction(this.checkPlaying)
+        this.addAction(this.skipGameResultWindow)
+        this.addAction(this.afterSkipMVPWindow,this.checkModeRunMore)
 
-    checkAndRun(){
-		this.returnFlag:=false
-        counter:=0
-
-        counter+=this.isMainWindow( this.selectBattleMode )
-        counter+=this.isBattleWindow( this.selectFriendsBattle ) 	
-
-        counter+=this.isFriendsBattleWindow( this.selectTopFriends ) 	
-        counter+=this.isFriendsBattleWindow( this.startFriendsBattle ) 	
-		if(this.returnFlag){
-			return counter
-		}
-        counter+=this.playFriendsBattle( ) 
-
-        counter+=this.checkPlaying( )
-
-        counter+=this.skipGameResultWindow()
-        counter+=this.afterSkipMVPWindow(this.checkModeRunMore )
-		if(this.returnFlag){
-			return counter
-		}
-        counter+=this.skipCommonPopup( )
-        counter+=this.checkLocalModePopup( )
-        counter+=this.receiveReward( ) 	
-
-        counter+=this.checkAndGoHome(counter)
-
-        ; this.logger.log("나는 친구대전" counter)
-        return counter
+        this.addAction(this.skipCommonPopup)
+        this.addAction(this.checkLocalModePopup)
+        this.addAction(this.receiveReward)
+        this.addAction(this.checkAndGoHome) 
     }
 
     selectBattleMode(){
@@ -56,6 +41,9 @@ Class FriendsBattleMode extends AutoGameMode{
     }		
 
     selectTopFriends(){
+        if( this.checkWantToModeQuit() ){
+            return 0
+        }
         if ( this.gameController.searchAndClickFolder("친구대전\버튼_탑대상",0,30) ){
             this.logger.log("젤 위 대상을 선택합니다") 
             return 1
@@ -65,9 +53,7 @@ Class FriendsBattleMode extends AutoGameMode{
     }
 
     startFriendsBattle(){
-        if( this.checkWantToModeQuit() ){
-            return 0
-        }
+
         if ( this.gameController.searchImageFolder("친구대전\화면_대상선택상태") ){		
             this.logger.log("친구 대전을 시작합니다") 
             if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
@@ -76,8 +62,8 @@ Class FriendsBattleMode extends AutoGameMode{
         }else{
             this.logger.log("친구가 더이상 없어 시작하지 않습니다.") 
             this.player.setBye()
-			this.returnFlag:=true
-		
+            this.returnFlag:=true
+
             return 0
         }
     }
@@ -122,7 +108,7 @@ Class FriendsBattleMode extends AutoGameMode{
             this.receiveFlag:=true
             this.player.setWantToWaitResult(false)
             this.player.setBye() 
-			this.returnFlag:=true
+            this.returnFlag:=true
             return 1
         }else{
 
@@ -130,7 +116,7 @@ Class FriendsBattleMode extends AutoGameMode{
                 this.logger.log( "다 돌아 종료 하겠습니다.") 
                 this.receiveFlag:=true
                 this.player.setBye()
-				this.returnFlag:=true
+                this.returnFlag:=true
             }else{
                 if( this.player.getRemainBattleCount() = "무한" ){
                     this.logger.log( "친구대전을 계속 돌겠다니.... 이건 잘못된 선택입니다.") 
