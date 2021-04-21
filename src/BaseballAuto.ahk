@@ -73,13 +73,13 @@ Class BaseballAuto{
                 for playerIndex, player in this.currentEnablePlayers{
                     globalCurrentPlayer:=player
 
-                    ; if( globalCurrentPlayer.needToStop()){
+                    ; if( player.needToStop()){
                     ;     this.logger.log( "STOP " this.getPlayerResult(player)) 
                     ;     this.stopPlayer(playerIndex) 
                     ;     continue
                     ; }
 
-                    globalCurrentPlayer.setCheck()
+                    player.setCheck()
                     this.gameController.setActiveId(player.getAppTitle())
                     globalContinueFlag:=false
 
@@ -92,7 +92,7 @@ Class BaseballAuto{
                             break
                         } 
 
-                        modeList:= this.typePerMode[globalCurrentPlayer.getMode()]
+                        modeList:= this.typePerMode[player.getMode()]
                         for index, gameMode in modeList ; Enumeration is the recommended approach in most cases.
                         {
                             gameMode.setPlayer(player) 
@@ -158,7 +158,7 @@ Class BaseballAuto{
                             }
                         }
                     } 
-                    globalCurrentPlayer.setCheckDone()
+                    player.setCheckDone()
                 } 
             }
         }else{ 

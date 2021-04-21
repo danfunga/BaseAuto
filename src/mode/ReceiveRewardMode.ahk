@@ -38,7 +38,7 @@ Class ReceiveRewardMode extends AutoGameMode{
 
     selectFriendsList(){
         if ( this.gameController.searchImageFolder("0.기본UI\5.친구_Base") ){		
-            this.player.setStay()
+            this.continueControl()
             this.logger.log("친구 목록을 선택합니다") 
             if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구목록") ){
                 return 1
@@ -48,7 +48,7 @@ Class ReceiveRewardMode extends AutoGameMode{
     }
     receiveAndSendFriendPoint(){
         if ( this.gameController.searchImageFolder("보상모드\화면_친구목록") ){		
-            this.player.setStay()
+            this.continueControl()
             this.logger.log("친구 목록 화면입니다") 
             if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
                 this.logger.log("보내기 받기를 눌렀습니다.") 
@@ -101,12 +101,12 @@ Class ReceiveRewardMode extends AutoGameMode{
                 return 0
             }
             this.logger.log(this.player.getAppTitle() "도전과제로 이동합니다.")
-            this.player.setStay()
+            this.continueControl()
             if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_도전과제_팀별") ){
                 return 1
             }else{
                 this.logger.log(this.player.getAppTitle() "도전 과제 팀별을 못찾으면 보상을 못받아..")
-                this.player.setBye()
+                this.stopControl()
             }
         }
         return 0
@@ -114,7 +114,7 @@ Class ReceiveRewardMode extends AutoGameMode{
 
     receiveRewardLoop(){
         if ( this.gameController.searchImageFolder("0.기본UI\4.도전과제_Base") ){
-            this.player.setStay()
+            this.continueControl()
             this.logger.log(this.player.getAppTitle() "일일 미션처리 부터 시작합니다.")
 
             if ( this.gameController.searchImageFolder("보상모드\화면_일일미션") ){
@@ -155,7 +155,7 @@ Class ReceiveRewardMode extends AutoGameMode{
             }
             this.receiveDailyReward:=true
             this.moveMainPageForNextJob()
-            this.player.setBye()
+            this.stopControl()
             return 0
         }
         return 0

@@ -30,7 +30,7 @@ Class RealTimeBattleMode extends AutoGameMode{
     {
         if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){		
             this.logger.log(this.player.getAppTitle() "실시간 배틀을 시작합니다")
-            this.player.setStay()
+            this.continueControl()
             if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_대전_팀별") ){
                 return 1
             }			
@@ -39,7 +39,7 @@ Class RealTimeBattleMode extends AutoGameMode{
     }
     selectRealTimeBattle(){
         if ( this.gameController.searchImageFolder("0.기본UI\2.대전모드_Base") ){		
-            this.player.setStay()
+            this.continueControl()
             this.logger.log("실시간 대전을 선택합니다") 
             if ( this.gameController.searchAndClickFolder("0.기본UI\2.대전모드_버튼_실시간대전") ){
                 return 1
@@ -54,7 +54,7 @@ Class RealTimeBattleMode extends AutoGameMode{
                 return 0
             }
 
-            this.player.setStay()
+            this.continueControl()
             this.logger.log("실시간 대전을 시작합니다") 
             if ( this.gameController.searchAndClickFolder("실시간대전\버튼_실시간대전_시작") ){
                 if( this.checkPopup() ){
@@ -70,7 +70,7 @@ Class RealTimeBattleMode extends AutoGameMode{
 
     playStartRealTimeBattle(){
         if ( this.gameController.searchImageFolder("실시간대전\버튼_경기시작") ){		
-            this.player.setStay()
+            this.continueControl()
             this.logger.log("경기를 시작합니다") 
             if ( this.gameController.searchAndClickFolder("실시간대전\버튼_경기시작") ){
                 return 1
@@ -102,7 +102,7 @@ Class RealTimeBattleMode extends AutoGameMode{
 
     skippBeforeGameStart(){
         if ( this.gameController.searchImageFolder("실시간대전\버튼_라인업") ){
-            this.player.setStay()
+            this.continueControl()
             this.logger.log(this.player.getAppTitle() " 라인업 클릭 -> 후 클릭 3번") 
             if( this.gameController.searchAndClickFolder("실시간대전\버튼_라인업") = true ){				
                 this.gameController.sleep(1)
@@ -120,7 +120,7 @@ Class RealTimeBattleMode extends AutoGameMode{
 
     skippPlayLineupStatus(){
         if ( this.gameController.searchImageFolder("실시간대전\버튼_스킵스킵") ){
-            this.player.setStay()
+            this.continueControl()
             this.logger.log(this.player.getAppTitle() " - 스킵합니다") 
             if( this.gameController.searchAndClickFolder("실시간대전\버튼_스킵스킵",0,0,false) = true ){				
                 return 1			 
@@ -142,20 +142,20 @@ Class RealTimeBattleMode extends AutoGameMode{
     checkGameResultWindow(){
         if ( this.gameController.searchImageFolder("1.공통\화면_경기_결과" ) ){		
             this.logger.log("실시간 대전 종료를 확인했습니다.") 
-            this.player.setStay()
+            this.continueControl()
             if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){
 
                 this.player.addResult()
                 if( this.player.needToStopBattle() ){
                     this.logger.log("실시간대전을 다 돌았습니다.") 
-                    this.player.setBye()
+                    this.stopControl()
                 }else{
                     if( this.player.getRemainBattleCount() = "무한" ){
                         this.logger.log("계속 해서 돕니다. 이건 잘못된 선택입니다." )
                     }else{
                         this.logger.log("실시간대전을 " this.player.getRemainBattleCount() "번 더 돕니다." ) 
                     }
-                    this.player.setFree()                    
+                    this.releaseControl()                    
                 }
                 return 1
             }

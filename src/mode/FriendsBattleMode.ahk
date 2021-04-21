@@ -61,16 +61,14 @@ Class FriendsBattleMode extends AutoGameMode{
             }		 
         }else{
             this.logger.log("친구가 더이상 없어 시작하지 않습니다.") 
-            this.player.setBye()
-            this.returnFlag:=true
-
+            this.stopControl()
             return 0
         }
     }
 
     playFriendsBattle(){
         if ( this.gameController.searchImageFolder("친구대전\화면_친구대전준비") ){		
-            this.player.setStay()
+            this.continueControl()
             this.logger.log("친구대전 경기를 시작합니다") 
             if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
                 this.logger.log("10초 기다립니다") 
@@ -105,25 +103,22 @@ Class FriendsBattleMode extends AutoGameMode{
         this.player.addResult()
         if ( this.player.getWaitingResult() ){
             this.logger.log( "종료 요청이 확인되었습니다.") 
-            this.receiveFlag:=true
             this.player.setWantToWaitResult(false)
-            this.player.setBye() 
-            this.returnFlag:=true
+            this.stopControl() 
             return 1
         }else{
 
             if( this.player.needToStopBattle() ){
                 this.logger.log( "다 돌아 종료 하겠습니다.") 
                 this.receiveFlag:=true
-                this.player.setBye()
-                this.returnFlag:=true
+                this.stopControl()
             }else{
                 if( this.player.getRemainBattleCount() = "무한" ){
                     this.logger.log( "친구대전을 계속 돌겠다니.... 이건 잘못된 선택입니다.") 
                 }else{
                     this.logger.log( this.player.getRemainBattleCount() " 번 더 돌겠습니다.") 
                 } 
-                this.player.setFree()
+                this.releaseControl()
             }
             return 1
         }

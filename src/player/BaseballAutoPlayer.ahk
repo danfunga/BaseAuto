@@ -238,6 +238,7 @@ class BaseballAutoPlayer{
                 if( targetMode = "next" ){
 					
                     currentIndex:=this.getIndex(this.appMode,this.ALONE_MODE_ARRAY)
+                    
                     if( this.LOOP_PER_ALONE_MODE[this.appMode] < 0 ){
                         currentIndex++
                     }else{
@@ -256,6 +257,7 @@ class BaseballAutoPlayer{
                         this.setStatus("끝") 
                         return false
                     }
+
                     targetMode:=this.ALONE_MODE_ARRAY[currentIndex] 
                     this.logger.log(this.appTitle "가 [" this.appRole "][" targetMode "] 모드로 동작합니다.. ")
                 }
