@@ -92,7 +92,6 @@ Class HomrunDerbyMode extends AutoGameMode{
             this.logger.log("그만돌아야 하는 팝업이 떴습니다.") 
             if( this.gameController.searchAndClickFolder("홈런더비모드\화면_종료팝업\버튼_확인" ) ){
                 this.stopControl()
-                this.returnFlag:=true
                 return 1
             }			
         }
@@ -124,14 +123,12 @@ Class HomrunDerbyMode extends AutoGameMode{
             this.logger.log( "종료 요청이 확인되었습니다.") 
             this.player.setWantToWaitResult(false)
             this.stopControl() 
-            this.returnFlag:=true
             return 1
         }else{
 
             if( this.player.needToStopBattle() ){
                 this.logger.log( "다 돌아 종료 하겠습니다.") 
                 this.stopControl()
-                this.returnFlag:=true
             }else{
                 if( this.player.getRemainBattleCount() = "무한" ){
                     this.logger.log( "돌 수 없을 때까지 돌게 됩니다.") 
@@ -148,7 +145,6 @@ Class HomrunDerbyMode extends AutoGameMode{
         if ( this.gameController.searchImageFolder("홈런더비모드\화면_볼없음" ) ){		 
             this.logger.log("볼이 없는거 보니 홈런더비 다 돌았네요. ..")
             this.stopControl()
-            this.returnFlag:=true
             return 1
         }
         return 0 

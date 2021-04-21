@@ -202,10 +202,10 @@ Class AutoGameMode{
         }
         return 0
     } 
-    
+
     stopControl(){
         this.player.setBye()
-        this.returnFlag:=false
+        this.returnFlag:=true
     }
     releaseControl(){
         this.player.setFree()
@@ -215,6 +215,6 @@ Class AutoGameMode{
     }
     stopAndQuitConrol(){
         this.player.setRealFree()
-        this.returnFlag:=false
+        this.returnFlag:=true
     }
 }
