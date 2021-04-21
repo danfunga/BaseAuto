@@ -189,16 +189,16 @@ Class AutoGameMode{
     checkAndGoHome( searchCounter ){ 
         if( searchCounter = 0 ){
             this.moveHomeChecker++
-            if( this.moveHomeChecker >= 2 ){ 
+            if( this.moveHomeChecker > 2 ){ 
                 return this.moveMainPageForNextJob()
             }
         }
     }
     moveMainPageForNextJob(){
+        this.moveHomeChecker:= 0
         if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){		
             this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
             if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
-                this.moveHomeChecker:= 0
                 return 1
             }
         }
