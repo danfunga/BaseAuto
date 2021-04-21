@@ -21,7 +21,7 @@ class BaseballAutoPlayer{
     ; 단독 모드 설정
     static COUNT_PER_ALONE_MODE := { "리그":5, "랭대":-1, "홈런":-1, "친구":10, "실대":1, "스테":-1, "보상":1 } 
     ; 친구대전을 계속 돌 필요 없으니
-    LOOP_PER_ALONE_MODE := { "리그":-1, "랭대":-1, "홈런":-1, "친구":5, "실대":1, "스테":1, "보상":2 } 
+    LOOP_PER_ALONE_MODE := { "리그":-1, "랭대":-1, "홈런":-1, "친구":6, "실대":1, "스테":1, "보상":3 } 
     ALONE_MODE_ARRAY:=["리그","홈런","랭대","친구","보상"] 
 
     __NEW( index , title:="(Main)", enabled:=false, role:="리그" ){
