@@ -3,15 +3,15 @@
 class BaseballAutoPlayer{
     static logger:= new AutoLogger( "Player" ) 
 
-    static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","친구","보상","스테"]
-    static AVAILABLE_MODES:=["리그","실대","랭대","홈런","친구","보상","스테"]
+    static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","친구","보상","스테","등반"]
+    static AVAILABLE_MODES:=["리그","실대","랭대","홈런","친구","보상","스테","등반"]
     static AVAILABLE_PLAY_TYPE:=["전체","공격","수비"]
 
     static NEXT_PLAYER_STATUS:=["Unknwon","자동중","리그종료","끝","다음임무"]
     static STOP_PLAYER_STATUS:=["끝","리그종료"]
 
     ; 기본 모드든에 대한 설정 
-    static COUNT_PER_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2,"리그":-1, "스테":-1 }
+    static COUNT_PER_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2,"리그":-1, "스테":-1, "등반":-1 }
 
     ; 일꾼 모드 설정
     static COUNT_PER_ASSIST_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2, "보상":1 } 
@@ -37,7 +37,7 @@ class BaseballAutoPlayer{
         this.currentBattleRemainCount:=0
         this.remainFriendsBattleCount:=40
         this.remainRealTimeBattleCount:=2
-        this.countPerMode := { "리그":0, "랭대":0, "홈런":0, "친구":0, "실대":0,"보상":0 } 
+        this.countPerMode := { "리그":0, "랭대":0, "홈런":0, "친구":0, "실대":0,"보상":0,"스테":0, "등반":0 } 
     } 
 
     setResult( result ){

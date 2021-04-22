@@ -9,6 +9,7 @@
 #include %A_ScriptDir%\src\mode\HomrunDerbyMode.ahk
 #include %A_ScriptDir%\src\mode\ReceiveRewardMode.ahk
 #include %A_ScriptDir%\src\mode\StageMode.ahk
+#include %A_ScriptDir%\src\mode\LeagueUpgradeMode.ahk
 
 Class BaseballAuto{
     __NEW(){
@@ -50,6 +51,10 @@ Class BaseballAuto{
         this.typePerMode["스테"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["스테"].Push(new StageMode( this.gameController ) ) 
 
+        this.typePerMode["등반"]:=[]
+        this.typePerMode["등반"].Push(new GameStarterMode( this.gameController ) ) 
+        this.typePerMode["등반"].Push(new LeagueUpgradeMode( this.gameController ) ) 
+
         this.logger.log("BaseballAuto Ready !")
     }
 
@@ -73,15 +78,8 @@ Class BaseballAuto{
                 for playerIndex, player in this.currentEnablePlayers{
                     globalCurrentPlayer:=player
 
-                    ; if( player.needToStop()){
-                    ;     this.logger.log( "STOP " this.getPlayerResult(player)) 
-                    ;     this.stopPlayer(playerIndex) 
-                    ;     continue
-                    ; }
-
                     player.setCheck()
                     this.gameController.setActiveId(player.getAppTitle())
-                    globalContinueFlag:=false
 
                     loopCount:=0
                     while( AUTO_RUNNING = true ){
@@ -93,15 +91,15 @@ Class BaseballAuto{
                         } 
 
                         modeList:= this.typePerMode[player.getMode()]
-                        for index, gameMode in modeList ; Enumeration is the recommended approach in most cases.
+                        for index, gameMode in modeList 
                         {
                             gameMode.setPlayer(player) 
                             localChecker+=gameMode.checkAndRun()
                         } 
+
                         if ( AUTO_RUNNING = false )
                             break
 
-                        ; this.logger.log( player.getAppTitle() " checker count=" localChecker)                                           
                         if( player.needToStop()){
                             this.logger.log( "STOP " this.getPlayerResult(player)) 
                             this.stopPlayer(playerIndex) 
@@ -113,10 +111,10 @@ Class BaseballAuto{
                             if ( localChecker = 0 ){
                                 loopCount++
                                 if( player.getMode() ="리그"){
-                                    
+
                                     if( loopCount!=0 and mod(loopCount,30) = 0 ){
                                         this.logger.log(player.getAppTitle() "[" player.getMode() "] 이미지 없음 " loopCount "회")
-                                    }                                    
+                                    } 
                                     this.gameController.sleep(2) 
 
                                     if( loopCount = 90 or loopCount = 120){
@@ -152,7 +150,7 @@ Class BaseballAuto{
                                             player.setUnknwon()
                                         } 
                                     }
-                                }                                
+                                } 
                             } else{
                                 loopCount:=0
                             }
@@ -164,7 +162,6 @@ Class BaseballAuto{
         }else{ 
             this.logger.log("BaseballAuto Already Started!!")
         }
-        ; this.logger.log("BaseballAuto Done!!")
         this.stop()
     }
     loadPlayerConfig(){

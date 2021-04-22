@@ -66,7 +66,11 @@ class MC_GameController{
             targetX:=imgX+relateX
             targetY:=imgY+relateY
             this.logger.debug( fileName "를 클릭합니다. X=" imgX ", Y=" imgY ", ResultX=" targetX ", ResultY=" targetY)
-            this.randomClick(targetX, targetY, 0, 15, boolDelay)
+            if( relateX >0 or relateY >0){
+                this.click( targetX, targetY, boolDelay )		
+            }else{
+                this.randomClick(targetX, targetY, 0, 15, boolDelay)
+            }            
             Return true
 
         }else{
