@@ -137,15 +137,10 @@ Class LeagueUpgradeMode extends AutoGameMode{
         if ( this.gameController.searchImageFolder("리그모드\Button_skipBeforePlay") ){
             this.logger.log(this.player.getAppTitle() " 라인업 등을 넘어갑니다.") 
             if( this.gameController.searchAndClickFolder("리그모드\Button_skipBeforePlay") = true ){				
-                this.gameController.sleep(1)
-                loop 3
-                {
-                    if( winW < 630 )
-                        this.gameController.clickRatioPos(0.744, 0.114, 10)
-                    else
-                        this.gameController.clickRatioPos(0.76, 0.097, 20)
-                    this.gameController.sleep(0.3)
-                }
+                result+=1
+                if( result > 4 )
+                    return result
+                result+=this.skippPlayLineupStatus(result)	
                 return 1
             }					
         } 
