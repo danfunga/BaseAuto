@@ -87,11 +87,14 @@ Class LeagueUpgradeMode extends AutoGameMode{
     }		
     closeGame(){
         if ( this.gameController.searchImageFolder("등반모드\화면_종료플래그") ){
-            if( this.gameController.searchAndClickFolder("등반모드\화면_종료플래그\버튼_종료",15,0) ){
-                this.logger.log("강제 종료 했습니다.")
-                this.gameController.sleep(2)				
-                return 1
-            } 
+            if ( !this.gameController.searchImageFolder("등반모드\화면_종료플래그\화면_예외") ){
+                if( this.gameController.searchAndClickFolder("등반모드\화면_종료플래그\버튼_종료",15,0) ){
+                    this.logger.log("강제 종료 했습니다.")
+                    this.gameController.sleep(2)				
+                    return 1
+                } 
+            }
+
         }
     }
     selectNextLeage(){
@@ -187,7 +190,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
                 break 
             }else{
                 this.logger.log(this.player.getAppTitle() " 뒤로가기 - ESC ") 
-                this.gameController.clickESC()                
+                this.gameController.clickESC() 
                 this.gameController.sleep(1)
             }
         }
