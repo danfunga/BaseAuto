@@ -177,7 +177,7 @@ Class AutoGameMode{
         if ( this.player.getWaitingResult() ){
             this.logger.log( "종료 요청이 확인되었습니다.") 
             this.player.setWantToWaitResult(false)
-            this.stopControl()            
+            this.stopControl() 
             return true
         }else{
             return false
@@ -218,6 +218,19 @@ Class AutoGameMode{
         this.player.setRealFree()
         this.returnFlag:=true
         this.autoFlag:=false
-        
+    }
+
+    goBackward(){
+        this.gameController.clickESC()
+        this.logger.log(this.player.getAppTitle() " 뒤로가기 - ESC ") 
+        this.gameController.sleep(3)
+    }
+    quitCom2usBaseball(){
+        if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야끄기") ){
+            this.logger.log("컴프야를 강제 종료 했습니다.")
+            this.releaseControl()
+            this.gameController.sleep(2)
+            return 1
+        } 
     }
 }

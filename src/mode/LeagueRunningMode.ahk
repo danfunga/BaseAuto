@@ -177,6 +177,7 @@ Class LeagueRunningMode extends AutoGameMode{
         if ( this.gameController.searchImageFolder("리그모드\화면_리그_완전종료") ){
             this.logger.log(this.player.getAppTitle() " 리그가 종료 되었습니다. 우승했길....") 
             this.stopAndQuitConrol()
+            return this.quitCom2usBaseball()
         }
         return 0				
     }

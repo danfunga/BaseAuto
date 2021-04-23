@@ -123,13 +123,10 @@ Class BaseballAuto{
                                         this.startMode.goBackward()
                                     } 
                                     if ( loopCount > 120 ){
-                                        this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 풀어주자")
-                                        if( this.currentEnablePlayers.length() <= 1 ){
-                                            this.logger.log("여기다 이녀석을 재기동 시켜주세요")
-                                            player.setStatus("끝")
-                                        }else{
-                                            player.setUnknwon()
-                                        } 
+                                        this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 이녀석을 강제...로...")
+                                        this.startMode.quitCom2usBaseball()
+                                        this.logger.log("자~ 재기동을 시켜 버렸다... 어떻게 하나 보자")                                        
+                                        player.setUnknwon()
                                     }
                                 }else{
                                     if( loopCount!=0 and mod(loopCount,60) = 0 ){
@@ -142,13 +139,11 @@ Class BaseballAuto{
                                     } 
 
                                     if ( loopCount > 240 ){
-                                        this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 풀어주자")
-                                        if( this.currentEnablePlayers.length() <= 1 ){
-                                            this.logger.log("여기다 이녀석을 재기동 시켜주세요")
-                                            player.setStatus("끝")
-                                        }else{
-                                            player.setUnknwon()
-                                        } 
+                                        this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 이녀석을 강제...로...")
+                                        this.startMode.quitCom2usBaseball()
+                                        this.logger.log("자~ 재기동을 시켜 버렸다... 어떻게 하나 보자")                                        
+                                        player.setUnknwon()
+
                                     }
                                 } 
                             } else{

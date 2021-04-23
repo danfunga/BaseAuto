@@ -161,10 +161,19 @@ class BaseballAutoPlayer{
     }
     setRealFree(){
         if( this.appRole ="일꾼" or this.appRole="단독"){ 
+            ; 리그모드일테니깐 리그를 못돌게 하자
             this.LOOP_PER_ALONE_MODE[this.appMode]:=0
-            this.logger.log("어찌됐건 이 곳을 못 빠져나갑니다. 종료시킵니다")        
+            this.logger.log("아마 이 화면을 못벗어 날거 같지만 행운을 빕니다.")
+            this.logger.log("운이 좋아 튕긴다면 다음 모드만 돌것입니다.")
+
+            if( this.setMode("next") ){
+                this.setStatus("다음임무") 
+            }else{
+                this.setStatus("리그종료")		
+            }
+        }else{
+            this.setStatus("리그종료")		
         }
-        this.setStatus("리그종료")		        
     }
     setFree(){
         this.setStatus("자동중")		

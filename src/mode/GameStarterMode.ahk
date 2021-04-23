@@ -48,11 +48,5 @@ Class GameStarterMode extends AutoGameMode{
         }
         return result
     }
-    goBackward(){
-
-        this.gameController.clickESC()
-        this.logger.log(this.player.getAppTitle() " 뒤로가기 - ESC ") 
-        this.gameController.sleep(3)
-
-    }
+    
 }

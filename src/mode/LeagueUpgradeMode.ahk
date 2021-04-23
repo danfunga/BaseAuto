@@ -89,12 +89,8 @@ Class LeagueUpgradeMode extends AutoGameMode{
     closeGame(){
         if( this.autoFlag ){
             if ( this.gameController.searchImageFolder("등반모드\화면_종료플래그") ){
-                if( this.gameController.searchAndClickFolder("등반모드\화면_종료플래그\버튼_종료") ){
-                    this.continueControl()
-                    this.logger.log("강제 종료 했습니다.")
-                    this.gameController.sleep(2) 				
-                    return 1
-                } 
+                this.quitCom2usBaseball()
+                this.continueControl()                
             }
         }
     }
