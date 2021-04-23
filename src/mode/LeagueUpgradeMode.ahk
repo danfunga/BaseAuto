@@ -8,13 +8,13 @@ Class LeagueUpgradeMode extends AutoGameMode{
     }
 
     initMode(){
-
         this.addAction(this.isMainWindow, this.selectLeagueButton) 
         this.addAction(this.skippLeagueSchedule)
         this.addAction(this.closeGame)
         this.addAction(this.skippBattleHistory)
         this.addAction(this.choicePlayType)
         this.addAction(this.checkSpeedUp)
+        this.addAction(this.closeGame)
         this.addAction(this.skippPlayLineupStatus)
         this.addAction(this.checkSpeedUp)
         this.addAction(this.closeGame)
@@ -90,16 +90,19 @@ Class LeagueUpgradeMode extends AutoGameMode{
         if( this.autoFlag ){
             if ( this.gameController.searchImageFolder("등반모드\화면_종료플래그") ){
                 this.quitCom2usBaseball()
-                this.continueControl()                
+                this.continueControl() 
             }
         }
     }
     selectNextLeage(){
         if ( this.gameController.searchImageFolder("등반모드\화면_다음시즌") ){
             this.continueControl()
-            if( this.gameController.searchAndClickFolder("등반모드\화면_다음시즌\버튼_확인") ){
-                this.gameController.sleep(2)				
-                return 1
+            if( this.gameController.searchAndClickFolder("등반모드\화면_다음시즌\버튼_다음시즌") ){
+                this.logger.log("다음 시즌을 선택합니다.")
+                if( this.gameController.searchAndClickFolder("등반모드\화면_다음시즌\버튼_확인") ){
+                    this.gameController.sleep(2)				
+                    return 1
+                }
             }else{
                 this.logger.log("일단 멈춰 놓고... 이미지 넣자")
                 this.stopControl()
@@ -133,12 +136,12 @@ Class LeagueUpgradeMode extends AutoGameMode{
     }
 
     skippPlayLineupStatus(before:=0){
-        result:=before        
+        result:=before 
         if( this.gameController.searchAndClickFolder("리그모드\Button_skipBeforePlay") = true ){				
             this.logger.log(this.player.getAppTitle() " 라인업 등을 넘어갑니다.") 
             result+=1
             if( result < 4 )
-                result+=this.skippPlayLineupStatus(result)	            
+                result+=this.skippPlayLineupStatus(result)	 
             return result
         }
         return result
