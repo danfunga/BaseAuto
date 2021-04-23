@@ -33,7 +33,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
         this.addAction(this.closeGame)
         this.addAction(this.selectNextLeage)
         this.addAction(this.selectPostSeason)
-        this.addAction(this.closeGame)    
+        this.addAction(this.closeGame) 
         this.addAction(this.skipAndroidAds)
         this.addAction(this.closeGame)
         this.addAction(this.checkGameDown)
@@ -60,8 +60,8 @@ Class LeagueUpgradeMode extends AutoGameMode{
             this.continueControl()
 
             if ( this.gameController.searchImageFolder("리그모드\화면_볼없음") ){
-                this.logger.log("리그 볼을 모두 소비하였습니다. 1분 취침") 
-                this.gameController.sleep(60)
+                this.logger.log("리그 볼을 모두 소비하였습니다. 10분 취침") 
+                this.gameController.sleep(600)
                 return 1
             }
 
@@ -111,8 +111,17 @@ Class LeagueUpgradeMode extends AutoGameMode{
                     return 1
                 }
             }else{
-                this.logger.log("일단 멈춰 놓고... 이미지 넣자")
-                this.stopControl()
+
+                if( this.gameController.searchAndClickFolder("등반모드\화면_다음시즌\버튼_기존시즌") ){
+                    this.logger.log("기존 시즌이 왜 선택되어야 하나 ㅠㅠ.")
+                    if( this.gameController.searchAndClickFolder("등반모드\화면_다음시즌\버튼_확인") ){
+                        this.gameController.sleep(2)				
+                        return 1
+                    }
+                }else{
+                    this.logger.log("일단 멈춰 놓고... 이미지 넣자")
+                    this.stopControl()
+                }
             }
         }
     }
@@ -319,7 +328,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
         return 0
     }
 
-     checkGameDown(){
+    checkGameDown(){
         if ( this.gameController.searchImageFolder("게임실행모드\Button_GameIcon") ){
             this.continueControl()
             this.logger.log("컴프야 게임을 실행합니다.: 15초 wait ")
