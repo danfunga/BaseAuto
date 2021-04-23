@@ -101,10 +101,13 @@ Class LeagueUpgradeMode extends AutoGameMode{
     selectNextLeage(){
         if ( this.gameController.searchImageFolder("등반모드\화면_다음시즌") ){
             this.continueControl()
-            if( this.gameController.searchAndClickFolder("등반모드\화면_다음시즌\버튼_확인",15,0) ){
+            if( this.gameController.searchAndClickFolder("등반모드\화면_다음시즌\버튼_확인") ){
                 this.gameController.sleep(2)				
                 return 1
-            } 
+            }else{
+                this.logger.log("일단 멈춰 놓고... 이미지 넣자")
+                this.stopControl()
+            }
         }
     }
     skippBattleHistory(){
