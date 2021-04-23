@@ -14,8 +14,6 @@
         }else{
             this.directory:=this.baseDirectory
         }
-
-        this.debug("AutoLogger init....")
     }
 
     log( content , boolIsDebug:=false) { 

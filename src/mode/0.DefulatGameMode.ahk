@@ -212,9 +212,12 @@ Class AutoGameMode{
     }
     continueControl(){
         this.player.setStay()
+        this.autoFlag:=false
     }
     stopAndQuitConrol(){
         this.player.setRealFree()
         this.returnFlag:=true
+        this.autoFlag:=false
+        
     }
 }

@@ -48,6 +48,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
 
     skippLeagueSchedule(){
         if ( this.gameController.searchImageFolder("0.기본UI\1.리그모드_Base") ){
+
             this.logger.log("경기 일정 화면을 넘어갑니다.") 
             this.continueControl()
 
@@ -64,7 +65,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
                     this.stopControl()
                 }else if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
                     this.logger.log("정상 요청이지만 이어하기를 수행했습니다.")
-                    this.gameController.sleep(15)
+                    this.gameController.sleep(5)
                     return 1
                 }
             }else{ 
@@ -77,8 +78,8 @@ Class LeagueUpgradeMode extends AutoGameMode{
                 if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
                     return 1
                 }else if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
-                    this.logger.log("경기가 이어합니다. 15초 기다립니다.")
-                    this.gameController.sleep(15)				
+                    this.logger.log("경기가 이어합니다. 5초 기다립니다.")
+                    this.gameController.sleep(5)				
                     return 1
                 }
             }		 
@@ -86,21 +87,21 @@ Class LeagueUpgradeMode extends AutoGameMode{
         return 0		
     }		
     closeGame(){
-        if ( this.gameController.searchImageFolder("등반모드\화면_종료플래그") ){
-            if ( !this.gameController.searchImageFolder("등반모드\화면_종료플래그\화면_예외") ){
-                if( this.gameController.searchAndClickFolder("등반모드\화면_종료플래그\버튼_종료",15,0) ){
+        if( this.autoFlag ){
+            if ( this.gameController.searchImageFolder("등반모드\화면_종료플래그") ){
+                if( this.gameController.searchAndClickFolder("등반모드\화면_종료플래그\버튼_종료") ){
+                    this.continueControl()
                     this.logger.log("강제 종료 했습니다.")
-                    this.gameController.sleep(2)				
+                    this.gameController.sleep(2) 				
                     return 1
                 } 
             }
-
         }
     }
     selectNextLeage(){
         if ( this.gameController.searchImageFolder("등반모드\화면_다음시즌") ){
+            this.continueControl()
             if( this.gameController.searchAndClickFolder("등반모드\화면_다음시즌\버튼_확인",15,0) ){
-
                 this.gameController.sleep(2)				
                 return 1
             } 
@@ -112,8 +113,8 @@ Class LeagueUpgradeMode extends AutoGameMode{
             this.continueControl()
 
             if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
-                this.logger.log("경기가 시작 됩니다. 15초 기다립니다.")
-                this.gameController.sleep(15)
+                this.logger.log("경기가 시작 됩니다. 5초 기다립니다.")
+                this.gameController.sleep(5)
                 return 1
             }
         }
@@ -133,17 +134,14 @@ Class LeagueUpgradeMode extends AutoGameMode{
     }
 
     skippPlayLineupStatus(before:=0){
-        result:=before
-        if ( this.gameController.searchImageFolder("리그모드\Button_skipBeforePlay") ){
+        result:=before        
+        if( this.gameController.searchAndClickFolder("리그모드\Button_skipBeforePlay") = true ){				
             this.logger.log(this.player.getAppTitle() " 라인업 등을 넘어갑니다.") 
-            if( this.gameController.searchAndClickFolder("리그모드\Button_skipBeforePlay") = true ){				
-                result+=1
-                if( result > 4 )
-                    return result
-                result+=this.skippPlayLineupStatus(result)	
-                return 1
-            }					
-        } 
+            result+=1
+            if( result < 4 )
+                result+=this.skippPlayLineupStatus(result)	            
+            return result
+        }
         return result
     }
     skippChanceStatus(){
@@ -156,8 +154,8 @@ Class LeagueUpgradeMode extends AutoGameMode{
     }
     checkTotalLeagueEnd(){
         if ( this.gameController.searchImageFolder("리그모드\화면_리그_완전종료") ){
+            this.continueControl()
             this.logger.log(this.player.getAppTitle() " 무조건 우승이다.") 
-
             if ( this.gameController.searchImageFolder("리그모드\화면_리그_완전종료") ){
                 this.sendESCUntilConfirm()
 
@@ -168,6 +166,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
     }
     selectPostSeason(){
         if ( this.gameController.searchImageFolder("등반모드\버튼_포스트시즌") ){
+            this.continueControl()
             this.logger.log("포스트 시즌을 선택합니다.") 
             if( this.gameController.searchAndClickFolder("등반모드\버튼_포스트시즌") ){
                 if( this.gameController.searchAndClickFolder("등반모드\버튼_포스트시즌\버튼_다음") ){
@@ -222,11 +221,13 @@ Class LeagueUpgradeMode extends AutoGameMode{
                 if ( this.gameController.searchImageFolder("리그모드\화면_게임정지상태") != true ){
                     this.logger.log(this.player.getAppTitle() " 자동 게임이 시작되었습니다.") 
                     this.releaseControl()
+                    this.autoFlag:=true
                     return 1
                 }
             }else{
                 ;this.logger.log(this.player.getAppTitle() " 자동 게임이 진행 중인것으로 보입니다.") 
                 this.releaseControl()
+                this.autoFlag:=true
                 return 1
             }
 
@@ -253,11 +254,12 @@ Class LeagueUpgradeMode extends AutoGameMode{
     }
     checkAutoPlayEnding(){
         if ( this.gameController.searchImageFolder("리그모드\화면_결과_타구장" ) ){		
+            this.autoFlag:=false
             this.logger.log("경기가 종료 되었습니다.") 
             if( this.gameController.searchAndClickFolder("리그모드\화면_결과_타구장" ) ){
                 this.logger.log("경기 종료를 확인했습니다.") 
                 this.player.addResult()
-                this.continueControl()
+                this.continueControl() 
                 if( this.player.getRole() = "단독" ){
                     if( this.player.needToStopBattle() ){
                         this.logger.log("리그를 횟수만큼 돌았습니다.") 
@@ -273,7 +275,8 @@ Class LeagueUpgradeMode extends AutoGameMode{
                 return 1
             }			
         }else{
-            if ( this.gameController.searchImageFolder("리그모드\화면_결과_플레이오프") ){ 
+            if ( this.gameController.searchImageFolder("리그모드\화면_결과_플레이오프") ){
+                this.autoFlag:=false 
                 this.gameController.sleep(4)			
                 if ( this.gameController.searchImageFolder("리그모드\화면_결과_플레이오프") ){								
                     this.logger.log("플레이 오프 경기가 종료 된거 같습니다")
