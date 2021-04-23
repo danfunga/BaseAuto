@@ -8,6 +8,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
     }
 
     initMode(){
+        this.addAction(this.closeGame)
         this.addAction(this.isMainWindow, this.selectLeagueButton) 
         this.addAction(this.skippLeagueSchedule)
         this.addAction(this.closeGame)
@@ -32,6 +33,12 @@ Class LeagueUpgradeMode extends AutoGameMode{
         this.addAction(this.closeGame)
         this.addAction(this.selectNextLeage)
         this.addAction(this.selectPostSeason)
+        this.addAction(this.closeGame)    
+        this.addAction(this.skipAndroidAds)
+        this.addAction(this.closeGame)
+        this.addAction(this.checkGameDown)
+        this.addAction(this.closeGame)
+        this.addAction(this.skipPopupAndAds)
         this.addAction(this.closeGame)
         this.addAction(this.checkAndGoHome) 
     }
@@ -310,6 +317,42 @@ Class LeagueUpgradeMode extends AutoGameMode{
             } 
         }
         return 0
+    }
+
+     checkGameDown(){
+        if ( this.gameController.searchImageFolder("게임실행모드\Button_GameIcon") ){
+            this.continueControl()
+            this.logger.log("컴프야 게임을 실행합니다.: 15초 wait ")
+            if( this.gameController.searchAndClickFolder("게임실행모드\Button_GameIcon") ){
+                this.gameController.sleep(15)					
+                return 1
+            } 
+        }
+        return 0
+    }
+
+    skipAndroidAds(){
+
+        if ( this.gameController.searchImageFolder("게임실행모드\Button_AdroidAds") ){
+            this.continueControl() 
+            this.logger.log("안드로이드 광고를 클릭합니다.") 
+            if( this.gameController.searchAndClickFolder("게임실행모드\Button_AdroidAds") ){
+                return 1
+            } 
+        }
+        return 0
+    }
+    skipPopupAndAds(){
+        result:=0
+        if ( this.gameController.searchImageFolder("게임실행모드\Button_NoMoreAds") ){
+            this.continueControl()
+            this.logger.log("팝업 광고 등을 취소합니다..") 
+            if ( this.gameController.searchAndClickFolder("게임실행모드\Button_NoMoreAds") = true ){
+                result+=1
+                result+=this.skipPopupAndAds()			
+            }		
+        }
+        return result
     }
 
 }

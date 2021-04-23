@@ -52,7 +52,6 @@ Class BaseballAuto{
         this.typePerMode["스테"].Push(new StageMode( this.gameController ) ) 
 
         this.typePerMode["등반"]:=[]
-        this.typePerMode["등반"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["등반"].Push(new LeagueUpgradeMode( this.gameController ) ) 
 
         this.logger.log("BaseballAuto Ready !")
