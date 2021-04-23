@@ -65,7 +65,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
                     this.stopControl()
                 }else if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
                     this.logger.log("정상 요청이지만 이어하기를 수행했습니다.")
-                    this.gameController.sleep(5)
+                    this.gameController.sleep(10)
                     return 1
                 }
             }else{ 
@@ -78,8 +78,8 @@ Class LeagueUpgradeMode extends AutoGameMode{
                 if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
                     return 1
                 }else if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
-                    this.logger.log("경기가 이어합니다. 5초 기다립니다.")
-                    this.gameController.sleep(5)				
+                    this.logger.log("경기가 이어합니다. 10초 기다립니다.")
+                    this.gameController.sleep(10)				
                     return 1
                 }
             }		 
@@ -116,8 +116,8 @@ Class LeagueUpgradeMode extends AutoGameMode{
             this.continueControl()
 
             if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
-                this.logger.log("경기가 시작 됩니다. 5초 기다립니다.")
-                this.gameController.sleep(5)
+                this.logger.log("경기가 시작 됩니다. 10초 기다립니다.")
+                this.gameController.sleep(10)
                 return 1
             }
         }
