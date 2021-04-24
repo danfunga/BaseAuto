@@ -96,8 +96,20 @@ Class LeagueUpgradeMode extends AutoGameMode{
     closeGame(){
         if( this.autoFlag ){
             if ( this.gameController.searchImageFolder("등반모드\화면_종료플래그") ){
-                this.quitCom2usBaseball()
-                this.continueControl() 
+                if( this.quitCom2usBaseball() ){
+                    this.continueControl() 
+                }else{
+                    this.logger.log("직접 클릭한다... 젭알..")
+                    this.gameController.randomClick(435, 11, 0, 10, true)
+
+                    if ( this.gameController.searchImageFolder("등반모드\화면_종료플래그") ){ 
+                        this.logger.log("설마 아직도...?")
+                        if( this.quitCom2usBaseball() ){
+                            this.continueControl() 
+                        }
+                    }
+                }
+
             }
         }
     }
@@ -111,7 +123,6 @@ Class LeagueUpgradeMode extends AutoGameMode{
                     return 1
                 }
             }else{
-
                 if( this.gameController.searchAndClickFolder("등반모드\화면_다음시즌\버튼_기존시즌") ){
                     this.logger.log("기존 시즌이 왜 선택되어야 하나 ㅠㅠ.")
                     if( this.gameController.searchAndClickFolder("등반모드\화면_다음시즌\버튼_확인") ){

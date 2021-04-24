@@ -230,7 +230,10 @@ Class AutoGameMode{
             this.logger.log("컴프야를 강제 종료 했습니다.")
             this.releaseControl()
             this.gameController.sleep(2)
-            return 1
-        } 
+            return true
+        } else{
+            this.logger.log("ERROR: 이걸 못찾으면 안되는데...")
+            return false
+        }
     }
 }

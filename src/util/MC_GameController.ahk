@@ -69,7 +69,7 @@ class MC_GameController{
             if( relateX >0 or relateY >0){
                 this.click( targetX, targetY, boolDelay )		
             }else{
-                this.randomClick(targetX, targetY, 0, 15, boolDelay)
+                this.randomClick(targetX, targetY, 0, 10, boolDelay)
             }            
             Return true
 
