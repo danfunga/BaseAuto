@@ -342,9 +342,10 @@ Class LeagueUpgradeMode extends AutoGameMode{
     checkGameDown(){
         if ( this.gameController.searchImageFolder("게임실행모드\Button_GameIcon") ){
             this.continueControl()
-            this.logger.log("컴프야 게임을 실행합니다.: 15초 wait ")
+            this.logger.log("2초후 컴프야 게임을 실행합니다.: 15초 wait ")
+            this.gameController.sleep(2)
             if( this.gameController.searchAndClickFolder("게임실행모드\Button_GameIcon") ){
-                this.gameController.sleep(15)					
+                this.gameController.sleep(15)
                 return 1
             } 
         }
