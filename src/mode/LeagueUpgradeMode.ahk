@@ -17,7 +17,6 @@ Class LeagueUpgradeMode extends AutoGameMode{
         this.addAction(this.checkSpeedUp)
         this.addAction(this.closeGame)
         this.addAction(this.skippPlayLineupStatus)
-        this.addAction(this.checkSpeedUp)
         this.addAction(this.closeGame)
         this.addAction(this.skippChanceStatus)
         this.addAction(this.activateAutoPlay)
@@ -345,7 +344,15 @@ Class LeagueUpgradeMode extends AutoGameMode{
             this.logger.log("2초후 컴프야 게임을 실행합니다.: 15초 wait ")
             this.gameController.sleep(2)
             if( this.gameController.searchAndClickFolder("게임실행모드\Button_GameIcon") ){
-                this.gameController.sleep(15)
+                this.gameController.sleep(2)
+                if ( this.gameController.searchImageFolder("게임실행모드\Button_GameIcon") ){
+                    this.logger.log("시작이 왜 안됐나요... ")
+                    if( this.gameController.searchAndClickFolder("게임실행모드\Button_GameIcon") ){
+                        this.gameController.sleep(13)        
+                    }
+                }else{
+                    this.gameController.sleep(13)    
+                }                    
                 return 1
             } 
         }
