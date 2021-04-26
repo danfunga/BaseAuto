@@ -226,10 +226,10 @@ Class AutoGameMode{
         this.gameController.sleep(3)
     }
     quitCom2usBaseball(){
-        if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야끄기") ){
+        if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야끄기",0,0,false) ){
             this.logger.log("컴프야를 강제 종료 했습니다.")
             this.releaseControl()
-            this.gameController.sleep(2)
+            ; this.gameController.sleep(2)
             return true
         } else{
             this.logger.log("ERROR: 이걸 못찾으면 안되는데...")
