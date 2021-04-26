@@ -153,6 +153,7 @@ Class ReceiveRewardMode extends AutoGameMode{
                 } 
 
             }
+            this.checkPopup()
             this.receiveDailyReward:=true
             this.moveMainPageForNextJob()
             this.stopControl()
