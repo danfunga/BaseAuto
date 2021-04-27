@@ -3,15 +3,15 @@
 class BaseballAutoPlayer{
     static logger:= new AutoLogger( "Player" ) 
 
-    static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","친구","보상","스테"]
-    static AVAILABLE_MODES:=["리그","실대","랭대","홈런","친구","보상","스테"]
+    static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","친구","보상","스테","등반"]
+    static AVAILABLE_MODES:=["리그","실대","랭대","홈런","친구","보상","스테","등반"]
     static AVAILABLE_PLAY_TYPE:=["전체","공격","수비"]
 
     static NEXT_PLAYER_STATUS:=["Unknwon","자동중","리그종료","끝","다음임무"]
     static STOP_PLAYER_STATUS:=["끝","리그종료"]
 
     ; 기본 모드든에 대한 설정 
-    static COUNT_PER_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2,"리그":-1, "스테":-1 }
+    static COUNT_PER_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2,"리그":-1, "스테":-1, "등반":-1 }
 
     ; 일꾼 모드 설정
     static COUNT_PER_ASSIST_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2, "보상":1 } 
@@ -21,7 +21,7 @@ class BaseballAutoPlayer{
     ; 단독 모드 설정
     static COUNT_PER_ALONE_MODE := { "리그":5, "랭대":-1, "홈런":-1, "친구":10, "실대":1, "스테":-1, "보상":1 } 
     ; 친구대전을 계속 돌 필요 없으니
-    LOOP_PER_ALONE_MODE := { "리그":-1, "랭대":-1, "홈런":-1, "친구":5, "실대":1, "스테":1, "보상":2 } 
+    LOOP_PER_ALONE_MODE := { "리그":-1, "랭대":-1, "홈런":-1, "친구":6, "실대":1, "스테":1, "보상":3 } 
     ALONE_MODE_ARRAY:=["리그","홈런","랭대","친구","보상"] 
 
     __NEW( index , title:="(Main)", enabled:=false, role:="리그" ){
@@ -37,7 +37,7 @@ class BaseballAutoPlayer{
         this.currentBattleRemainCount:=0
         this.remainFriendsBattleCount:=40
         this.remainRealTimeBattleCount:=2
-        this.countPerMode := { "리그":0, "랭대":0, "홈런":0, "친구":0, "실대":0,"보상":0 } 
+        this.countPerMode := { "리그":0, "랭대":0, "홈런":0, "친구":0, "실대":0,"보상":0,"스테":0, "등반":0 } 
     } 
 
     setResult( result ){
@@ -161,10 +161,19 @@ class BaseballAutoPlayer{
     }
     setRealFree(){
         if( this.appRole ="일꾼" or this.appRole="단독"){ 
+            ; 리그모드일테니깐 리그를 못돌게 하자
             this.LOOP_PER_ALONE_MODE[this.appMode]:=0
-            this.logger.log("어찌됐건 이 곳을 못 빠져나갑니다. 종료시킵니다")        
+            this.logger.log("아마 이 화면을 못벗어 날거 같지만 행운을 빕니다.")
+            this.logger.log("운이 좋아 튕긴다면 다음 모드만 돌것입니다.")
+
+            if( this.setMode("next") ){
+                this.setStatus("다음임무") 
+            }else{
+                this.setStatus("리그종료")		
+            }
+        }else{
+            this.setStatus("리그종료")		
         }
-        this.setStatus("리그종료")		        
     }
     setFree(){
         this.setStatus("자동중")		
@@ -238,6 +247,7 @@ class BaseballAutoPlayer{
                 if( targetMode = "next" ){
 					
                     currentIndex:=this.getIndex(this.appMode,this.ALONE_MODE_ARRAY)
+                    
                     if( this.LOOP_PER_ALONE_MODE[this.appMode] < 0 ){
                         currentIndex++
                     }else{
@@ -256,6 +266,7 @@ class BaseballAutoPlayer{
                         this.setStatus("끝") 
                         return false
                     }
+
                     targetMode:=this.ALONE_MODE_ARRAY[currentIndex] 
                     this.logger.log(this.appTitle "가 [" this.appRole "][" targetMode "] 모드로 동작합니다.. ")
                 }

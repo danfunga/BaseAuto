@@ -27,7 +27,7 @@ Class StageMode extends AutoGameMode{
     startSpecialMode(){
         if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){
             this.logger.log(this.player.getAppTitle() "스테이지모드를 시작합니다!")
-            this.player.setStay()
+            this.continueControl()
             if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_스페셜_팀별") ){
                 return 1
             }
@@ -37,7 +37,7 @@ Class StageMode extends AutoGameMode{
 
     selectStageMode(){
         if ( this.gameController.searchImageFolder("0.기본UI\3.스페셜모드_Base") ){		
-            this.player.setStay()
+            this.continueControl()
             this.logger.log("스테이지 모드를 선택합니다~") 
             if ( this.gameController.searchAndClickFolder("0.기본UI\3.스페셜모드_버튼_스테이지모드") ){
                 return 1
@@ -48,7 +48,7 @@ Class StageMode extends AutoGameMode{
 
     selectStageLevel(){
         if ( this.gameController.searchImageFolder("0.기본UI\3-3.스테이지모드_Base") ){		
-            this.player.setStay()
+            this.continueControl()
             this.logger.log("입장합니다") 
             if ( this.gameController.searchAndClickFolder("스테이지모드\화면_입장") ){
                 return 1
@@ -62,7 +62,7 @@ Class StageMode extends AutoGameMode{
             if(this.checkStageModeClose()){
                 return 1
             }else{
-                this.player.setStay()
+                this.continueControl()
                 this.logger.log("스테이지 모드를 시작합니다~")
                 if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
                     this.logger.log("고고변 받아봤자 캡틴 안나옴ㅋ")
@@ -79,7 +79,7 @@ Class StageMode extends AutoGameMode{
 
     skipPlayerProfile(){
         if ( this.gameController.searchAndClickFolder("스테이지모드\화면_투수프로필") ){		 
-            this.player.setStay()
+            this.continueControl()
             this.logger.log("스테이지 모드 프로필 클릭 합니다~") 
             this.gameController.sleep(1)
             this.logger.log("스테이지 모드 시작 하자!!") 
@@ -115,7 +115,7 @@ Class StageMode extends AutoGameMode{
 
     checkPlaying(){
         if ( this.gameController.searchImageFolder("스테이지모드\화면_진행중" ) ){		
-            this.player.setStay()
+            this.continueControl()
             this.logger.log("고고변을 향하여..")
 
         } 
@@ -125,7 +125,7 @@ Class StageMode extends AutoGameMode{
     checkGameResultWindow(){
         if ( this.gameController.searchImageFolder("1.공통\화면_경기_결과" ) ){		
             this.logger.log("경기 결과화면입니다..") 
-            this.player.setStay()
+            this.continueControl()
             if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){ 
                 return 1
             }
@@ -135,20 +135,20 @@ Class StageMode extends AutoGameMode{
 
     checkMVPWindow(){
         if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){		
-            this.player.setStay()
+            this.continueControl()
             this.logger.log("스테이지모드 종료를 확인했습니다.") 
             if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){
                 this.player.addResult()
                 if( this.player.needToStopBattle() ){
                     this.logger.log("스테이지모드를 횟수만큼 다 돌았습니다.") 
-                    this.player.setBye()
+                    this.stopControl()
                 }else{
                     if( this.player.getRemainBattleCount() = "무한" ){
                         this.logger.log("스테이지 볼을 다 쓸때까지 돕니다." )
                     }else{
                         this.logger.log("스테이지 모드를 " this.player.getRemainBattleCount() "번 더 돕니다." ) 
                     }
-                    this.player.setFree()
+                    this.releaseControl()
                 }
                 return 1
             }
@@ -159,7 +159,7 @@ Class StageMode extends AutoGameMode{
     checkStageModeClose(){
         if ( this.gameController.searchImageFolder("스테이지모드\화면_볼없음" ) ){		 
             this.logger.log("볼이 없는거 보니 스테이지모드 다 돌았네요. ..")
-            this.player.setBye()
+            this.stopControl()
             return 1
         }
         return 0 

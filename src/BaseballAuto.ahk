@@ -9,6 +9,7 @@
 #include %A_ScriptDir%\src\mode\HomrunDerbyMode.ahk
 #include %A_ScriptDir%\src\mode\ReceiveRewardMode.ahk
 #include %A_ScriptDir%\src\mode\StageMode.ahk
+#include %A_ScriptDir%\src\mode\LeagueUpgradeMode.ahk
 
 Class BaseballAuto{
     __NEW(){
@@ -50,6 +51,9 @@ Class BaseballAuto{
         this.typePerMode["스테"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["스테"].Push(new StageMode( this.gameController ) ) 
 
+        this.typePerMode["등반"]:=[]
+        this.typePerMode["등반"].Push(new LeagueUpgradeMode( this.gameController ) ) 
+
         this.logger.log("BaseballAuto Ready !")
     }
 
@@ -73,15 +77,8 @@ Class BaseballAuto{
                 for playerIndex, player in this.currentEnablePlayers{
                     globalCurrentPlayer:=player
 
-                    ; if( globalCurrentPlayer.needToStop()){
-                    ;     this.logger.log( "STOP " this.getPlayerResult(player)) 
-                    ;     this.stopPlayer(playerIndex) 
-                    ;     continue
-                    ; }
-
-                    globalCurrentPlayer.setCheck()
+                    player.setCheck()
                     this.gameController.setActiveId(player.getAppTitle())
-                    globalContinueFlag:=false
 
                     loopCount:=0
                     while( AUTO_RUNNING = true ){
@@ -92,16 +89,16 @@ Class BaseballAuto{
                             break
                         } 
 
-                        modeList:= this.typePerMode[globalCurrentPlayer.getMode()]
-                        for index, gameMode in modeList ; Enumeration is the recommended approach in most cases.
+                        modeList:= this.typePerMode[player.getMode()]
+                        for index, gameMode in modeList 
                         {
                             gameMode.setPlayer(player) 
                             localChecker+=gameMode.checkAndRun()
                         } 
+
                         if ( AUTO_RUNNING = false )
                             break
 
-                        ; this.logger.log( player.getAppTitle() " checker count=" localChecker)                                           
                         if( player.needToStop()){
                             this.logger.log( "STOP " this.getPlayerResult(player)) 
                             this.stopPlayer(playerIndex) 
@@ -113,10 +110,10 @@ Class BaseballAuto{
                             if ( localChecker = 0 ){
                                 loopCount++
                                 if( player.getMode() ="리그"){
-                                    
+
                                     if( loopCount!=0 and mod(loopCount,30) = 0 ){
                                         this.logger.log(player.getAppTitle() "[" player.getMode() "] 이미지 없음 " loopCount "회")
-                                    }                                    
+                                    } 
                                     this.gameController.sleep(2) 
 
                                     if( loopCount = 90 or loopCount = 120){
@@ -125,13 +122,14 @@ Class BaseballAuto{
                                         this.startMode.goBackward()
                                     } 
                                     if ( loopCount > 120 ){
-                                        this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 풀어주자")
-                                        if( this.currentEnablePlayers.length() <= 1 ){
-                                            this.logger.log("여기다 이녀석을 재기동 시켜주세요")
-                                            player.setStatus("끝")
-                                        }else{
+                                        this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 이녀석을 강제...로...")
+                                        if( this.startMode.quitCom2usBaseball()){
+                                            this.logger.log("자~ 재기동을 시켜 버렸다... 어떻게 하나 보자")
                                             player.setUnknwon()
-                                        } 
+                                            loopCount:=0
+                                        }else{
+                                            this.setStatus("끝")
+                                        }
                                     }
                                 }else{
                                     if( loopCount!=0 and mod(loopCount,60) = 0 ){
@@ -144,27 +142,27 @@ Class BaseballAuto{
                                     } 
 
                                     if ( loopCount > 240 ){
-                                        this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 풀어주자")
-                                        if( this.currentEnablePlayers.length() <= 1 ){
-                                            this.logger.log("여기다 이녀석을 재기동 시켜주세요")
-                                            player.setStatus("끝")
-                                        }else{
+                                        this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 이녀석을 강제...로...")
+                                        if( this.startMode.quitCom2usBaseball()){
+                                            this.logger.log("자~ 재기동을 시켜 버렸다... 어떻게 하나 보자")
                                             player.setUnknwon()
-                                        } 
+                                            loopCount:=0
+                                        }else{
+                                            this.setStatus("끝")
+                                        }
                                     }
-                                }                                
+                                } 
                             } else{
                                 loopCount:=0
                             }
                         }
                     } 
-                    globalCurrentPlayer.setCheckDone()
+                    player.setCheckDone()
                 } 
             }
         }else{ 
             this.logger.log("BaseballAuto Already Started!!")
         }
-        ; this.logger.log("BaseballAuto Done!!")
         this.stop()
     }
     loadPlayerConfig(){

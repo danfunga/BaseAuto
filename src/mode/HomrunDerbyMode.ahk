@@ -62,7 +62,7 @@ Class HomrunDerbyMode extends AutoGameMode{
     }
     skipPlayerProfile(){
         if ( this.gameController.searchAndClickFolder("홈런더비모드\화면_투수프로필") ){		 
-            this.player.setStay()
+            this.continueControl()
             this.logger.log("홈런 더비 프로필 클릭 합니다~") 
             this.gameController.sleep(1)
             this.logger.log("홈런 더비 시작 하자!!") 
@@ -91,8 +91,7 @@ Class HomrunDerbyMode extends AutoGameMode{
         if ( this.gameController.searchImageFolder("홈런더비모드\화면_종료팝업" ) ){		
             this.logger.log("그만돌아야 하는 팝업이 떴습니다.") 
             if( this.gameController.searchAndClickFolder("홈런더비모드\화면_종료팝업\버튼_확인" ) ){
-                this.player.setBye()
-                this.returnFlag:=true
+                this.stopControl()
                 return 1
             }			
         }
@@ -101,7 +100,7 @@ Class HomrunDerbyMode extends AutoGameMode{
 
     checkPlaying(){
         if ( this.gameController.searchImageFolder("홈런더비모드\화면_진행중" ) ){		
-            this.player.setStay()
+            this.continueControl()
             this.logger.log("더비 랜덤 클릭 맞좀 봐라.") 
             Loop, 200
             {
@@ -123,22 +122,20 @@ Class HomrunDerbyMode extends AutoGameMode{
         if ( this.player.getWaitingResult() ){
             this.logger.log( "종료 요청이 확인되었습니다.") 
             this.player.setWantToWaitResult(false)
-            this.player.setBye() 
-            this.returnFlag:=true
+            this.stopControl() 
             return 1
         }else{
 
             if( this.player.needToStopBattle() ){
                 this.logger.log( "다 돌아 종료 하겠습니다.") 
-                this.player.setBye()
-                this.returnFlag:=true
+                this.stopControl()
             }else{
                 if( this.player.getRemainBattleCount() = "무한" ){
                     this.logger.log( "돌 수 없을 때까지 돌게 됩니다.") 
                 }else{
                     this.logger.log( this.player.getRemainBattleCount() " 번 더 돌겠습니다.") 
                 } 
-                this.player.setFree()
+                this.releaseControl()
             }
             return 1
         }
@@ -147,8 +144,7 @@ Class HomrunDerbyMode extends AutoGameMode{
     checkHomerunDerbyClose(){
         if ( this.gameController.searchImageFolder("홈런더비모드\화면_볼없음" ) ){		 
             this.logger.log("볼이 없는거 보니 홈런더비 다 돌았네요. ..")
-            this.player.setBye()
-            this.returnFlag:=true
+            this.stopControl()
             return 1
         }
         return 0 

@@ -28,7 +28,7 @@ Class LeagueRunningMode extends AutoGameMode{
     selectLeagueButton(){
         if( this.player.getRole() = "단독" ){
             if( this.player.getRemainBattleCount() = 0 ){
-                this.player.setBye()
+                this.stopControl()
                 return 0
             }
         }
@@ -44,7 +44,7 @@ Class LeagueRunningMode extends AutoGameMode{
     skippLeagueSchedule(){
         if ( this.gameController.searchImageFolder("0.기본UI\1.리그모드_Base") ){
             this.logger.log("경기 일정 화면을 넘어갑니다.") 
-            this.player.setStay()
+            this.continueControl()
             if ( this.gameController.searchImageFolder("리그모드\화면_도전과제_상태\초과1단계") ){
                 if ( this.gameController.searchImageFolder("리그모드\화면_도전과제_상태\화면_리그경기") ){
                     this.logger.log("초과 1단계 이상을 달성했습니다.")
@@ -61,9 +61,9 @@ Class LeagueRunningMode extends AutoGameMode{
                 this.logger.log("리그 볼을 모두 소비하였습니다.")
 
                 if( this.player.getRole() = "리그"){
-                    this.player.setFree()
+                    this.releaseControl()
                 }else{
-                    this.player.setBye()
+                    this.stopControl()
                     return 0 
                 }
                 return 1
@@ -73,7 +73,7 @@ Class LeagueRunningMode extends AutoGameMode{
                 if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
                     this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
                     this.player.setWantToWaitResult(false)
-                    this.player.setBye()
+                    this.stopControl()
                 }else if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
                     this.logger.log("정상 요청이지만 이어하기를 수행했습니다.")
                     this.gameController.sleep(15)				
@@ -82,7 +82,7 @@ Class LeagueRunningMode extends AutoGameMode{
             }else{ 
                 if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
                     if( this.player.getRemainBattleCount() = 0 ){
-                        this.player.setBye()
+                        this.stopControl()
                         return 0
                     }
                 }
@@ -101,7 +101,7 @@ Class LeagueRunningMode extends AutoGameMode{
     skippBattleHistory(){
         if ( this.gameController.searchImageFolder("리그모드\화면_상대전적") ){
             this.logger.log("전적 화면을 넘어갑니다.")
-            this.player.setStay()
+            this.continueControl()
 
             global baseballAutoGui
 
@@ -127,7 +127,7 @@ Class LeagueRunningMode extends AutoGameMode{
     }	
     choicePlayType(){
         if ( this.gameController.searchImageFolder("리그모드\Window_ChoicePlayType") ){
-            this.player.setStay()
+            this.continueControl()
             if ( this.player.getBattleType() = "수비" ) {
                 this.logger.log("수비 방식을 선택합니다.") 
                 if ( this.gameController.searchAndClickFolder("리그모드\Window_ChoicePlayType\Button_OnlyDepence") ){
@@ -176,8 +176,8 @@ Class LeagueRunningMode extends AutoGameMode{
     checkTotalLeagueEnd(){
         if ( this.gameController.searchImageFolder("리그모드\화면_리그_완전종료") ){
             this.logger.log(this.player.getAppTitle() " 리그가 종료 되었습니다. 우승했길....") 
-
-            this.player.setRealFree()
+            this.stopAndQuitConrol()
+            return this.quitCom2usBaseball()
         }
         return 0				
     }
@@ -198,12 +198,12 @@ Class LeagueRunningMode extends AutoGameMode{
                 this.gameController.sleep(2)			
                 if ( this.gameController.searchImageFolder("리그모드\화면_게임정지상태") != true ){
                     this.logger.log(this.player.getAppTitle() " 자동 게임이 시작되었습니다.") 
-                    this.player.setFree()
+                    this.releaseControl()
                     return 1
                 }
             }else{
                 ;this.logger.log(this.player.getAppTitle() " 자동 게임이 진행 중인것으로 보입니다.") 
-                this.player.setFree()
+                this.releaseControl()
                 return 1
             }
 
@@ -234,7 +234,7 @@ Class LeagueRunningMode extends AutoGameMode{
             if( this.gameController.searchAndClickFolder("리그모드\화면_결과_타구장" ) ){
                 this.logger.log("경기 종료를 확인했습니다.") 
                 this.player.addResult()
-                this.player.setStay()
+                this.continueControl()
                 if( this.player.getRole() = "단독" ){
                     if( this.player.needToStopBattle() ){
                         this.logger.log("리그를 횟수만큼 돌았습니다.") 
@@ -258,12 +258,12 @@ Class LeagueRunningMode extends AutoGameMode{
                         this.gameController.sleep(3)			
                         if ( this.gameController.searchImageFolder("리그모드\화면_결과_플레이오프") ){
                             this.logger.log("오류 인거 같으니 넘어가준다.") 
-                            this.player.setFree()
+                            this.releaseControl()
                             return 0
                         }else{
                             this.logger.log("플레이 오프 경기가 종료 된거 같습니다")
                             this.player.addResult()
-                            this.player.setStay()
+                            this.continueControl()
                             if( this.player.getRole() = "단독" ){
                                 if( this.player.needToStopBattle() ){
                                     this.logger.log("리그를 횟수만큼 돌았습니다.") 

@@ -63,28 +63,28 @@ Class AutoGameMode{
 
     isMainWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){ 
-            this.player.setStay()
+            this.continueControl()
             return callback.Call(this)
         }
         return 0
     }
     isBattleWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\2.대전모드_Base") ){		
-            this.player.setStay()
+            this.continueControl()
             return callback.Call(this)
         }
         return 0		
     }	
     isSpecialWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\3.스페셜모드_Base") ){		
-            this.player.setStay()
+            this.continueControl()
             return callback.Call(this)
         }
         return 0		
     }
     isHomerunDerbyWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\3-1.홈런더비_Base") ){		 
-            this.player.setStay()
+            this.continueControl()
             return callback.Call(this)
         }
         return 0		
@@ -92,14 +92,14 @@ Class AutoGameMode{
 
     isRankingBattleWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\2-1.랭킹대전_Base") ){
-            this.player.setStay()
+            this.continueControl()
             return callback.Call(this)
         }
         return 0		
     }
     isFriendsBattleWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\2-2.친구대전_Base") ){
-            this.player.setStay()
+            this.continueControl()
             return callback.Call(this)
         }
         return 0		
@@ -108,7 +108,7 @@ Class AutoGameMode{
     isGameResultWindow( callback ){
         if ( this.gameController.searchImageFolder("1.공통\화면_경기_결과" ) ){	
             this.logger.log("경기 결과를 확인했습니다.") 	
-            this.player.setStay()
+            this.continueControl()
             return callback.Call(this)
         }
         return 0 
@@ -123,9 +123,9 @@ Class AutoGameMode{
     }
 
     skipGameResultWindow(){
-        if ( this.gameController.searchImageFolder("1.공통\화면_경기_결과" ) ){		
+        if ( this.gameController.searchImageFolder("1.공통\화면_경기_결과" ) ){
             this.logger.log("경기 결과화면입니다..") 
-            this.player.setStay()
+            this.continueControl()
             if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){ 
                 return 1
             }
@@ -133,9 +133,9 @@ Class AutoGameMode{
         return 0 
     }
     skipMVPWindow(){
-        if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){		
+        if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){
             this.logger.log("MVP 화면입니다.") 
-            this.player.setStay()
+            this.continueControl()
             if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){ 
                 this.logger.log("MVP 화면을 넘어갑니다") 
                 return 1
@@ -159,9 +159,8 @@ Class AutoGameMode{
         return 0
     }
     skipCommonPopup(){
-        if ( this.gameController.searchImageFolder("1.공통\화면_팝업스킵" ) ){		
+        if ( this.gameController.searchImageFolder("1.공통\화면_팝업스킵" ) ){
             this.logger.log("레벨업이나 성장을 팝업등을 무시합니다.") 
-            ; this.player.setStay()
             if ( this.gameController.searchAndClickFolder("1.공통\버튼_팝업스킵" ) ){
                 return 1
             }
@@ -178,8 +177,7 @@ Class AutoGameMode{
         if ( this.player.getWaitingResult() ){
             this.logger.log( "종료 요청이 확인되었습니다.") 
             this.player.setWantToWaitResult(false)
-            this.player.setBye() 
-            this.returnFlag:=true
+            this.stopControl() 
             return true
         }else{
             return false
@@ -189,19 +187,53 @@ Class AutoGameMode{
     checkAndGoHome( searchCounter ){ 
         if( searchCounter = 0 ){
             this.moveHomeChecker++
-            if( this.moveHomeChecker >= 2 ){ 
+            if( this.moveHomeChecker > 2 ){ 
                 return this.moveMainPageForNextJob()
             }
         }
     }
     moveMainPageForNextJob(){
-        if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){		
+        this.moveHomeChecker:= 0
+        if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){
             this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
             if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
-                this.moveHomeChecker:= 0
                 return 1
             }
         }
         return 0
     } 
+
+    stopControl(){
+        this.player.setBye()
+        this.returnFlag:=true
+    }
+    releaseControl(){
+        this.player.setFree()
+    }
+    continueControl(){
+        this.player.setStay()
+        this.autoFlag:=false
+    }
+    stopAndQuitConrol(){
+        this.player.setRealFree()
+        this.returnFlag:=true
+        this.autoFlag:=false
+    }
+
+    goBackward(){
+        this.gameController.clickESC()
+        this.logger.log(this.player.getAppTitle() " 뒤로가기 - ESC ") 
+        this.gameController.sleep(3)
+    }
+    quitCom2usBaseball(){
+        if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야끄기",0,0,false) ){
+            this.logger.log("컴프야를 강제 종료 했습니다.")
+            this.releaseControl()
+            ; this.gameController.sleep(2)
+            return true
+        } else{
+            this.logger.log("ERROR: 이걸 못찾으면 안되는데...")
+            return false
+        }
+    }
 }
