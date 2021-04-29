@@ -264,22 +264,31 @@ Class BaseballAutoGui{
 
         currentWindowHeight=40
         this.guiMain.addGroupBox("Options", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
-        this.guiMain.Add("Checkbox", "랭대장비", "xs+10 ys+20", "EquipChk", 0)
-
+        this.guiMain.Add("Checkbox", "랭대장비", "xs+10 ys+20", "RankEquipChk", 0)
         this.guiMain.Add("Checkbox", "부스터", "X+1", "BoosterChk", 0)
+        this.guiMain.Add("Checkbox", "스테장비", "X+2", "StageEquipChk", 0)
       
         return currentWindowHeight
     }
 
-    getUseEquip() {
-        return this.guiMain.Controls["EquipChk"].get()
+    getUseRankEquip() {
+        return this.guiMain.Controls["RankEquipChk"].get()
     }
-    setUseEquip( bool ) {
+
+    setUseRankEquip( bool ) {
         ; configFile 에서 설정되는 부분
-        this.guiMain.Controls["EquipChk"].set(bool)
+        this.guiMain.Controls["RankEquipChk"].set(bool)
+    }
+
+    getUseStageEquip(){
+        return this.guiMain.Controls["StageEquipChk"].get()
+    }
+
+    setUseStageEquip( bool ) {
+        ; configFile 에서 설정되는 부분
+        this.guiMain.Controls["StageEquipChk"].set(bool)
     }
     
-
     getUseBooster() {
         return this.guiMain.Controls["BoosterChk"].get()
     }

@@ -49,12 +49,37 @@ Class StageMode extends AutoGameMode{
     selectStageLevel(){
         if ( this.gameController.searchImageFolder("0.기본UI\3-3.스테이지모드_Base") ){		
             this.continueControl()
-            this.logger.log("입장합니다") 
+            this.logger.log("입장합니다")
+            this.setStageEquips()
             if ( this.gameController.searchAndClickFolder("스테이지모드\화면_입장") ){
                 return 1
             }		 
         }
         return 0	
+    }
+
+    setStageEquips(){
+        global baseballAutoGui
+
+        if(baseballAutoGui.getUseStageEquip()=1){
+           
+        } else {
+            this.logger.log("장비 착용이 설정 되어 있지 않습니다.")
+            this.unsetStageEquips()
+        }
+        return 0
+    }
+
+    unsetStageEquips(){
+        if ( this.gameController.searchImageFolder("0.기본UI\3-3.스테이지모드_Base") ){
+            if ( this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비있음") ){
+                this.logger.log("스테 장비를 해제합니다.")
+                this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\해제")
+                this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비\닫기")
+                return 1
+            }
+        }
+        return 0
     }
 
     startStageMode(){

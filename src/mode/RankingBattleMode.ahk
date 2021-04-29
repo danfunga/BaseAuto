@@ -65,7 +65,7 @@ Class RankingBattleMode extends AutoGameMode{
     setBattleEquips(){
         global baseballAutoGui
 
-        if(baseballAutoGui.getUseEquip()=1){
+        if(baseballAutoGui.getUseRankEquip()=1){
             this.logger.log("장비 착용이 설정 되어 있습니다.")
             if ( this.gameController.searchImageFolder("0.기본UI\2-1.랭킹대전_Base") ){
                 this.continueControl()
