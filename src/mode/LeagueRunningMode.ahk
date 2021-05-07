@@ -108,12 +108,14 @@ Class LeagueRunningMode extends AutoGameMode{
             if (baseballAutoGui.getUseBooster()=true) {
                 this.logger.log("도전과제 부스터를 사용합니다.")
                 if ( this.gameController.searchAndClickFolder("1.공통\버튼_도전과제부스터\부스터_미사용") ){
-                    this.gameController.sleep(3)
+                    this.logger.log("부스터 활성 시켰습니다.")                    
+                }else{
+                    this.logger.log("이미 도전과제 부스터가 활성화 되어 있습니다.")
                 }
             } else {
                 this.logger.log("도전과제 부스터를 사용하지 않습니다.")
                 if ( this.gameController.searchAndClickFolder("1.공통\버튼_도전과제부스터\부스터_사용") ){
-                    this.gameController.sleep(3)
+                    this.logger.log("부스터 해제 했습니다.")
                 }
             }
 
