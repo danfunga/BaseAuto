@@ -215,9 +215,9 @@ Class AutoGameMode{
         this.autoFlag:=false
     }
     stopAndQuitConrol(){
-        this.player.setRealFree()
         this.returnFlag:=true
         this.autoFlag:=false
+        return this.player.setRealFree()
     }
 
     goBackward(){

@@ -167,12 +167,15 @@ class BaseballAutoPlayer{
             this.logger.log("운이 좋아 튕긴다면 다음 모드만 돌것입니다.")
 
             if( this.setMode("next") ){
-                this.setStatus("다음임무") 
+                this.setStatus("다음임무")
+                return true
             }else{
-                this.setStatus("리그종료")		
+                this.setStatus("리그종료")
+                return false
             }
         }else{
             this.setStatus("리그종료")		
+            return false
         }
     }
     setFree(){
