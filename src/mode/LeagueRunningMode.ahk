@@ -100,12 +100,12 @@ Class LeagueRunningMode extends AutoGameMode{
 
     skippBattleHistory(){
         if ( this.gameController.searchImageFolder("리그모드\화면_상대전적") ){
-            this.logger.log("전적 화면을 넘어갑니다.")
-            this.continueControl()
-
             global baseballAutoGui
-
-            if (baseballAutoGui.getUseBooster()=1) {
+            this.logger.log("전적 화면을 넘어갑니다.")
+            
+            this.gameController.sleep(1)
+            this.continueControl()            
+            if (baseballAutoGui.getUseBooster()=true) {
                 this.logger.log("도전과제 부스터를 사용합니다.")
                 if ( this.gameController.searchAndClickFolder("1.공통\버튼_도전과제부스터\부스터_미사용") ){
                     this.gameController.sleep(3)
