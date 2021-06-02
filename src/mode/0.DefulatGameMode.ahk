@@ -232,8 +232,39 @@ Class AutoGameMode{
             ; this.gameController.sleep(2)
             return true
         } else{
-            this.logger.log("ERROR: 이걸 못찾으면 안되는데...")
+            this.logger.log("ERROR: 컴프야를 종료 못하니 앱플레이어를 강제로 재시작해봅니다.")
+            result:=this.restartAppPlayer()
+            this.gameController.setActiveId(this.player.getAppTitle())
+            return result
+
+        }
+    }
+    restartAppPlayer(){
+        ; this.logger.log("앱 플레이어의 강제 재기동을 수행합니다.") 
+        popupTitle:="MEmu"
+        this.logger.log( "앱 플레이어의 강제 재기동을 수행합니다. "  ) 
+        this.gameController.setActiveId(this.player.getAppTitle())
+        if( this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료") ){
+            this.gameController.setActiveId(popupTitle)
+            if ( this.gameController.searchImageFolder("1.공통\버튼_앱강제종료\화면_재시작확인") ){
+                this.logger.log("재기동을 선택합니다.") 
+                if( this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료\화면_재시작확인\버튼_재시작" ) ){                    
+                    this.logger.log( "20초를 기다립니다.") 
+                    this.gameController.sleep(20)
+                    this.gameController.setActiveId(this.player.getAppTitle())
+                    this.releaseControl()
+                    return true
+                }
+            }else{
+                this.logger.log("재시작이 활성화 안됩니다. 이거 설정해주세요") 
+                this.gameController.setActiveId(this.player.getAppTitle())
+                return false
+            }
+        }else{
+            this.logger.log("앱플레이어의 X 버튼을 못찾습니다.") 
+            this.gameController.setActiveId(this.player.getAppTitle())
             return false
         }
     }
+
 }

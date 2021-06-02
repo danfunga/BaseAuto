@@ -35,17 +35,21 @@ Class InActiveImageSearcher{
             this.prepare()
         }
         findResult:=false 
-        pBitmapNeedle:=Gdip_CreateBitmapFromFile(A_ScriptDir this.pathPrefix target)         
+        pBitmapNeedle:=Gdip_CreateBitmapFromFile(A_ScriptDir this.pathPrefix target) 
         ; Sleep, 1000
         if Gdip_ImageSearch( this.pBitmapHayStack,pBitmapNeedle, resultList ,0,0,0,0,this.percentage,0x000000,1,1) { 
-            StringSplit, LISTArray, resultList, `, 
-            intPosX:=LISTArray1 
-            intPosY:=LISTArray2
-            ; this.logger.log( target "을 찾았습니다. X=" intPosX ", Y=" intPosY )
-            findResult:=true
+            if( resultList =""){
+                ; this.logger.log( target "을 찾았다고 말하지만 없네요" )
+                findResult:=false 
+            }else{
+                StringSplit, LISTArray, resultList, `,             
+                intPosX:=LISTArray1 
+                intPosY:=LISTArray2
+                ; this.logger.log( target "을 찾았습니다. X=" intPosX ", Y=" intPosY )
+                findResult:=true             
+            }
             Gdip_DisposeImage(pBitmapNeedle)
-        }
-        else {
+        }else {
             ; this.logger.log( target "을 찾지 못했습니다." )
             findResult:=false
             Gdip_DisposeImage(pBitmapNeedle)
