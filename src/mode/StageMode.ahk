@@ -13,8 +13,7 @@ Class StageMode extends AutoGameMode{
         this.addAction(this.selectStageMode)
         this.addAction(this.selectStageLevel)
         this.addAction(this.startStageMode)
-		this.addAction(this.playStageMode)
-
+        this.addAction(this.playStageMode)
 
         this.addAction(this.skipPlayerProfile)
         this.addAction(this.checkPlaying)
@@ -64,7 +63,7 @@ Class StageMode extends AutoGameMode{
         global baseballAutoGui
 
         if(baseballAutoGui.getUseStageEquip()=1){
-           
+
         } else {
             this.logger.log("장비 착용이 설정 되어 있지 않습니다.")
             this.unsetStageEquips()
@@ -92,14 +91,14 @@ Class StageMode extends AutoGameMode{
                 this.continueControl()
                 this.logger.log("스테이지 모드를 준비합니다~")
                 if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
-					return 1
-                }                
+                    return 1
+                } 
             }
-			
+
         }
         return 0		
     }
-	playStageMode(){
+    playStageMode(){
         if ( this.gameController.searchImageFolder("스테이지모드\화면_대전준비") ){		 
             if(this.checkStageModeClose()){
                 return 1
@@ -107,17 +106,16 @@ Class StageMode extends AutoGameMode{
                 this.continueControl()
                 this.logger.log("스테이지 모드를 시작합니다~")
                 if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
-					this.logger.log("고고변 받아봤자 캡틴 안나옴ㅋ")
-					this.logger.log("6초 기다립니다.")
+                    this.logger.log("고고변 받아봤자 캡틴 안나옴ㅋ")
+                    this.logger.log("6초 기다립니다.")
                     this.gameController.sleep(6)
                     return 1
-                }                
+                } 
             }
-			
+
         }
         return 0		
     }
-
 
     skipPlayerProfile(){
         if ( this.gameController.searchAndClickFolder("스테이지모드\화면_투수프로필") ){		 
@@ -200,8 +198,9 @@ Class StageMode extends AutoGameMode{
 
     checkStageModeClose(){
         if ( this.gameController.searchImageFolder("스테이지모드\화면_볼없음" ) ){		 
-            this.logger.log("볼이 없는거 보니 스테이지모드 다 돌았네요. ..")			
-            this.stopControl()
+            this.logger.log("볼이 없는거 보니 스테이지모드 다 돌았네요. ..")
+            this.logger.log("볼 찰때까지 루프 돌아 봅니다 ㅎ")
+            this.releaseControl()
             return 1
         }
         return 0 
