@@ -13,6 +13,8 @@ Class StageMode extends AutoGameMode{
         this.addAction(this.selectStageMode)
         this.addAction(this.selectStageLevel)
         this.addAction(this.startStageMode)
+		this.addAction(this.playStageMode)
+
 
         this.addAction(this.skipPlayerProfile)
         this.addAction(this.checkPlaying)
@@ -88,19 +90,34 @@ Class StageMode extends AutoGameMode{
                 return 1
             }else{
                 this.continueControl()
-                this.logger.log("스테이지 모드를 시작합니다~")
+                this.logger.log("스테이지 모드를 준비합니다~")
                 if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
-                    this.logger.log("고고변 받아봤자 캡틴 안나옴ㅋ")
-                }
-                if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
-                    this.logger.log("6초 기다립니다") 
-                    this.gameController.sleep(6)
-                    return 1
-                }		 
+					return 1
+                }                
             }
+			
         }
         return 0		
     }
+	playStageMode(){
+        if ( this.gameController.searchImageFolder("스테이지모드\화면_대전준비") ){		 
+            if(this.checkStageModeClose()){
+                return 1
+            }else{
+                this.continueControl()
+                this.logger.log("스테이지 모드를 시작합니다~")
+                if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
+					this.logger.log("고고변 받아봤자 캡틴 안나옴ㅋ")
+					this.logger.log("6초 기다립니다.")
+                    this.gameController.sleep(6)
+                    return 1
+                }                
+            }
+			
+        }
+        return 0		
+    }
+
 
     skipPlayerProfile(){
         if ( this.gameController.searchAndClickFolder("스테이지모드\화면_투수프로필") ){		 
@@ -183,7 +200,7 @@ Class StageMode extends AutoGameMode{
 
     checkStageModeClose(){
         if ( this.gameController.searchImageFolder("스테이지모드\화면_볼없음" ) ){		 
-            this.logger.log("볼이 없는거 보니 스테이지모드 다 돌았네요. ..")
+            this.logger.log("볼이 없는거 보니 스테이지모드 다 돌았네요. ..")			
             this.stopControl()
             return 1
         }

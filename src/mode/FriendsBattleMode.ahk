@@ -118,7 +118,8 @@ Class FriendsBattleMode extends AutoGameMode{
                 }else{
                     this.logger.log( this.player.getRemainBattleCount() " 번 더 돌겠습니다.") 
                 } 
-                this.releaseControl()
+				if( this.player.appRole != "단독" )
+					this.releaseControl()                
             }
             return 1
         }
