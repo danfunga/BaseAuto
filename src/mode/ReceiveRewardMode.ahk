@@ -141,15 +141,13 @@ Class ReceiveRewardMode extends AutoGameMode{
             }
             if ( this.gameController.searchImageFolder("보상모드\화면_앰블럼") ){
                 loop 6 {
-                    if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
-                        this.logger.log("앰블럼 제작 - " A_INDEX) 
-                        this.checkPopup()
-                    }else{
-                        if ( this.gameController.searchImageFolder("보상모드\화면_보상없음") ){
+					if ( this.gameController.searchImageFolder("보상모드\화면_보상없음") ){
                             this.logger.log("더이상 제작 불가능") 
                             break
-                        }
-                    } 
+                    }else if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
+                        this.logger.log("앰블럼 제작 - " A_INDEX) 
+                        this.checkPopup()
+                    }
                 } 
 
             }
