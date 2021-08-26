@@ -31,9 +31,19 @@ Class ReceiveRewardMode extends AutoGameMode{
             return 0
         }
         this.logger.log(this.player.getAppTitle() "우정포인트 받기를 시작합니다")
-        if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
+		if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
             return 1
         } 
+		
+        if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
+            return 1
+        }else if(this.gameController.searchAndClickFolder("보상모드\버튼_커뮤니티") ){
+			if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
+            return 1
+			}
+
+        }
+		
     }
 
     selectFriendsList(){
