@@ -53,9 +53,6 @@ Class HistoryMode extends AutoGameMode{
     }
 
     startHistoryMode(){
-		if( this.checkWantToModeQuit() ){
-            return 0
-        }
 		if ( this.gameController.searchImageFolder("히스토리모드\버튼_마지막\화면_마지막_선택") ){		            
 			if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
 				this.logger.log("히스토리 모드를 시작합니다.")
@@ -69,9 +66,7 @@ Class HistoryMode extends AutoGameMode{
         }		
     }
 	setupAutoMode(){
-		if( this.checkWantToModeQuit() ){
-            return 0
-        }
+		
 		if ( this.gameController.searchImageFolder("히스토리모드\화면_볼없음") ){
 				this.gameController.searchAndClickFolder("히스토리모드\화면_볼없음\버튼_확인")
 				this.logger.log("히스토리 볼을 모두 소비하였습니다.")
@@ -88,9 +83,7 @@ Class HistoryMode extends AutoGameMode{
         }	
 	}
     playHistoryMode(){
-		if( this.checkWantToModeQuit() ){
-            return 0
-        }
+		
         if ( this.gameController.searchImageFolder("히스토리모드\화면_히스토리준비") ){		
             this.continueControl()
             this.logger.log("히스토리 모드를 시작합니다") 
@@ -139,7 +132,7 @@ Class HistoryMode extends AutoGameMode{
                 this.stopControl()
             }else{
                 if( this.player.getRemainBattleCount() = "무한" ){
-                    this.logger.log( "히스토리 볼ㅇ르 다 소비합니다.") 
+                    this.logger.log( "히스토리 볼을 다 소비 할때까지 돕니다.") 
                 }else{
                     this.logger.log( this.player.getRemainBattleCount() " 번 더 돌겠습니다.") 
                 } 
