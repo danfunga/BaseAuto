@@ -57,16 +57,11 @@ Class HistoryMode extends AutoGameMode{
             return 0
         }
 		if ( this.gameController.searchImageFolder("히스토리모드\버튼_마지막\화면_마지막_선택") ){		            
-			if ( this.gameController.searchImageFolder("히스토리모드\화면_볼없음") ){
-				this.logger.log("히스토리 볼을 모두 소비하였습니다.")
-				this.stopControl()
-				return 0 			
-			}else{
-				if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
+			if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
 				this.logger.log("히스토리 모드를 시작합니다.")
 					return 1
-				}
-			}		
+			}
+		
         }else{
             this.logger.log("왜 선택이 제대로 안되는 거지.. 일단 멈춘다.") 
             this.stopControl()
@@ -77,6 +72,12 @@ Class HistoryMode extends AutoGameMode{
 		if( this.checkWantToModeQuit() ){
             return 0
         }
+		if ( this.gameController.searchImageFolder("히스토리모드\화면_볼없음") ){
+				this.gameController.searchAndClickFolder("히스토리모드\화면_볼없음\버튼_확인")
+				this.logger.log("히스토리 볼을 모두 소비하였습니다.")
+				this.stopControl()
+				return 0 			
+		}
 		if ( this.gameController.searchImageFolder("히스토리모드\화면_히스토리준비") ){		
             this.continueControl()
 			if ( this.gameController.searchImageFolder("히스토리모드\화면_자동상태") ){
@@ -106,7 +107,7 @@ Class HistoryMode extends AutoGameMode{
     checkLocalModePopup(counter:=0){
         localCounter:=counter 
         if ( this.gameController.searchImageFolder("히스토리모드\화면_팝업체크" ) ){		
-            this.logger.log("히스토리 모드 팝업 체크.. 나중에 하자.") 
+            this.logger.log("히스토리 모드 팝업 체크..") 
             if( this.gameController.searchAndClickFolder("히스토리모드\화면_팝업체크\버튼_확인" ) ){
                 if( localCounter > 5 ){
                     return localCounter
