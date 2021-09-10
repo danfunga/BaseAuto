@@ -89,6 +89,13 @@ Class AutoGameMode{
         }
         return 0		
     }
+	isHistoryModeWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\3-4.히스토리모드_Base") ){		 
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0		
+    }
 
     isRankingBattleWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\2-1.랭킹대전_Base") ){

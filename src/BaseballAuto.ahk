@@ -7,6 +7,7 @@
 #include %A_ScriptDir%\src\mode\RankingBattleMode.ahk
 #include %A_ScriptDir%\src\mode\FriendsBattleMode.ahk
 #include %A_ScriptDir%\src\mode\HomrunDerbyMode.ahk
+#include %A_ScriptDir%\src\mode\HistoryMode.ahk
 #include %A_ScriptDir%\src\mode\ReceiveRewardMode.ahk
 #include %A_ScriptDir%\src\mode\StageMode.ahk
 #include %A_ScriptDir%\src\mode\LeagueUpgradeMode.ahk
@@ -50,6 +51,10 @@ Class BaseballAuto{
         this.typePerMode["스테"]:=[]
         this.typePerMode["스테"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["스테"].Push(new StageMode( this.gameController ) ) 
+		
+		this.typePerMode["히스"]:=[]
+        this.typePerMode["히스"].Push(new GameStarterMode( this.gameController ) ) 
+        this.typePerMode["히스"].Push(new HistoryMode( this.gameController ) ) 
 
         this.typePerMode["등반"]:=[]
         this.typePerMode["등반"].Push(new LeagueUpgradeMode( this.gameController ) ) 
