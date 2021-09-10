@@ -53,6 +53,9 @@ Class HistoryMode extends AutoGameMode{
     }
 
     startHistoryMode(){
+		if( this.checkWantToModeQuit() ){
+            return 0
+        }
 		if ( this.gameController.searchImageFolder("히스토리모드\버튼_마지막\화면_마지막_선택") ){		            
 			if ( this.gameController.searchImageFolder("히스토리모드\화면_볼없음") ){
 				this.logger.log("히스토리 볼을 모두 소비하였습니다.")
@@ -71,6 +74,9 @@ Class HistoryMode extends AutoGameMode{
         }		
     }
 	setupAutoMode(){
+		if( this.checkWantToModeQuit() ){
+            return 0
+        }
 		if ( this.gameController.searchImageFolder("히스토리모드\화면_히스토리준비") ){		
             this.continueControl()
 			if ( this.gameController.searchImageFolder("히스토리모드\화면_자동상태") ){
@@ -78,10 +84,12 @@ Class HistoryMode extends AutoGameMode{
 			}else if ( this.gameController.searchAndClickFolder("히스토리모드\버튼_자동아님") ){
 				this.logger.log("자동모드 체크 ==> 자동으로 변경합니다.") 
 			}
-        }
-	
+        }	
 	}
     playHistoryMode(){
+		if( this.checkWantToModeQuit() ){
+            return 0
+        }
         if ( this.gameController.searchImageFolder("히스토리모드\화면_히스토리준비") ){		
             this.continueControl()
             this.logger.log("히스토리 모드를 시작합니다") 
