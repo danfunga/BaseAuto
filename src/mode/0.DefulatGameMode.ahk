@@ -89,6 +89,13 @@ Class AutoGameMode{
         }
         return 0		
     }
+	isHomerunRoyalWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\3-2.홈런로얄_Base") ){		 
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0		
+    }
 	isHistoryModeWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\3-4.히스토리모드_Base") ){		 
             this.continueControl()
