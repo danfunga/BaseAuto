@@ -7,6 +7,7 @@
 #include %A_ScriptDir%\src\mode\RankingBattleMode.ahk
 #include %A_ScriptDir%\src\mode\FriendsBattleMode.ahk
 #include %A_ScriptDir%\src\mode\HomrunDerbyMode.ahk
+#include %A_ScriptDir%\src\mode\HomrunRoyalMode.ahk
 #include %A_ScriptDir%\src\mode\HistoryMode.ahk
 #include %A_ScriptDir%\src\mode\ReceiveRewardMode.ahk
 #include %A_ScriptDir%\src\mode\StageMode.ahk
@@ -43,6 +44,10 @@ Class BaseballAuto{
         this.typePerMode["홈런"]:=[]
         this.typePerMode["홈런"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["홈런"].Push(new HomrunDerbyMode( this.gameController ) ) 
+		
+		this.typePerMode["로얄"]:=[]
+        this.typePerMode["로얄"].Push(new GameStarterMode( this.gameController ) ) 
+        this.typePerMode["로얄"].Push(new HomrunRoyalMode( this.gameController ) ) 
 
         this.typePerMode["보상"]:=[]
         this.typePerMode["보상"].Push(new GameStarterMode( this.gameController ) ) 
