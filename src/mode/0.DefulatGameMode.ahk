@@ -74,7 +74,7 @@ Class AutoGameMode{
             return callback.Call(this)
         }
         return 0		
-    }	
+    }
     isSpecialWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\3.스페셜모드_Base") ){		
             this.continueControl()
@@ -88,6 +88,14 @@ Class AutoGameMode{
             return callback.Call(this)
         }
         return 0		
+    }
+    isStageWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\3-3.스테이지모드_Base") ){		 
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0
+
     }
 	isHomerunRoyalWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\3-2.홈런로얄_Base") ){		 

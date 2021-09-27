@@ -9,23 +9,40 @@ Class StageMode extends AutoGameMode{
 
     initMode(){
 
-        this.addAction(this.startSpecialMode)
-        this.addAction(this.selectStageMode)
-        this.addAction(this.selectStageLevel)
-        this.addAction(this.startStageMode)
+        ; this.addAction(this.startSpecialMode)
+        ; this.addAction(this.selectStageMode)
+        ; this.addAction(this.selectStageLevel)
+        ; this.addAction(this.startStageMode)
+        ; this.addAction(this.playStageMode)
+
+        ; this.addAction(this.skipPlayerProfile)
+        ; this.addAction(this.checkPlaying)
+        ; this.addAction(this.checkGameResultWindow)
+        ; this.addAction(this.checkMVPWindow)
+
+        ; this.addAction(this.checkPopup)
+        ; this.addAction(this.checkStageModeClose)
+        ; this.addAction(this.checkAndGoHome)
+
+        this.addAction(this.isMainWindow,this.selectSpecialMode)
+        this.addAction(this.isSpecialWindow,this.selectStageMode)
+        this.addAction(this.isStageWindow,this.selectStageLevel)
+        this.addAction(this.isStageWindow,this.startStageMode)
         this.addAction(this.playStageMode)
 
         this.addAction(this.skipPlayerProfile)
         this.addAction(this.checkPlaying)
-        this.addAction(this.checkGameResultWindow)
-        this.addAction(this.checkMVPWindow)
+        this.addAction(this.skipGameResultWindow)
+        this.addAction(this.afterSkipMVPWindow,this.checkModeRunMore)
 
-        this.addAction(this.checkPopup)
+        this.addAction(this.skipCommonPopup)
+        ; this.addAction(this.checkLocalModePopup)
         this.addAction(this.checkStageModeClose)
+        this.addAction(this.checkPopup) 
         this.addAction(this.checkAndGoHome) 
     }
 
-    startSpecialMode(){
+    selectSpecialMode(){
         if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){
             this.logger.log(this.player.getAppTitle() "스테이지모드를 시작합니다!")
             this.continueControl()
@@ -199,11 +216,35 @@ Class StageMode extends AutoGameMode{
     checkStageModeClose(){
         if ( this.gameController.searchImageFolder("스테이지모드\화면_볼없음" ) ){		 
             this.logger.log("볼이 없는거 보니 스테이지모드 다 돌았네요. ..")
-            this.logger.log("볼 찰때까지 루프 돌아 봅니다 ㅎ")
-            this.releaseControl()
+            this.stopControl()
             return 1
         }
         return 0 
+    }
+
+    checkModeRunMore(){
+        this.player.addResult()
+        if ( this.player.getWaitingResult() ){
+            this.logger.log( "종료 요청이 확인되었습니다.") 
+            this.player.setWantToWaitResult(false)
+            this.stopControl() 
+            return 1
+        }else{
+
+            if( this.player.needToStopBattle() ){
+                this.logger.log( "다 돌아 종료 하겠습니다.") 
+                this.stopControl()
+            }else{
+                if( this.player.getRemainBattleCount() = "무한" ){
+                    this.logger.log( "돌 수 없을 때까지 돌게 됩니다.") 
+                }else{
+                    this.logger.log( this.player.getRemainBattleCount() " 번 더 돌겠습니다.") 
+                } 
+				if( this.player.appRole != "단독" )
+					this.releaseControl()
+            }
+            return 1
+        }
     }
 
 }
