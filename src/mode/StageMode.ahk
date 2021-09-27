@@ -8,22 +8,6 @@ Class StageMode extends AutoGameMode{
     }
 
     initMode(){
-
-        ; this.addAction(this.startSpecialMode)
-        ; this.addAction(this.selectStageMode)
-        ; this.addAction(this.selectStageLevel)
-        ; this.addAction(this.startStageMode)
-        ; this.addAction(this.playStageMode)
-
-        ; this.addAction(this.skipPlayerProfile)
-        ; this.addAction(this.checkPlaying)
-        ; this.addAction(this.checkGameResultWindow)
-        ; this.addAction(this.checkMVPWindow)
-
-        ; this.addAction(this.checkPopup)
-        ; this.addAction(this.checkStageModeClose)
-        ; this.addAction(this.checkAndGoHome)
-
         this.addAction(this.isMainWindow,this.selectSpecialMode)
         this.addAction(this.isSpecialWindow,this.selectStageMode)
         this.addAction(this.isStageWindow,this.selectStageLevel)
@@ -36,7 +20,6 @@ Class StageMode extends AutoGameMode{
         this.addAction(this.afterSkipMVPWindow,this.checkModeRunMore)
 
         this.addAction(this.skipCommonPopup)
-        ; this.addAction(this.checkLocalModePopup)
         this.addAction(this.checkStageModeClose)
         this.addAction(this.checkPopup) 
         this.addAction(this.checkAndGoHome) 
