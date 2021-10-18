@@ -80,9 +80,7 @@ Class LeagueRunningMode extends AutoGameMode{
             if ( this.player.getWaitingResult() ){
                 this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
                 this.player.setWantToWaitResult(false)
-                this.stopControl() 
-                    this.stopControl()
-                this.stopControl() 
+                this.stopControl()                     
                 return 0
             }else{
                 if( this.player.getRole() = "단독" ){
