@@ -27,6 +27,7 @@ Class LeagueRunningMode extends AutoGameMode{
 
     selectLeagueButton(){
         if( this.player.getRole() = "단독" ){
+            this.logger.log(this.player.getAppTitle() " 리그 시작전 모드 종료를 체크 합니다.")
             if( this.player.getRemainBattleCount() = 0 ){
                 this.stopControl()
                 return 0
@@ -57,6 +58,12 @@ Class LeagueRunningMode extends AutoGameMode{
                 this.player.setNeedSkip(false)
             }
 
+            if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
+                this.logger.log("이어하기는 정상 종료, 리그 종료와 무관하게 수행합니다.")
+                this.gameController.sleep(15)				
+                return 1
+            }
+
             if ( this.gameController.searchImageFolder("리그모드\화면_볼없음") ){
                 this.logger.log("리그 볼을 모두 소비하였습니다.")
 
@@ -67,32 +74,27 @@ Class LeagueRunningMode extends AutoGameMode{
                     return 0 
                 }
                 return 1
+
             }
 
             if ( this.player.getWaitingResult() ){
-                if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
-                    this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
-                    this.player.setWantToWaitResult(false)
+                this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
+                this.player.setWantToWaitResult(false)
+                this.stopControl() 
                     this.stopControl()
-                }else if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
-                    this.logger.log("정상 요청이지만 이어하기를 수행했습니다.")
-                    this.gameController.sleep(15)				
-                    return 1
-                }
-            }else{ 
-                if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
+                this.stopControl() 
+                return 0
+            }else{
+                if( this.player.getRole() = "단독" ){
+                    this.logger.log(this.player.getAppTitle() " 모드 종료를 체크 합니다.")
                     if( this.player.getRemainBattleCount() = 0 ){
                         this.stopControl()
                         return 0
-                    }
+                    } 
                 }
-                if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
-                    return 1
-                }else if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
-                    this.logger.log("경기가 이어합니다. 15초 기다립니다.")
-                    this.gameController.sleep(15)				
-                    return 1
-                }
+            }
+            if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
+                return 1
             }		 
         }
         return 0		
@@ -102,13 +104,13 @@ Class LeagueRunningMode extends AutoGameMode{
         if ( this.gameController.searchImageFolder("리그모드\화면_상대전적") ){
             global baseballAutoGui
             this.logger.log("전적 화면을 넘어갑니다.")
-            
+
             this.gameController.sleep(1)
-            this.continueControl()            
+            this.continueControl() 
             if (baseballAutoGui.getUseBooster()=true) {
                 this.logger.log("도전과제 부스터를 사용합니다.")
                 if ( this.gameController.searchAndClickFolder("1.공통\버튼_도전과제부스터\부스터_미사용") ){
-                    this.logger.log("부스터 활성 시켰습니다.")                    
+                    this.logger.log("부스터 활성 시켰습니다.") 
                 }else{
                     this.logger.log("이미 도전과제 부스터가 활성화 되어 있습니다.")
                 }
