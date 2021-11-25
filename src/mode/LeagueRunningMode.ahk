@@ -133,19 +133,19 @@ Class LeagueRunningMode extends AutoGameMode{
             if ( this.player.getBattleType() = "수비" ) {
                 this.logger.log("수비 방식을 선택합니다.") 
                 if ( this.gameController.searchAndClickFolder("리그모드\Window_ChoicePlayType\Button_OnlyDepence") ){
-                    this.gameController.sleep(2)
+                    this.gameController.sleep(1)
                     return 1
                 }
             } else if( this.player.getBattleType() = "공격" ){
                 this.logger.log("공격 방식을 선택합니다.") 
                 if ( this.gameController.searchAndClickFolder("리그모드\Window_ChoicePlayType\Button_OnlyOppence") ){
-                    this.gameController.sleep(2)
+                    this.gameController.sleep(1)
                     return 1
                 }
             }else{
                 this.logger.log("전체 플레이 방식을 선택합니다.") 
                 if ( this.gameController.searchAndClickFolder("리그모드\Window_ChoicePlayType\Button_FullPlay") ){
-                    this.gameController.sleep(2)
+                    this.gameController.sleep(1)
                     return 1
                 }
             } 
@@ -155,16 +155,14 @@ Class LeagueRunningMode extends AutoGameMode{
 
     skippPlayLineupStatus(before:=0){
         result:=before
-        if ( this.gameController.searchImageFolder("리그모드\Button_skipBeforePlay") ){
-            this.logger.log(this.player.getAppTitle() " 라인업 등을 넘어갑니다.") 
-            if( this.gameController.searchAndClickFolder("리그모드\Button_skipBeforePlay") = true ){				
-                this.gameController.sleep(1)
-                result+=1
-                if( result > 4 )
-                    return result
-                result+=this.skippPlayLineupStatus(result)			
-            }					
-        } 
+        if( this.gameController.searchAndClickFolder("리그모드\Button_skipBeforePlay") = true ){				
+			this.logger.log(this.player.getAppTitle() " 라인업 등을 넘어갑니다.") 
+            this.gameController.sleep(1)
+            result+=1
+            if( result > 4 )
+                return result
+            result+=this.skippPlayLineupStatus(result)			
+        }					
         return result
     }
     skippChanceStatus(){

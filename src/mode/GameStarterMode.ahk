@@ -45,7 +45,14 @@ Class GameStarterMode extends AutoGameMode{
             this.logger.log("이상한 page에 들어왔으면 ESC를 누릅시다.") 
             ; 이걸로 인해 무한 루프가 안되도록 0을 리턴하자
             this.goBackward()
+        }else if ( this.gameController.searchImageFolder("1.공통\화면_잘못들옴\2번") ){
+            this.continueControl()
+            this.logger.log("이상한 page에 들어왔으면 ESC를 누릅시다.") 
+            ; 이걸로 인해 무한 루프가 안되도록 0을 리턴하자
+            this.goBackward()
+			this.goBackward()
         }
+		
         return 0
     }
     skipPopupAndAds(){

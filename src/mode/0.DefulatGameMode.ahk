@@ -245,7 +245,7 @@ Class AutoGameMode{
     goBackward(){
         this.gameController.clickESC()
         this.logger.log(this.player.getAppTitle() " 뒤로가기 - ESC ") 
-        this.gameController.sleep(3)
+        this.gameController.sleep(0.3)
     }
     quitCom2usBaseball(){
         if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야끄기",0,0,false) ){
