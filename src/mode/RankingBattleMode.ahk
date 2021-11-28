@@ -171,7 +171,7 @@ Class RankingBattleMode extends AutoGameMode{
             this.continueControl()
             this.logger.log("랭대는 다 돌거나 갱신한다. ")
             if( this.gameController.searchAndClickFolder("랭대모드\화면_랭대종료\버튼_확인" ) ){
-				this.releaseControl()                
+				this.stopControl()                
                 return 1
             }
         }
