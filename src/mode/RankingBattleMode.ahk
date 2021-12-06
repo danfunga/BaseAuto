@@ -48,18 +48,26 @@ Class RankingBattleMode extends AutoGameMode{
             this.unsetBattleEquips()
             return 0
         }
+		if ( this.gameController.searchImageFolder("랭대모드\화면_볼없음" ) ){
+			this.logger.log("볼이 없군요")
+			this.stopControl()                
+            return 1
+        }
+		
         if ( this.gameController.searchImageFolder("랭대모드\화면_상대있음") ){
             this.setBattleEquips()
             this.logger.log("랭킹 대전을 시작합니다")
             if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
                 return 1
             }
-        }else{
-            this.logger.log("상대가 없는거 보니 다 돌았습니다.")
-            this.unsetBattleEquips()
-            this.stopControl()
-            return 1
         }
+		; 이제 상대 없는것은 없다
+		; else{
+            ; this.logger.log("상대가 없는거 보니 다 돌았습니다.")
+            ; this.unsetBattleEquips()
+            ; this.stopControl()
+            ; return 1
+        ; }
     }
 
     setBattleEquips(){
@@ -145,7 +153,7 @@ Class RankingBattleMode extends AutoGameMode{
     checkLocalModePopup(counter:=0){
         localCounter:=counter
         if ( this.gameController.searchImageFolder("랭대모드\화면_팝업체크" ) ){
-            this.logger.log("주말 팝업인가.")
+            this.logger.log("주말,상대교체,드링크, 승급등의 팝업을 무시합니다.")
             if( this.gameController.searchAndClickFolder("랭대모드\화면_팝업체크\버튼_확인" ) ){
                 if( localCounter > 5 ){
                     return localCounter
@@ -160,6 +168,7 @@ Class RankingBattleMode extends AutoGameMode{
     checkPlaying(){
         if ( this.gameController.searchImageFolder("랭대모드\화면_자동중" ) ){
             this.continueControl()
+			; this.logger.log("....")
             this.gameController.sleep(2)
             return 1
         }
@@ -168,13 +177,18 @@ Class RankingBattleMode extends AutoGameMode{
 
     checkRankingClose(){
         if ( this.gameController.searchImageFolder("랭대모드\화면_랭대종료" ) ){
+			this.logger.log("종료 팝업인지 확인")
+			if( this.checkLocalModePopup(0) > 0){
+				return 0
+			}
             this.continueControl()
-            this.logger.log("랭대는 다 돌거나 갱신한다. ")
+            this.logger.log("랭대를 다 돌았습니다. ")
             if( this.gameController.searchAndClickFolder("랭대모드\화면_랭대종료\버튼_확인" ) ){
 				this.stopControl()                
                 return 1
             }
         }
+		
         return 0
     }
 
