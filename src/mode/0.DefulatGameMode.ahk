@@ -228,6 +228,9 @@ Class AutoGameMode{
     stopControl(){
         this.player.setBye()
         this.returnFlag:=true
+		; 왠지 맞지 않지만 정상 동작을 위해 넣는다.
+		this.gameController.sleep(1)
+		this.moveMainPageForNextJob()
     }
     releaseControl(){
         this.player.setFree()
