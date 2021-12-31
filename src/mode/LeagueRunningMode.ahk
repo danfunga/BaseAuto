@@ -27,7 +27,7 @@ Class LeagueRunningMode extends AutoGameMode{
 
     selectLeagueButton(){
         if( this.player.getRole() = "단독" ){
-            this.logger.log(this.player.getAppTitle() " 리그 시작전 모드 종료를 체크 합니다.")
+            this.logger.log(this.player.getAppTitle() " 리그 시작전 모드 종료를 체크 합니다. RemainCounter=" this.player.getRemainBattleCount())
             if( this.player.getRemainBattleCount() = 0 ){
                 this.stopControl()
                 return 0
@@ -62,6 +62,8 @@ Class LeagueRunningMode extends AutoGameMode{
                 this.logger.log("이어하기는 정상 종료, 리그 종료와 무관하게 수행합니다.")
                 this.gameController.sleep(15)				
                 return 1
+            }else{
+                this.logger.log("이어하기가 아닙니다.")
             }
 
             if ( this.gameController.searchImageFolder("리그모드\화면_볼없음") ){
@@ -80,11 +82,11 @@ Class LeagueRunningMode extends AutoGameMode{
             if ( this.player.getWaitingResult() ){
                 this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
                 this.player.setWantToWaitResult(false)
-                this.stopControl()                     
+                this.stopControl() 
                 return 0
             }else{
                 if( this.player.getRole() = "단독" ){
-                    this.logger.log(this.player.getAppTitle() " 모드 종료를 체크 합니다.")
+                    this.logger.log(this.player.getAppTitle() " 모드 종료를 체크 합니다. RemainCounter=" this.player.getRemainBattleCount())
                     if( this.player.getRemainBattleCount() = 0 ){
                         this.stopControl()
                         return 0
@@ -156,7 +158,7 @@ Class LeagueRunningMode extends AutoGameMode{
     skippPlayLineupStatus(before:=0){
         result:=before
         if( this.gameController.searchAndClickFolder("리그모드\Button_skipBeforePlay") = true ){				
-			this.logger.log(this.player.getAppTitle() " 라인업 등을 넘어갑니다.") 
+            this.logger.log(this.player.getAppTitle() " 라인업 등을 넘어갑니다.") 
             this.gameController.sleep(1)
             result+=1
             if( result > 4 )

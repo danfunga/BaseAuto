@@ -99,21 +99,19 @@ class BaseballAutoPlayer{
 
     ; 도는것을 확인했을때 Call
     needToStopBattle(){ 
-
-        if( this.currentBattleRemainCount < 0 ){
+        if( this.currentBattleRemainCount = 0 ){
+            return true
+        } else if( this.currentBattleRemainCount < 0 ){
             return false
         }else{
-            if( this.this.currentBattleRemainCount = 0 ){
+            this.currentBattleRemainCount-- 
+            if(this.currentBattleRemainCount<= 0){
+                this.currentBattleRemainCount:=0
                 return true
             }else{
-                this.currentBattleRemainCount-- 
-                if(this.currentBattleRemainCount<= 0){
-                    return true
-                }else{
-                    return false
-                } 
+                return false
             } 
-        }
+        } 
     }
 
     getAppTitle(){
@@ -248,9 +246,7 @@ class BaseballAutoPlayer{
                 targetMode:=this.ALONE_MODE_ARRAY[1]
             }else{
                 if( targetMode = "next" ){
-					
                     currentIndex:=this.getIndex(this.appMode,this.ALONE_MODE_ARRAY)
-                    
                     if( this.LOOP_PER_ALONE_MODE[this.appMode] < 0 ){
                         currentIndex++
                     }else{
