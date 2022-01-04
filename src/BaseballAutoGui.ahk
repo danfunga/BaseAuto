@@ -217,9 +217,9 @@ Class BaseballAutoGui{
     }
     updateStatusColor( statusLabel, status , changeColor:=0 ){
         if( changeColor = 1 ){
-            this.guiMain.Controls[statusLabel].SetOptions("+cOrange")
+            this.guiMain.Controls[statusLabel].SetOptions("+cBlue")
         }else if( changeColor = 2 ){
-            this.guiMain.Controls[statusLabel].SetOptions("+cGreen")
+            this.guiMain.Controls[statusLabel].SetOptions("+cPurple")
         }else if( changeColor = 3 ){
             this.guiMain.Controls[statusLabel].SetOptions("+cRed")
         }else{
