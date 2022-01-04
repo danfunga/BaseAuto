@@ -38,6 +38,7 @@
         if( this.module = "Player"){
             if( this.checkDay != sFileName ){ 
                 this.checkDay:=sFileName
+                this.log( "지난 로그파일을 정리하겠습니다.")
 
                 todayString = %A_NOW%
                 EnvAdd, todayString, -4, Days
