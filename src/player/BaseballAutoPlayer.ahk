@@ -163,7 +163,7 @@ class BaseballAutoPlayer{
             this.LOOP_PER_ALONE_MODE[this.appMode]:=0
             this.logger.log("아마 이 화면을 못벗어 날거 같지만 행운을 빕니다.")
             this.logger.log("운이 좋아 튕긴다면 다음 모드만 돌것입니다.")
-
+             this.setResultColor(3)
             if( this.setMode("next") ){
                 this.setStatus("다음임무")
                 return true
