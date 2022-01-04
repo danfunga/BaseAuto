@@ -5,6 +5,10 @@
     __NEW( module , modulePath = "" ){
         this.module:=module
         this.directory:=modulePath
+        this.checkDay:=""
+
+        FormatTime, todayString, %A_NOW%, MM월dd일
+        ; this.checkDay:=todayString
 
         FileCreateDir, % This.baseDirectory
         if( modulePath != "" ){
@@ -30,6 +34,31 @@
         if( BaseballAutoGui != "" ){
             BaseballAutoGui.guiLog( this.module, "How", formattedContent)
         }
+
+        if( this.module = "Player"){
+            if( this.checkDay != sFileName ){ 
+                this.checkDay:=sFileName
+
+                todayString = %A_NOW%
+                EnvAdd, todayString, -4, Days
+
+                loop 30
+                {
+                    EnvAdd, todayString, -1, Days
+                    FormatTime, targetFileName, %todayString%, MM월dd일
+                    
+                    if FileExist(this.directory "\log(" targetFileName ").txt")
+                    {
+                        FileDelete, % this.directory "\log(" targetFileName ").txt"
+                        this.log( "로그 파일 [ \log(" targetFileName ").txt] 을 지웠습니다.")
+                    }else{
+                        Break
+                    }
+                
+                }
+            }
+        }
+
     }
 
     debug( content ){ 
