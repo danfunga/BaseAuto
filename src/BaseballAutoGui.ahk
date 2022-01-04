@@ -220,6 +220,8 @@ Class BaseballAutoGui{
             this.guiMain.Controls[statusLabel].SetOptions("+cRed")
         }else if( changeColor = 2 ){
             this.guiMain.Controls[statusLabel].SetOptions("+cGreen")
+        }else if( changeColor = 3 ){
+            this.guiMain.Controls[statusLabel].SetOptions("+cYellow")
         }else{
             this.guiMain.Controls[statusLabel].SetOptions("+cBlack")
         }
