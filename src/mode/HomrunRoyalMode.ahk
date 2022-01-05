@@ -132,11 +132,8 @@ Class HomrunRoyalMode extends AutoGameMode{
 
     checkModeRunMore(){
         this.player.addResult()
-        if ( this.player.getWaitingResult() ){
-            this.logger.log( "종료 요청이 확인되었습니다.") 
-            this.player.setWantToWaitResult(false)
-            this.stopControl() 
-            return 1
+        if( this.checkWantToModeQuit() ){
+            return 0
         }else{
 
             if( this.player.needToStopBattle() ){

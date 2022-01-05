@@ -83,7 +83,7 @@ class BaseballAutoConfig{
         if( loadedUseEquip = ""){
             loadedUseEquip:=0
         }
-        baseballAutoGui.setUseEquip(loadedUseEquip)
+        baseballAutoGui.setUsingEquipment(loadedUseEquip)
 
         loadedUseBooster:=this.configFile.loadValue("GLOBAL_CONFIG","UseBooster")
         if( loadedUseBooster = ""){
@@ -103,7 +103,7 @@ class BaseballAutoConfig{
             this.configFile.saveValue(PLAYER_KEY,element.getKeyBattleType(), element.getBattleType()) 
         }
         this.configFile.saveValue("GLOBAL_CONFIG","JobOrder",baseballAutoGui.getJobOrder())
-        this.configFile.saveValue("GLOBAL_CONFIG","UseEquip",baseballAutoGui.getUseEquip())     
+        this.configFile.saveValue("GLOBAL_CONFIG","UseEquip",baseballAutoGui.getUsingEquipment())     
         this.configFile.saveValue("GLOBAL_CONFIG","UseBooster",baseballAutoGui.getUseBooster())       
     }
     savePlayerResult( player ){

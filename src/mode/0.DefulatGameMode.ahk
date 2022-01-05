@@ -97,14 +97,14 @@ Class AutoGameMode{
         return 0
 
     }
-	isHomerunRoyalWindow( callback ){
+    isHomerunRoyalWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\3-2.홈런로얄_Base") ){		 
             this.continueControl()
             return callback.Call(this)
         }
         return 0		
     }
-	isHistoryModeWindow( callback ){
+    isHistoryModeWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\3-4.히스토리모드_Base") ){		 
             this.continueControl()
             return callback.Call(this)
@@ -199,10 +199,23 @@ Class AutoGameMode{
         if ( this.player.getWaitingResult() ){
             this.logger.log( "종료 요청이 확인되었습니다.") 
             this.player.setWantToWaitResult(false)
+            this.unsetEquipment()
             this.stopControl() 
             return true
         }else{
             return false
+        }
+    }
+    unsetEquipment(){
+        if ( this.gameController.searchAndClickFolder("1.공통\화면_장비없음") ){
+            this.logger.log("착용 중인 장비가 없습니다.")
+        }else if( this.gameController.searchAndClickFolder("1.공통\버튼_장비착용") ){
+            this.logger.log("장비를 해제 하겠습니다.")
+            if(this.gameController.searchImageFolder("1.공통\버튼_장비착용\화면_모두해제")){
+                this.logger.log("장비가 없는데 여긴 왜 들어왔을까요 - 확인하세요")
+            }
+            this.gameController.searchAndClickFolder("1.공통\버튼_장비착용\버튼_모두해제") 
+            this.gameController.searchAndClickFolder("1.공통\버튼_장비착용\버튼_장비닫기") 
         }
     }
 
@@ -228,9 +241,9 @@ Class AutoGameMode{
     stopControl(){
         this.player.setBye()
         this.returnFlag:=true
-		; 왠지 맞지 않지만 정상 동작을 위해 넣는다.
-		this.gameController.sleep(1)
-		this.moveMainPageForNextJob()
+        ; 왠지 맞지 않지만 정상 동작을 위해 넣는다.
+        this.gameController.sleep(1)
+        this.moveMainPageForNextJob()
     }
     releaseControl(){
         this.player.setFree()
@@ -267,13 +280,13 @@ Class AutoGameMode{
     restartAppPlayer(){
         ; this.logger.log("앱 플레이어의 강제 재기동을 수행합니다.") 
         popupTitle:="MEmu"
-        this.logger.log( "앱 플레이어의 강제 재기동을 수행합니다. "  ) 
+        this.logger.log( "앱 플레이어의 강제 재기동을 수행합니다. " ) 
         this.gameController.setActiveId(this.player.getAppTitle())
         if( this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료") ){
             this.gameController.setActiveId(popupTitle)
             if ( this.gameController.searchImageFolder("1.공통\버튼_앱강제종료\화면_재시작확인") ){
                 this.logger.log("재기동을 선택합니다.") 
-                if( this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료\화면_재시작확인\버튼_재시작" ) ){                    
+                if( this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료\화면_재시작확인\버튼_재시작" ) ){ 
                     this.logger.log( "20초를 기다립니다.") 
                     this.gameController.sleep(20)
                     this.gameController.setActiveId(this.player.getAppTitle())

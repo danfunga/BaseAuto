@@ -43,69 +43,49 @@ Class RankingBattleMode extends AutoGameMode{
             this.logger.log("랭킹 대전을 찾지 못했습니다")
         }
     }
-    startRankingBattle(){
+    startRankingBattle(){ 
         if( this.checkWantToModeQuit() ){
-            this.unsetBattleEquips()
             return 0
-        }
-		if ( this.gameController.searchImageFolder("랭대모드\화면_볼없음" ) ){
-			this.logger.log("볼이 없군요")
-			this.stopControl()                
+        } 
+        if ( this.gameController.searchImageFolder("랭대모드\화면_볼없음" ) ){
+            this.logger.log("볼이 없군요")
+            this.unsetEquipment()
+            this.stopControl() 
             return 1
         }
-		
+
         if ( this.gameController.searchImageFolder("랭대모드\화면_상대있음") ){
-            this.setBattleEquips()
+            this.checkAndSetBattleEquips()
+
             this.logger.log("랭킹 대전을 시작합니다")
             if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
                 return 1
             }
         }
-		; 이제 상대 없는것은 없다
-		; else{
-            ; this.logger.log("상대가 없는거 보니 다 돌았습니다.")
-            ; this.unsetBattleEquips()
-            ; this.stopControl()
-            ; return 1
-        ; }
     }
-
-    setBattleEquips(){
-        global baseballAutoGui
-
-        if(baseballAutoGui.getUseRankEquip()=1){
+    checkAndSetBattleEquips(){
+        if( baseballAutoGui.getUsingEquipment() ){
             this.logger.log("장비 착용이 설정 되어 있습니다.")
-            if ( this.gameController.searchImageFolder("0.기본UI\2-1.랭킹대전_Base") ){
-                this.continueControl()
-                if ( this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비없음") ){
-                    this.logger.log("대전 장비를 착용합니다")
-                    Loop, 6
-                    {
-                        this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비")
-                        this.ransleep(200,500)
-                    }
-                    this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비\닫기")
-                    return 1
-                }
-            }
-        } else {
+            this.setBattleEquips()
+        }else{
             this.logger.log("장비 착용이 설정 되어 있지 않습니다.")
-            this.unsetBattleEquips()
+            this.unsetEquipment()
         }
-
-        return 0
     }
 
-    unsetBattleEquips(){
-        if ( this.gameController.searchImageFolder("0.기본UI\2-1.랭킹대전_Base") ){
-            if ( this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비있음") ){
-                this.logger.log("대전 장비를 해제합니다.")
-                this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\해제")
-                this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비\닫기")
-                return 1
+    setBattleEquips(){ 
+        if ( this.gameController.searchAndClickFolder("1.공통\화면_장비없음") ){
+            this.logger.log("랭킹배틀용 장비를 착용합니다.")
+            Loop, 6
+            {
+                this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비")
+                this.ransleep(200,500)
             }
-        }
-        return 0
+            this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비\닫기")
+
+        }else if( this.gameController.searchImageFolder("1.공통\버튼_장비착용") ){
+            this.logger.log("착용 중인 장비를 사용합니다.")
+        } 
     }
 
     ransleep(min, max)
@@ -122,11 +102,11 @@ Class RankingBattleMode extends AutoGameMode{
             }
             this.continueControl()
             this.logger.log("경기를 시작합니다")
-            if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
-                this.logger.log("4초 기다립니다")
-                this.gameController.sleep(4)
-                return 1
-            }
+            ; if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
+            ;     this.logger.log("4초 기다립니다")
+            ;     this.gameController.sleep(4)
+            ;     return 1
+            ; }
         }
         return 0
     }
@@ -168,7 +148,7 @@ Class RankingBattleMode extends AutoGameMode{
     checkPlaying(){
         if ( this.gameController.searchImageFolder("랭대모드\화면_자동중" ) ){
             this.continueControl()
-			; this.logger.log("....")
+            ; this.logger.log("....")
             this.gameController.sleep(2)
             return 1
         }
@@ -177,34 +157,30 @@ Class RankingBattleMode extends AutoGameMode{
 
     checkRankingClose(){
         if ( this.gameController.searchImageFolder("랭대모드\화면_랭대종료" ) ){
-			this.logger.log("종료 팝업인지 확인")
-			if( this.checkLocalModePopup(0) > 0){
-				return 0
-			}
+            this.logger.log("종료 팝업인지 확인")
+            if( this.checkLocalModePopup(0) > 0){
+                return 0
+            }
             this.continueControl()
             this.logger.log("랭대를 다 돌았습니다. ")
             if( this.gameController.searchAndClickFolder("랭대모드\화면_랭대종료\버튼_확인" ) ){
-				this.stopControl()                
+                this.stopControl() 
                 return 1
             }
         }
-		
+
         return 0
     }
 
     checkModeRunMore(){
         this.player.addResult()
-        if ( this.player.getWaitingResult() ){
-            this.logger.log( "종료 요청이 확인되었습니다.") 
-            this.unsetBattleEquips()
-            this.player.setWantToWaitResult(false)
-            this.stopControl() 
-            return 1
+        if( this.checkWantToModeQuit() ){
+            return 0
         }else{
 
             if( this.player.needToStopBattle() ){
                 this.logger.log( "다 돌아 종료 하겠습니다.") 
-                this.unsetBattleEquips()
+                this.unsetEquipment()
                 this.stopControl()
             }else{
                 if( this.player.getRemainBattleCount() = "무한" ){
@@ -212,8 +188,8 @@ Class RankingBattleMode extends AutoGameMode{
                 }else{
                     this.logger.log( this.player.getRemainBattleCount() " 번 더 돌겠습니다.") 
                 } 
-				if( this.player.appRole != "단독" )
-					this.releaseControl()                
+                if( this.player.appRole != "단독" )
+                    this.releaseControl() 
             }
             return 1
         }
