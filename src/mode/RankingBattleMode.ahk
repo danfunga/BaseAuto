@@ -102,11 +102,11 @@ Class RankingBattleMode extends AutoGameMode{
             }
             this.continueControl()
             this.logger.log("경기를 시작합니다")
-            ; if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
-            ;     this.logger.log("4초 기다립니다")
-            ;     this.gameController.sleep(4)
-            ;     return 1
-            ; }
+            if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
+                this.logger.log("4초 기다립니다")
+                this.gameController.sleep(4)
+                return 1
+            }
         }
         return 0
     }
