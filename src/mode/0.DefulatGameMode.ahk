@@ -207,7 +207,7 @@ Class AutoGameMode{
         }
     }
     unsetEquipment(){
-        if ( this.gameController.searchAndClickFolder("1.공통\화면_장비없음") ){
+        if ( this.gameController.searchImageFolder("1.공통\화면_장비없음") ){
             this.logger.log("착용 중인 장비가 없습니다.")
         }else if( this.gameController.searchAndClickFolder("1.공통\버튼_장비착용") ){
             this.logger.log("장비를 해제 하겠습니다.")
