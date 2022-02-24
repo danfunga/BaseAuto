@@ -23,7 +23,7 @@ Class ReceiveRewardMode extends AutoGameMode{
         this.addAction(this.checkAndGoHome)             
     }
     
-    selectFriendButton(){ 
+    selectFriendButton(){         
         if( this.checkWantToModeQuit() ){
             return 0
         }
@@ -39,6 +39,7 @@ Class ReceiveRewardMode extends AutoGameMode{
             return 1
         }else if(this.gameController.searchAndClickFolder("보상모드\버튼_커뮤니티") ){
 			if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
+                this.gameController.sleep(2)
             return 1
 			}
 
@@ -51,6 +52,7 @@ Class ReceiveRewardMode extends AutoGameMode{
             this.continueControl()
             this.logger.log("친구 목록을 선택합니다") 
             if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구목록") ){
+                this.gameController.sleep(2)
                 return 1
             }		 
         }
@@ -113,6 +115,7 @@ Class ReceiveRewardMode extends AutoGameMode{
             this.logger.log(this.player.getAppTitle() "도전과제로 이동합니다.")
             this.continueControl()
             if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_도전과제_팀별") ){
+                this.gameController.sleep(1)
                 return 1
             }else{
                 this.logger.log(this.player.getAppTitle() "도전 과제 팀별을 못찾으면 보상을 못받아..")

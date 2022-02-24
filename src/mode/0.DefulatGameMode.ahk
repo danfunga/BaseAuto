@@ -264,7 +264,7 @@ Class AutoGameMode{
         this.gameController.sleep(0.3)
     }
     quitCom2usBaseball(){
-        if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야끄기",0,0,false) ){
+        if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야끄기",0,35,false) ){
             this.logger.log("컴프야를 강제 종료 했습니다.")
             this.releaseControl()
             ; this.gameController.sleep(2)
