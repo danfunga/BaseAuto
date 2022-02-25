@@ -70,6 +70,7 @@ Class FriendsBattleMode extends AutoGameMode{
         if ( this.gameController.searchImageFolder("친구대전\화면_친구대전준비") ){		
             this.continueControl()
             this.logger.log("친구대전 경기를 시작합니다") 
+            this.setAutoMode(true)
             if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
                 this.logger.log("10초 기다립니다") 
                 this.gameController.sleep(10)

@@ -264,7 +264,7 @@ Class AutoGameMode{
         this.gameController.sleep(0.3)
     }
     quitCom2usBaseball(){
-        if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야끄기",0,35,false) ){
+        if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야끄기",0,0,false,true) ){
             this.logger.log("컴프야를 강제 종료 했습니다.")
             this.releaseControl()
             ; this.gameController.sleep(2)
@@ -277,16 +277,40 @@ Class AutoGameMode{
 
         }
     }
+    setAutoMode( mode:=true ){
+        if( mode ){
+            if ( this.gameController.searchImageFolder("1.공통\모드_자동모드\버튼_자동상태") ){
+                this.logger.log("자동모드 체크 ==> 자동입니다. ") 
+            }else if ( this.gameController.searchAndClickFolder("1.공통\모드_자동모드\버튼_자동아님") ){
+                this.logger.log("자동모드 체크 ==> 자동으로 변경합니다.") 
+            }else{
+                this.logger.log("자동으로 변경을 실패했습니다.") 
+            }
+        }else{
+            if ( this.gameController.searchImageFolder("1.공통\모드_자동모드\버튼_자동아님") ){
+                this.logger.log("자동모드 체크 ==> 자동이 아닙니다.") 
+            }else if ( this.gameController.searchAndClickFolder("1.공통\모드_자동모드\버튼_자동상태") ){
+                this.logger.log("자동모드 체크 ==> 자동을 끕니다.") 
+            }else{
+                this.logger.log("자동을 끄는것을 실패했습니다.") 
+            }
+        }
+    }
     restartAppPlayer(){
-        ; this.logger.log("앱 플레이어의 강제 재기동을 수행합니다.") 
-        popupTitle:="MEmu"
+         WinGetClass, targetClassName , % this.player.getAppTitle()              
+        if ( InStr(targetClassName ,"LDPlayer" )  ){
+            popupTitle:="ahk_class LDPlayerMsgFrame"
+        }else{
+            popupTitle:="MEmu"
+        }
+        
         this.logger.log( "앱 플레이어의 강제 재기동을 수행합니다. " ) 
         this.gameController.setActiveId(this.player.getAppTitle())
-        if( this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료") ){
+        if( this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료",0,0,false,true) ){
             this.gameController.setActiveId(popupTitle)
             if ( this.gameController.searchImageFolder("1.공통\버튼_앱강제종료\화면_재시작확인") ){
                 this.logger.log("재기동을 선택합니다.") 
-                if( this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료\화면_재시작확인\버튼_재시작" ) ){ 
+                if( this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료\화면_재시작확인\버튼_재시작",0,0,false,true ) ){ 
                     this.logger.log( "20초를 기다립니다.") 
                     this.gameController.sleep(20)
                     this.gameController.setActiveId(this.player.getAppTitle())

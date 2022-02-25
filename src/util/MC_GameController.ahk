@@ -61,15 +61,15 @@ class MC_GameController{
         ; return false
     }
 
-    searchAndClickFolder( targetFolder, relateX=0, relateY=0 , boolDelay=true ) {
+    searchAndClickFolder( targetFolder, relateX:=0, relateY:=0 , boolDelay:=true , clickTitle:=false ) {
         if ( this.internalSearchImageFolder( targetFolder, fileName, imgX, imgY ) ){ 
             targetX:=imgX+relateX
             targetY:=imgY+relateY
-            this.logger.debug( fileName "를 클릭합니다. X=" imgX ", Y=" imgY ", ResultX=" targetX ", ResultY=" targetY)
+            this.logger.debug( fileName "를 클릭합니다. X=" imgX ", Y=" imgY ", ResultX=" targetX ", ResultY=" targetY " Title = " clickTitle)
             if( relateX >0 or relateY >0){
-                this.click( targetX, targetY, boolDelay )		
+                this.click( targetX, targetY, boolDelay, clickTitle )		
             }else{
-                this.randomClick(targetX, targetY, 0, 10, boolDelay)
+                this.randomClick(targetX, targetY, 0, 10, boolDelay, clickTitle)
             }            
             Return true
 
@@ -79,23 +79,23 @@ class MC_GameController{
         } 
     }
 
-    click( positionX, positionY, needDelay ){
-        this.controller.click(positionX, positionY)
+    click( positionX, positionY, needDelay , clickTitle=false){
+        this.controller.click(positionX, positionY, clickTitle)
         if( needDelay ){
             this.sleep(1)
         }
     }
 
-    randomClick( positionX, positionY , randomStart:=0, randomEnd:=15 , needDelay:=true ){
+    randomClick( positionX, positionY , randomStart:=0, randomEnd:=15 , needDelay:=true , clickTitle:=false){
         Random, randFirst, randomStart, randomEnd
         Random, randSecond, randomStart, randomEnd
 
         targetX:=positionX+randFirst
         targetY:=positionY+randSecond
-        this.logger.debug( "Before X=" positionX " Y=" positionY " Apply X=" targetX ", Y=" targetY " Click")
+        this.logger.debug( "Before X=" positionX " Y=" positionY " Apply X=" targetX ", Y=" targetY " Click title = " clickTitle )
         ; ToolTip, % "TargetX = " positionX ", targetY= "positionY
         ; MouseMove %positionX%, %positionY%
-        this.click( targetX, targetY, needDelay )		
+        this.click( targetX, targetY, needDelay, clickTitle )		
     }
 
     sleep( secSleep ){

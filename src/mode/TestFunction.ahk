@@ -152,7 +152,9 @@ return
 return 
 
 ^F6::
-    testWindow := new MC_ScanWindow("OK")
+    WinGetClass, target , LDsub
+    MsgBox, %target%
+    ; testWindow := new MC_ScanWindow("OK")
     ; testWindow := new MC_ScanWindow("OK2")
     ; widthToScan=200
     ; heightToScan=50

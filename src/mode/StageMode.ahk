@@ -105,6 +105,8 @@ Class StageMode extends AutoGameMode{
             }else{
                 this.continueControl()
                 this.logger.log("스테이지 모드를 시작합니다~")
+                
+                this.setAutoMode(true)
                 if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
                     this.logger.log("고고변 받아봤자 캡틴 안나옴ㅋ")
                     this.logger.log("6초 기다립니다.")
@@ -181,7 +183,7 @@ Class StageMode extends AutoGameMode{
                 this.player.addResult()
                 if( this.player.needToStopBattle() ){
                     this.logger.log("스테이지모드를 횟수만큼 다 돌았습니다.") 
-                     this.releaseControl()
+                    this.releaseControl()
                 }else{
                     if( this.player.getRemainBattleCount() = "무한" ){
                         this.logger.log("스테이지 볼을 다 쓸때까지 돕니다." )
@@ -199,7 +201,7 @@ Class StageMode extends AutoGameMode{
     checkStageModeClose(){
         if ( this.gameController.searchImageFolder("스테이지모드\화면_볼없음" ) ){		 
             this.logger.log("볼이 없는거 보니 스테이지모드 다 돌았네요. ..")
-             this.releaseControl()
+            this.releaseControl()
             return 1
         }
         return 0 
@@ -210,21 +212,21 @@ Class StageMode extends AutoGameMode{
         if ( this.player.getWaitingResult() ){
             this.logger.log( "종료 요청이 확인되었습니다.") 
             this.player.setWantToWaitResult(false)
-             this.releaseControl() 
+            this.releaseControl() 
             return 1
         }else{
 
             if( this.player.needToStopBattle() ){
                 this.logger.log( "다 돌아 종료 하겠습니다.") 
-                 this.releaseControl()
+                this.releaseControl()
             }else{
                 if( this.player.getRemainBattleCount() = "무한" ){
                     this.logger.log( "돌 수 없을 때까지 돌게 됩니다.") 
                 }else{
                     this.logger.log( this.player.getRemainBattleCount() " 번 더 돌겠습니다.") 
                 } 
-				if( this.player.appRole != "단독" )
-					this.releaseControl()
+                if( this.player.appRole != "단독" )
+                    this.releaseControl()
             }
             return 1
         }

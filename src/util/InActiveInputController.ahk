@@ -10,26 +10,22 @@
         this.currentTargetTitle:=targetId
     }
 
-    click( x, y ) {
+    click( x, y , clickTitle=false) {
         ; WinGetPos, winX, winY, winW, winH, % this.currentTargetTitle
         px:=x
         ; px:=x-winX
         py:=y
         ; py:=y-winy
-        this.fixedClick(px, py ) 
+        this.fixedClick(px, py , clickTitle) 
     }
 
-    fixedClick( posX, posY ){
+    fixedClick( posX, posY , clickTitle=false){
         ; global BooleanDebugMode
         ; if( BooleanDebugMode = true ){
         ; this.logger.log(" fixed Click Position " posX ", " posY ) 
         ; } 
-        
-        ; LD player
-        ; PostMessage, 0x201, 1, %lParam%, TheRender, % this.currentTargetTitle ;WM_LBUTTONDOWN
-        ; sleep, 50	
-        ; PostMessage, 0x202, 0, %lParam%, TheRender, % this.currentTargetTitle ;WM_LBUTTONUP       
-        if InStr(this.currentTargetTitle ,"LD" )
+        WinGetClass, target , % this.currentTargetTitle              
+        if ( InStr(target ,"LDPlayer" ) && !clickTitle )
         {           
             lParam:= posX|posY-35<< 16 
             PostMessage, 0x201, 1, %lParam%, TheRender, % this.currentTargetTitle ;WM_LBUTTONDOWN
@@ -38,9 +34,9 @@
         }
         else{
             lParam:= posX|posY<< 16 
-        PostMessage, 0x201, 1, %lParam%, , % this.currentTargetTitle ;WM_LBUTTONDOWN
-        ; sleep, 50	
-        PostMessage, 0x202, 0, %lParam%, , % this.currentTargetTitle ;WM_LBUTTONUP       
+            PostMessage, 0x201, 1, %lParam%, , % this.currentTargetTitle ;WM_LBUTTONDOWN
+            ; sleep, 50	
+            PostMessage, 0x202, 0, %lParam%, , % this.currentTargetTitle ;WM_LBUTTONUP       
 
         }
         
