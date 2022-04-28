@@ -14,9 +14,9 @@ Class ReceiveRewardMode extends AutoGameMode{
 
     initMode(){
         this.addAction(this.isMainWindow,this.selectFriendButton)
-        ; this.addAction(this.selectFriendsList)
-        ; this.addAction(this.receiveAndSendFriendPoint)
-        ; this.addAction(this.startReceiveReward)
+        this.addAction(this.selectFriendsList)
+        this.addAction(this.receiveAndSendFriendPoint)
+        this.addAction(this.startReceiveReward)
         this.addAction(this.receiveRewardLoop)
         this.addAction(this.checkPopup)
         this.addAction(this.skipMVPWindow)
