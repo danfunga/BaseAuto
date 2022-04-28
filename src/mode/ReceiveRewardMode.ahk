@@ -14,16 +14,16 @@ Class ReceiveRewardMode extends AutoGameMode{
 
     initMode(){
         this.addAction(this.isMainWindow,this.selectFriendButton)
-        this.addAction(this.selectFriendsList)
-        this.addAction(this.receiveAndSendFriendPoint)
-        this.addAction(this.startReceiveReward)
+        ; this.addAction(this.selectFriendsList)
+        ; this.addAction(this.receiveAndSendFriendPoint)
+        ; this.addAction(this.startReceiveReward)
         this.addAction(this.receiveRewardLoop)
         this.addAction(this.checkPopup)
         this.addAction(this.skipMVPWindow)
-        this.addAction(this.checkAndGoHome)             
+        this.addAction(this.checkAndGoHome) 
     }
-    
-    selectFriendButton(){         
+
+    selectFriendButton(){ 
         if( this.checkWantToModeQuit() ){
             return 0
         }
@@ -31,20 +31,20 @@ Class ReceiveRewardMode extends AutoGameMode{
             return 0
         }
         this.logger.log(this.player.getAppTitle() "우정포인트 받기를 시작합니다")
-		if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
+        if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
             return 1
         } 
-		
+
         if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
             return 1
         }else if(this.gameController.searchAndClickFolder("보상모드\버튼_커뮤니티") ){
-			if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
+            if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
                 this.gameController.sleep(2)
-            return 1
-			}
+                return 1
+            }
 
         }
-		
+
     }
 
     selectFriendsList(){
@@ -83,6 +83,30 @@ Class ReceiveRewardMode extends AutoGameMode{
     }
 
     checkPopup(counter:=0){
+        localCounter:=counter
+        if ( this.gameController.searchImageFolder("1.공통\버튼_팝업스킵" ) ){		
+            if( this.gameController.searchAndClickFolder("1.공통\버튼_팝업스킵" ) ){
+                if( localCounter > 5 ){
+                    return localCounter
+                }
+                localCounter++ 
+                this.checkPopup(localCounter)
+            }
+        }
+
+        if ( this.gameController.searchImageFolder("보상모드\화면_팝업체크" ) ){		
+            this.logger.log("OK.") 
+            if( this.gameController.searchAndClickFolder("보상모드\화면_팝업체크\버튼_확인" ) ){
+                if( localCounter > 5 ){
+                    return localCounter
+                }
+                localCounter++ 
+                this.checkPopup(localCounter)
+            }			
+        }
+        return localCounter
+    }
+    selectPeace(counter:=0){
         localCounter:=counter
         if ( this.gameController.searchImageFolder("1.공통\버튼_팝업스킵" ) ){		
             if( this.gameController.searchAndClickFolder("1.공통\버튼_팝업스킵" ) ){
@@ -153,16 +177,48 @@ Class ReceiveRewardMode extends AutoGameMode{
                 this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼")
             }
             if ( this.gameController.searchImageFolder("보상모드\화면_앰블럼") ){
-                loop 6 {
-					if ( this.gameController.searchImageFolder("보상모드\화면_보상없음") ){
-                            this.logger.log("더이상 제작 불가능") 
-                            break
+                pieceCount:=0
+                completeCount:=0
+                loop 10{
+                    if ( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성") ){ 
+                        if ( this.gameController.searchImageFolder("보상모드\버튼_앰블럼생성\선택" ) ){
+                            if ( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성\선택\0먼저") ){
+                                this.logger.log("한개도 없는걸 먼저 선택")
+                                if( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성\선택\확인") ){
+                                    pieceCount++
+                                    this.logger.log("앰블럼 획득 - " pieceCount)
+                                }
+                            }else if ( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성\선택\1까지") ){
+                                this.logger.log("1개짜리 선택")
+                                if( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성\선택\확인") ){
+                                    pieceCount++
+                                    this.logger.log("앰블럼 획득 - " pieceCount)
+                                }
+                            }else if ( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성\선택\2이상") ){
+                                this.logger.log("2 이상뿐이냐?")
+                                if( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성\선택\확인") ){
+                                    pieceCount++
+                                    this.logger.log("앰블럼 획득 - " pieceCount)
+                                }
+                            }
+                            this.checkPopup()
+                            if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
+                                completeCount++
+                                this.logger.log("앰블럼 제작 - " completeCount) 
+                                this.checkPopup()
+                            } 
+                        }else{
+                            pieceCount++
+                            this.logger.log("앰블럼 획득 - " pieceCount)
+                        }
+                    }else if( this.gameController.searchImageFolder("보상모드\화면_보상없음") ){
+                        this.logger.log("더이상 제작 불가능") 
+                        break
                     }else if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
                         this.logger.log("앰블럼 제작 - " A_INDEX) 
                         this.checkPopup()
-                    }
+                    } 
                 } 
-
             }
             this.checkPopup()
             this.receiveDailyReward:=true
