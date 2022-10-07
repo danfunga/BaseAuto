@@ -307,8 +307,8 @@ Class AutoGameMode{
 		}
         this.logger.log( "앱 플레이어의 강제 재기동을 수행합니다. " ) 
         this.gameController.setActiveId(this.player.getAppTitle())
-		
         if( this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료",0,0,false,true) ){
+			this.gameController.sleep(1)
             this.gameController.setActiveId(popupTitle)
             if ( this.gameController.searchImageFolder("1.공통\버튼_앱강제종료\화면_재시작확인") ){
                 this.logger.log("재기동을 선택합니다.") 
