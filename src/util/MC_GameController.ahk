@@ -82,7 +82,7 @@ class MC_GameController{
     click( positionX, positionY, needDelay , clickTitle=false){
         this.controller.click(positionX, positionY, clickTitle)
         if( needDelay ){
-            this.sleep(1)
+            this.sleep(2)
         }
     }
 
