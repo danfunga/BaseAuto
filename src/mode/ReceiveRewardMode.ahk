@@ -32,7 +32,7 @@ Class ReceiveRewardMode extends AutoGameMode{
         }
         this.logger.log(this.player.getAppTitle() "우정포인트 받기를 시작합니다")
         if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
-			this.gameController.sleep(6)
+			this.gameController.sleep(10)
             return 1
         }         
     }
@@ -42,7 +42,7 @@ Class ReceiveRewardMode extends AutoGameMode{
             this.continueControl()
             this.logger.log("친구 목록을 선택합니다") 
             if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구목록") ){
-                this.gameController.sleep(6)
+                this.gameController.sleep(10)
                 return 1
             }		 
         }
