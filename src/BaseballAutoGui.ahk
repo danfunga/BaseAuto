@@ -274,7 +274,7 @@ Class BaseballAutoGui{
         } 
 
         this.guiMain.Add("Text", "단독 순서 : ", "xs y+20")
-        this.guiMain.Add("Edit", "리그,실대,랭대,홈런,히스,스테,타홀,친구,보상", "xs y+3", "configJobOrder")
+        this.guiMain.Add("Edit", "리그,실대,랭대,홈런,히스,스테,타홀,친구,보상", "xs y+3 w" this.maxGroupWidth-10, "configJobOrder")
 
         return currentWindowHeight
     }
