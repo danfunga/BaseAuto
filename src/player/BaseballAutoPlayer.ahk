@@ -110,7 +110,7 @@ class BaseballAutoPlayer{
     addResult(){ 
         this.setResult( this.result + 1)
         if( this.index = 1){            
-            this.setCurrentModeResult(this.appMode, this.countPerMode[modeName]+1) 
+            this.setCurrentModeResult(this.appMode, this.countPerMode[this.appMode]+1) 
         }
     } 
 
