@@ -215,6 +215,8 @@ Class BaseballAutoGui{
         this.guiMain.Controls[statusLabel].setText(status)
     }
     updateStatus( statusLabel, status ){
+        if( statusLabel = "")
+            return
         this.guiMain.Controls[statusLabel].setText(status)
     }
     initWindowStatistic(_height){
@@ -227,9 +229,7 @@ Class BaseballAutoGui{
             if( value = "등반" or value ="로얄"){
                 continue
             }
-            ; guiTitle:=% index ". " value
             guiTitle:=% value ":"
-            ; guiLabel :=% "Statstics" index "Text"
             if ( existIndex = 1 ){
                 option:=% "xs+10 ys+15 section"
             }else{
@@ -251,8 +251,8 @@ Class BaseballAutoGui{
                 continue
             }
             ; guiTitle:=% index ". " value
-            guiTitle:="0"
-            guiLabel :=% "Statstics" index "Text"
+            guiTitle:=0
+            guiLabel:=% "Statistic" index "Result"
             if ( existIndex = 1 ){
                 option:=% "xs+28 ys w22 right section"
             }else{
@@ -262,8 +262,8 @@ Class BaseballAutoGui{
                     option:=% "x+36 yp wp right"
                 }
             }             
-            this.guiMain.Add("Text", guiTitle, option, guiLable,0)
-            BaseballAutoPlayer.STASTICS_KEY_MAP[value]:=guiLabel
+            this.guiMain.Add("Text", guiTitle, option, guiLabel,0)
+            BaseballAutoPlayer.STASTICS_KEY_MAP[value]:=guiLabel            
             existIndex++
         } 
         return currentWindowHeight

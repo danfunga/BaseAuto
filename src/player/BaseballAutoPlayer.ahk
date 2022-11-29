@@ -54,8 +54,8 @@ class BaseballAutoPlayer{
         }
     }
     addCurrentModeResult(modeName){
-        this.countPerMode[modeName]++
-        global baseballAutoGui        
+        global baseballAutoGui
+        this.countPerMode[modeName]++                        
         baseballAutoGui.updateStatus( BaseballAutoPlayer.STASTICS_KEY_MAP[modeName], this.countPerMode[modeName])
     }
     setResult( result ){
@@ -104,9 +104,7 @@ class BaseballAutoPlayer{
     }
     addResult(){ 
         this.setResult( this.result + 1)
-        this.addCurrentModeResult(this.appMode)
-        
-        
+        this.addCurrentModeResult(this.appMode)        
     } 
 
     getRemainBattleCount(){
@@ -242,7 +240,6 @@ class BaseballAutoPlayer{
         if( this.appRole ="일꾼" ){
             if( targetMode = "일꾼" ){
                 targetMode:=BaseballAutoPlayer.ASSIST_MODE_ARRAY[1]
-
             }else{
                 if( targetMode = "next" ){
                     currentIndex:=this.getIndex(this.appMode,BaseballAutoPlayer.ASSIST_MODE_ARRAY)
