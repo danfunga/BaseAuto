@@ -165,6 +165,7 @@ Class ReceiveRewardMode extends AutoGameMode{
                 this.gameController.searchAndClickFolder("보상모드\버튼_주간미션")
             }
             if ( this.gameController.searchImageFolder("보상모드\화면_주간미션") ){
+				this.gameController.sleep(3)
                 if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
                     this.logger.log("주간 보상 모두 받기를 수행합니다.") 
                     this.checkPopup()
@@ -174,6 +175,7 @@ Class ReceiveRewardMode extends AutoGameMode{
                 }
                 this.logger.log("앰블럼으로 이동") 
                 this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼")
+				this.gameController.sleep(3)
             }
             if ( this.gameController.searchImageFolder("보상모드\화면_앰블럼") ){
                 pieceCount:=0
