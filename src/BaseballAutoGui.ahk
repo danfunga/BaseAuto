@@ -266,19 +266,6 @@ Class BaseballAutoGui{
             BaseballAutoPlayer.STASTICS_KEY_MAP[value]:=guiLabel
             existIndex++
         } 
-
-
-        ; for index, player in baseballAutoConfig.players
-        ; {
-        ;     guiType:="Text"
-        ;     guiTitle:=player.getStatus()
-        ;     guiLable:=player.getKeyStatus()
-        ;     option:="xp y+10 wp hp +Center"
-        ;     if( index = 1 ){
-        ;         option:="xs+245 ys+20 w60 +Center"
-        ;     }
-        ;     this.guiMain.Add(guiType, guiTitle, option, guiLable,0)
-        ; }
         return currentWindowHeight
     }
     initLogWindow(_height){
@@ -318,6 +305,7 @@ Class BaseballAutoGui{
             }
             guiLabel :=% "AloneMode" index "CheckBox"
             if ( memberIndex = 1 ){
+                baseballAutoConfig.standaloneEnabledModeMap[value]:=true
                 option:=% "xs+5 y+5 checked disabled"
             }else{
                 if(memberIndex=7 or memberIndex = 13){
@@ -325,7 +313,10 @@ Class BaseballAutoGui{
                 }else{
                     option:="x+0 yp"
                 }
-                if ( baseballAutoConfig.standaloneEnabledModeMap[value] ){
+                if( value = "클협" ){
+                    baseballAutoConfig.standaloneEnabledModeMap[value]:=false
+                    option:= % option " disabled"
+                }else if ( baseballAutoConfig.standaloneEnabledModeMap[value] ){
                     option:= % option " checked"
                 }
             } 
@@ -335,7 +326,7 @@ Class BaseballAutoGui{
         } 
 
         this.guiMain.Add("Text", "단독 순서 : ", "xs y+20")
-        this.guiMain.Add("Edit", "리그,실대,랭대,홈런,히스,스테,타홀,친구,보상", "xs y+3 w" this.maxGroupWidth-10, "configJobOrder")
+        this.guiMain.Add("Edit", "A,B,C", "xs y+3 w" this.maxGroupWidth-10, "configJobOrder")
 
         return currentWindowHeight
     }
