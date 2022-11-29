@@ -315,7 +315,18 @@ class BaseballAutoPlayer{
             } 
             this.appMode:=this.ALONE_MODE_ARRAY[currentIndex] 
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_ALONE_MODE[this.appMode]
-            this.logger.log(this.appTitle "가 [" this.appRole "][" this.appMode "] 모드로 동작합니다. Loop = " this.LOOP_PER_ALONE_MODE[this.appMode] " RunCount = " this.currentBattleRemainCount)
+            this.logger.log(this.appTitle "가 [" this.appRole "][" this.appMode "] 모드로 동작합니다.")
+            if ( this.LOOP_PER_ALONE_MODE[this.appMode] = -1){
+                loopString :="무한"
+            }else{
+                loopString :=% this.LOOP_PER_ALONE_MODE[this.appMode] "회"
+            }
+            if ( this.currentBattleRemainCount = -1){
+                thisTimeRepeatString :="끝까지 "
+            }else{
+                thisTimeRepeatString :=% this.currentBattleRemainCount "번"
+            }
+            this.logger.log( this.appTitle "[" this.appMode "] 반복: " loopString ", 횟수: " thisTimeRepeatString " 돕니다.")            
             return true
         } 
         else{
