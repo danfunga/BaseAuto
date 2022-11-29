@@ -4,7 +4,8 @@
 Class BaseballAutoGui{
     width:=330
     maxGroupWidth := this.width-20
-
+    CONST_SIZE_LOG_HEIGHT:=250
+    CONST_SIZE_CONFIG_HEIGHT:=130
     __NEW( title ){
         this.guiMain := new MC_GuiObj(title)
         this.mainHeight:=this.init()
@@ -40,8 +41,9 @@ Class BaseballAutoGui{
         mainHeight+=this.initPlayerWindow(mainHeight)
         mainHeight+=this.initOptionWindow(mainHeight)
         mainHeight+=this.initButtonWindow(mainHeight)
+        mainHeight+=this.initWindowStatistic(mainHeight)
         mainHeight+=this.initLogWindow(mainHeight)
-
+        ; mainHeight+=this.initConfigWindow(mainHeight)+5
         this.totalHeight:=mainHeight+this.initConfigWindow(mainHeight)+5
         return mainHeight
     }
@@ -49,19 +51,19 @@ Class BaseballAutoGui{
     initConfigButton( _height ){
         currentWindowHeight:=15
         ; option:=% "xs+5 ys+20 disabled"
-    ;    his.guiMain.Add("Button", "Bye", "x" 100 " y0", "ByeButton",0)
-    ;     this.guiMain.Add("Button", "Hi", "x" 150 " y0", "HiButton",0) t
+        ;    his.guiMain.Add("Button", "Bye", "x" 100 " y0", "ByeButton",0)
+        ;     this.guiMain.Add("Button", "Hi", "x" 150 " y0", "HiButton",0) t
 
         ; this.guiMain.Add("Button", "Bye", "x" this.maxGroupWidth -200 " y0 w50", "ByeButton",0)
         ; this.guiMain.Add("Button", "Hi", "x" this.maxGroupWidth -150 " y0 w50", "HiButton",0)
         this.guiMain.Add("Button", "Clear", "x" this.maxGroupWidth -90 " y0 w50", "StatClearButton",0)
-        this.guiMain.Add("Button", "Save", "x" this.maxGroupWidth -40 " y0 w50", "RoleSaveButton",0)
+        this.guiMain.Add("Button", "Save", "x" this.maxGroupWidth -40 " y0 w50", "SavePlayerButton",0)
 
         ; this.guiMain.Add("Button", "pass", "x" this.maxGroupWidth -30 " y+10", "RolePassButton",0)
         ; this.guiMain.Add("Button", "OK", "x" this.maxGroupWidth -30 " y+10", "RoleAllowButton",0)
         ; this.guiMain.Controls["ByeButton"].BindMethod(this.byePlayerFunction.Bind(this))
         ; this.guiMain.Controls["HiButton"].BindMethod(this.HiPlayerFunction.Bind(this))
-        this.guiMain.Controls["RoleSaveButton"].BindMethod(this.roleSaveByGui.Bind(this))
+        this.guiMain.Controls["SavePlayerButton"].BindMethod(this.savePlayerByGui.Bind(this))
         this.guiMain.Controls["StatClearButton"].BindMethod(this.clearStatsByGui.Bind(this))
         ; this.guiMain.Controls["RolePassButton"].BindMethod(this.rolePassByGui.Bind(this))
         ; this.guiMain.Controls["RoleAllowButton"].BindMethod(this.roleAllowByGui.Bind(this))
@@ -98,7 +100,6 @@ Class BaseballAutoGui{
             }
             this.guiMain.Add("Edit", player.getAppTitle(), option, guiLable,0)
         }
-
 
         targetTitle:=""
         for index, singleText in BaseballAutoPlayer.AVAILABLE_ROLES
@@ -179,9 +180,7 @@ Class BaseballAutoGui{
             this.guiMain.Controls[ keyForPlayer "Enabled" ].Set(element["ENABLE"])
             this.guiMain.Controls[ keyForPlayer "Id" ].setText(element["TITLE"])
             this.guiMain.Controls[ keyForPlayer "Role" ].select(element["ROLE"])
-
         }
-
     }
 
     initButtonWindow(_height){
@@ -230,8 +229,12 @@ Class BaseballAutoGui{
     updateStatus( statusLabel, status ){
         this.guiMain.Controls[statusLabel].setText(status)
     }
+    initWindowStatistic(_height){
+
+        
+    }
     initLogWindow(_height){
-        currentWindowHeight=200
+        currentWindowHeight:=this.CONST_SIZE_LOG_HEIGHT
         ; this.guiMain.Add("Edit", "Logs", "Readonly xp y+5 w" this.maxGroupWidth-1 " h" currentWindowHeight-30 , "GuiLoggerLogging",0)
         this.guiMain.Add("logEdit", "Logs", "Readonly x10 y" _height+5 " w" this.maxGroupWidth-1 " h" currentWindowHeight-5 , "GuiLoggerLogging",0)
         ; this.guiMain.addGroupBox("Logs", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
@@ -250,13 +253,40 @@ Class BaseballAutoGui{
         this.guiMain.Controls["GuiLoggerLogging"].set( logMessage currentLog )
     }
     initConfigWindow(_height){
-        currentWindowHeight=90
+        global baseballAutoConfig
+        currentWindowHeight:=this.CONST_SIZE_CONFIG_HEIGHT
+        
         this.guiMain.addGroupBox("Config", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
+        ; this.guiMain.Add("CheckBox", "Pushbullet ", "xs+5 ys+20 h10", "configPushbulletEnabled",0)
+        ; this.guiMain.Add("Button", "Save", "x" this.maxGroupWidth -45 " yp+10 w50", "buttonConfigSave",0)
 
-        this.guiMain.Add("CheckBox", "Pushbullet ", "xs+5 ys+20 h10", "configPushbulletEnabled",0)
-        this.guiMain.Add("CheckBox", "SchreenShot Error ", "xp y+10", "configScreenShotOnError",0)
-        this.guiMain.Add("Text", "일꾼 순서 : ", "xp y+10", "configJobOrderText")
-        this.guiMain.Add("Edit", "홈런,랭킹,친구", "x+0 yp-3", "configJobOrder")
+        this.guiMain.Add("Text", "단독 활성화 : ", "xs+5 yp+20 section")
+
+        memberIndex:=1
+        for index, value in BaseballAutoPlayer.AVAILABLE_MODES
+        { 
+            if( value = "등반" or value ="로얄"){
+                continue
+            }
+            guiLabel :=% "AloneMode" index "CheckBox"
+            if ( memberIndex = 1 ){
+                option:=% "xs+5 y+5 checked disabled"
+            }else if(memberIndex=7 or memberIndex = 13){
+                option:=% "xs+5 y+5"
+            }
+            else{
+                option:="x+0 yp"
+                if ( baseballAutoConfig.standaloneEnabledModeMap[value] ){
+                    option:= % option " checked"
+                }
+            } 
+            this.guiMain.Add("CheckBox", value, option, guiLabel,0)
+            memberIndex++
+        } 
+
+        this.guiMain.Add("Text", "단독 순서 : ", "xs y+20")
+        this.guiMain.Add("Edit", "리그,실대,랭대,홈런,히스,스테,타홀,친구,보상", "xs y+3", "configJobOrder")
+    
 
         return currentWindowHeight
     }
@@ -269,17 +299,17 @@ Class BaseballAutoGui{
         this.guiMain.Add("Checkbox", "장비사용", "xs+10 ys+20", "EquipmentCheck", 0)
         this.guiMain.Add("Checkbox", "부스터", "X+1", "BoosterChk", 0)
         this.guiMain.Add("Checkbox", "스테장비", "X+2", "StageEquipChk", 0)
-      
+
         return currentWindowHeight
     }
     getUsingEquipment(){
         return this.guiMain.Controls["EquipmentCheck"].get()
-    }    
+    } 
     setUsingEquipment(bool){
         ; configFile 에서 설정되는 부분
         this.guiMain.Controls["EquipmentCheck"].set(bool)
     }
-    
+
     getUseStageEquip(){
         return this.guiMain.Controls["StageEquipChk"].get()
     }
@@ -288,7 +318,7 @@ Class BaseballAutoGui{
         ; configFile 에서 설정되는 부분
         this.guiMain.Controls["StageEquipChk"].set(bool)
     }
-    
+
     getUseBooster() {
         return this.guiMain.Controls["BoosterChk"].get()
     }
@@ -333,12 +363,10 @@ Class BaseballAutoGui{
         }
         ; MsgBox, % "Target App=" targetAppTiile
 
-
-
     }
 
     hiPlayerFunction(){
-          global globalCurrentPlayer, baseballAutoConfig
+        global globalCurrentPlayer, baseballAutoConfig
         targetAppTiile:=globalCurrentPlayer.getAppTitle()
         if( targetAppTiile = "" ){
 
@@ -370,14 +398,13 @@ Class BaseballAutoGui{
             player.setResult(0)
         }
     }
-    roleSaveByGui(){
+    savePlayerByGui(){
         this.saveGuiConfigs()
-        this.saveGuiOptions()
-        ToolTip, Role Saved
+        ToolTip, Player Saved
         Sleep , 500
         ToolTip
-        ; ToolTip, % "Enabled Players " baseballAutoConfig.enabledPlayers.length()
     }
+
     saveGuiConfigs(){
         global baseballAutoConfig
         baseballAutoConfig.enabledPlayers:=[]
@@ -388,6 +415,16 @@ Class BaseballAutoGui{
                 baseballAutoConfig.enabledPlayers.push(player)
             }
         }
+        memberIndex:=1
+        for index, value in BaseballAutoPlayer.AVAILABLE_MODES
+        { 
+            if( value = "등반" or value ="로얄"){
+                continue
+            }
+            guiLabel :=% "AloneMode" index "CheckBox"           
+            baseballAutoConfig.standaloneEnabledModeMap[value]:=this.guiMain.Controls[guiLabel].get()
+            memberIndex++
+        } 
         baseballAutoConfig.saveConfig()
     }
     rolePassByGui(){
@@ -405,7 +442,7 @@ Class BaseballAutoGui{
         ToolTip
     }
     waitingResultByGui(){
-        global baseballAuto        
+        global baseballAuto 
         baseballAuto.setWantToResult(true)
 
         ToolTip, 종료 또는 Mode Skip을 요청합니다.
@@ -467,8 +504,3 @@ Class BaseballAutoGui{
     }
 }
 
-; ACTIVE_ID:="(Hard)"
-; BooleanDebugMode:=true
-
-; baseballAuto := new BaseballAuto()
-; baseballAutoGui := new BaseballAutoGui()

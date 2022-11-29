@@ -122,7 +122,6 @@ Class HomrunDerbyMode extends AutoGameMode{
         if( this.checkWantToModeQuit() ){
             return 0
         }else{
-
             if( this.player.needToStopBattle() ){
                 this.logger.log( "다 돌아 종료 하겠습니다.") 
                 this.stopControl()

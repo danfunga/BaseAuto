@@ -95,8 +95,16 @@ Class AutoGameMode{
             return callback.Call(this)
         }
         return 0
-
     }
+
+    isTitleHolderModeWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\3-5.타이틀홀더모드_Base") ){		 
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0
+    }
+
     isHomerunRoyalWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\3-2.홈런로얄_Base") ){		 
             this.continueControl()
@@ -165,6 +173,7 @@ Class AutoGameMode{
         }
         return 0 
     }	
+    
 
     afterSkipGameResultWindow( callback ){
         if( this.skipGameResultWindow() ){
@@ -182,7 +191,7 @@ Class AutoGameMode{
     }
     skipCommonPopup(){
         if ( this.gameController.searchImageFolder("1.공통\화면_팝업스킵" ) ){
-            this.logger.log("레벨업이나 성장을 팝업등을 무시합니다.") 
+            this.logger.log("팝업을 무시합니다.") 
             if ( this.gameController.searchAndClickFolder("1.공통\버튼_팝업스킵" ) ){
                 return 1
             }
@@ -190,11 +199,14 @@ Class AutoGameMode{
         return 0 
     } 
 
-    clickNextAndConfirmButton(){
-        if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){
-            return 1
-        } 
+
+    clickCommonStartButton(){
+        return this.gameController.searchAndClickFolder("1.공통\버튼_게임시작")
     }
+    clickNextAndConfirmButton(){
+        return this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) 
+    }
+
     checkWantToModeQuit(){
         if ( this.player.getWaitingResult() ){
             this.logger.log( "종료 요청이 확인되었습니다.") 
@@ -278,37 +290,44 @@ Class AutoGameMode{
         }
     }
     setAutoMode( mode:=true ){
+        success:=false
+        ; while(success == false){
         if( mode ){
             if ( this.gameController.searchImageFolder("1.공통\모드_자동모드\버튼_자동상태") ){
                 this.logger.log("자동모드 체크 ==> 자동입니다. ") 
+                success:=true
             }else if ( this.gameController.searchAndClickFolder("1.공통\모드_자동모드\버튼_자동아님") ){
                 this.logger.log("자동모드 체크 ==> 자동으로 변경합니다.") 
+                success:=true
             }else{
                 this.logger.log("자동으로 변경을 실패했습니다.") 
             }
         }else{
             if ( this.gameController.searchImageFolder("1.공통\모드_자동모드\버튼_자동아님") ){
                 this.logger.log("자동모드 체크 ==> 자동이 아닙니다.") 
+                success:=true
             }else if ( this.gameController.searchAndClickFolder("1.공통\모드_자동모드\버튼_자동상태") ){
                 this.logger.log("자동모드 체크 ==> 자동을 끕니다.") 
+                success:=true
             }else{
                 this.logger.log("자동을 끄는것을 실패했습니다.") 
             }
         }
+        ; }
     }
     restartAppPlayer(){
-         WinGetClass, targetClassName , % this.player.getAppTitle()              		 
-        if ( InStr(targetClassName ,"LDPlayer" )  ){
+        WinGetClass, targetClassName , % this.player.getAppTitle() 		 
+        if ( InStr(targetClassName ,"LDPlayer" ) ){
             popupTitle:="ahk_class LDPlayerMsgFrame"
-        }else if ( InStr(targetClassName ,"Qt5QWindowIcon" )  ){
-			popupTitle:="ahk_class Qt5QWindowIcon"
+        }else if ( InStr(targetClassName ,"Qt5QWindowIcon" ) ){
+            popupTitle:="ahk_class Qt5QWindowIcon"
         }else{
-		   popupTitle:="MEmu"
-		}
+            popupTitle:="MEmu"
+        }
         this.logger.log( "앱 플레이어의 강제 재기동을 수행합니다. " ) 
         this.gameController.setActiveId(this.player.getAppTitle())
         if( this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료",0,0,false,true) ){
-			this.gameController.sleep(1)
+            this.gameController.sleep(1)
             this.gameController.setActiveId(popupTitle)
             if ( this.gameController.searchImageFolder("1.공통\버튼_앱강제종료\화면_재시작확인") ){
                 this.logger.log("재기동을 선택합니다.") 

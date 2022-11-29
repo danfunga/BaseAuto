@@ -3,28 +3,33 @@
 class BaseballAutoPlayer{
     static logger:= new AutoLogger( "Player" ) 
 
-    static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","로얄","친구","보상","스테","히스","등반"]
-    static AVAILABLE_MODES:=["리그","실대","랭대","홈런","로얄","친구","보상","히스","스테","등반"]
+    ; static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","로얄","친구","보상","스테","히스","등반","클협","타홀"]
+    static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","로얄","친구","보상","스테","히스","등반","타홀"]
+    static AVAILABLE_MODES:=["리그","실대","랭대","홈런","로얄","히스","스테","등반","타홀","친구","보상"]
+    ; static AVAILABLE_MODES:=["리그","실대","랭대","홈런","로얄","친구","보상","히스","스테","등반","클협","타홀"]
     static AVAILABLE_PLAY_TYPE:=["전체","공격","수비"]
 
     static NEXT_PLAYER_STATUS:=["Unknwon","자동중","리그종료","끝","다음임무"]
     static STOP_PLAYER_STATUS:=["끝","리그종료"]
 
     ; 기본 모드든에 대한 설정 
-    static COUNT_PER_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2,"리그":-1, "스테":-1, "등반":-1 }
+    static COUNT_PER_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2,"리그":-1, "스테":-1, "타홀":-1, "클협":-1,"등반":-1 }
 
     ; 일꾼 모드 설정
     static COUNT_PER_ASSIST_MODE := { "랭대":-1,"히스":-1, "홈런":-1, "친구":40, "실대":2, "보상":1 } 
     static ASSIST_MODE_ARRAY:=["홈런","랭대","히스","친구","보상"]
     static ASSIST_MODE_ENDLESS:=false
 
-    ; 단독 모드 설정
-    static COUNT_PER_ALONE_MODE := { "리그":5, "랭대":-1, "홈런":-1,"히스":-1,"친구":10, "실대":1, "스테":-1, "보상":1 } 
+    ; 1번 돌때 도는 횟수
+    static COUNT_PER_ALONE_MODE:={ "리그":5, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":-1, "타홀":-1,"친구":10, "보상":1 } 
+    static DEFULAT_LOOP_COUNT_PER_DAY :={ "리그":-1, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":2, "타홀":-1,"친구":-1, "보상":-1 } 
     ; 친구대전을 계속 돌 필요 없으니
-    LOOP_PER_ALONE_MODE := { "리그":-1, "랭대":-1,"히스":-1, "홈런":-1, "친구":-1, "실대":1, "스테":1, "보상":-1 } 
-    ALONE_MODE_ARRAY:=["리그","홈런","랭대","히스","친구","보상"] 
+    ; 사이클 횟수
+    LOOP_PER_ALONE_MODE :={} 
+    ALONE_MODE_ENABLED_MAP:={ "리그":true, "실대":false,"랭대":true,"홈런":true,"히스":true, "스테":false,"클협":false, "타홀":false,"친구":true, "보상":true } 
+    ALONE_MODE_ARRAY:=["리그","실대","홈런","랭대","히스","스테","타홀","친구","보상"] 
 
-    __NEW( index , title:="(Main)", enabled:=false, role:="리그" ){
+    __NEW( index , title:="nox1", enabled:=false, role:="단독" ){
         this.index:=index
         this.appTitle:=title
         this.enabled:=enabled
@@ -37,9 +42,15 @@ class BaseballAutoPlayer{
         this.currentBattleRemainCount:=0
         this.remainFriendsBattleCount:=40
         this.remainRealTimeBattleCount:=2
-        this.countPerMode := { "리그":0, "랭대":0, "홈런":0,"로얄":0,"친구":0, "실대":0,"히스":0,"보상":0,"스테":0, "등반":0 } 
+        this.countPerMode := { "리그":0, "실대":0,"랭대":0,"홈런":0,"히스":0, "스테":0,"클협":0, "타홀":0,"친구":0, "보상":0, "로얄":0, "등반":0,"클협":0 } 
+        this.initTodayLoopCount()
     } 
-
+    initTodayLoopCount(){ 
+        for key in BaseballAutoPlayer.DEFULAT_LOOP_COUNT_PER_DAY
+        { 
+            this.LOOP_PER_ALONE_MODE[key]:=BaseballAutoPlayer.DEFULAT_LOOP_COUNT_PER_DAY[key] 
+        }
+    }
     setResult( result ){
         global baseballAutoGui, baseballAutoConfig
         if ( result ="" ){
@@ -163,7 +174,7 @@ class BaseballAutoPlayer{
             this.LOOP_PER_ALONE_MODE[this.appMode]:=0
             this.logger.log("아마 이 화면을 못벗어 날거 같지만 행운을 빕니다.")
             this.logger.log("운이 좋아 튕긴다면 다음 모드만 돌것입니다.")
-             this.setResultColor(3)
+            this.setResultColor(3)
             if( this.setMode("next") ){
                 this.setStatus("다음임무")
                 return true
@@ -222,6 +233,7 @@ class BaseballAutoPlayer{
         if( this.appRole ="일꾼" ){
             if( targetMode = "일꾼" ){
                 targetMode:=BaseballAutoPlayer.ASSIST_MODE_ARRAY[1]
+
             }else{
                 if( targetMode = "next" ){
                     currentIndex:=this.getIndex(this.appMode,BaseballAutoPlayer.ASSIST_MODE_ARRAY)
@@ -242,20 +254,29 @@ class BaseballAutoPlayer{
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_ASSIST_MODE[this.appMode]
             return true
         }else if( this.appRole = "단독" ){
-            if( targetMode = "단독" ){
+            if( this.logger.isDayChanged() ){ 
+                this.initTodayLoopCount()
+                this.logger.log("새로운 날이 되어서 Loop를 초기화 합니다.")
+            }
+            if( targetMode = "단독" ){ 
                 targetMode:=this.ALONE_MODE_ARRAY[1]
+                currentIndex:=1
             }else{
                 if( targetMode = "next" ){
                     currentIndex:=this.getIndex(this.appMode,this.ALONE_MODE_ARRAY)
-                    if( this.LOOP_PER_ALONE_MODE[this.appMode] < 0 ){
+                    if( this.LOOP_PER_ALONE_MODE[this.appMode] <= 0 ){
+                        ; 무한으로 돌아야 하는 모드면 그냥 Index만 넘기고
                         currentIndex++
                     }else{
                         this.LOOP_PER_ALONE_MODE[this.appMode]--
-                        if( this.LOOP_PER_ALONE_MODE[this.appMode] <= 0 ){
-                            this.ALONE_MODE_ARRAY.remove(currentIndex)
-                        }else{
-                            currentIndex++ 
-                        }
+                        currentIndex++ 
+                        ; if( this.LOOP_PER_ALONE_MODE[this.appMode] == 0 ){
+                        ;     ; 그만 돌아야 하니 빼줘라
+                        ;     ; this.ALONE_MODE_ARRAY.remove(currentIndex)
+                        ;     currentIndex++ 
+                        ; }else{
+                        ;     currentIndex++ 
+                        ; }
                     }
 
                     if( currentIndex > this.ALONE_MODE_ARRAY.length() ){
@@ -265,13 +286,23 @@ class BaseballAutoPlayer{
                         this.setStatus("끝") 
                         return false
                     }
-
-                    targetMode:=this.ALONE_MODE_ARRAY[currentIndex] 
-                    this.logger.log(this.appTitle "가 [" this.appRole "][" targetMode "] 모드로 동작합니다.. ")
                 }
             } 
-            this.appMode:=targetMode
+            while(true){
+                targetMode:=this.ALONE_MODE_ARRAY[currentIndex] 
+                if( this.ALONE_MODE_ENABLED_MAP[targetMode]=false){
+                    currentIndex++ 
+                    if( currentIndex > this.ALONE_MODE_ARRAY.length() ){
+                        currentIndex:=1
+                    }
+                    ; this.ALONE_MODE_ARRAY.remove(currentIndex)
+                }else{
+                    break
+                }
+            } 
+            this.appMode:=this.ALONE_MODE_ARRAY[currentIndex] 
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_ALONE_MODE[this.appMode]
+            this.logger.log(this.appTitle "가 [" this.appRole "][" this.appMode "] 모드로 동작합니다. Loop = " this.LOOP_PER_ALONE_MODE[this.appMode] " RunCount = " this.currentBattleRemainCount)
             return true
         } 
         else{
@@ -297,7 +328,24 @@ class BaseballAutoPlayer{
         }
         this.battleType:=_battleType
     }
+    setStandAloneModeOrder(arrayString ){
+        ; MsgBox, % "called : "  this.ALONE_MODE_ARRAY
+        ; targetString:="red,green,blue"
+        StringSplit, tempArray,arrayString, `,
+        this.ALONE_MODE_ARRAY:=[]
+        loop %tempArray0%
+        {
+            this.ALONE_MODE_ARRAY.push(tempArray%A_Index%) 
+        }
 
+    }
+    setStandAloneModeEnableMap(enableMap){
+        for key in enableMap
+        { 
+            this.ALONE_MODE_ENABLED_MAP[key]:=enableMap[key] 
+        }
+
+    }
     getKeyEnable(){
         return % "player" this.index "Enabled"
     }

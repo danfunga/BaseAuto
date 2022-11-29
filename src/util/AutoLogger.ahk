@@ -18,8 +18,16 @@
         }else{
             this.directory:=this.baseDirectory
         }
+        this.dayChanged:=false
     }
-
+    isDayChanged(){
+        if( this.dayChanged ){
+            this.dayChanged:=false
+            return true
+        }else{
+            return false
+        }
+    }    
     log( content , boolIsDebug:=false) { 
         FormatTime, sFileName, %A_NOW%, MM월dd일
         FormatTime, TimeString, %A_NOW%, HH:mm:ss
@@ -38,6 +46,7 @@
         if( this.module = "Player"){
             if( this.checkDay != sFileName ){ 
                 this.checkDay:=sFileName
+                this.dayChanged:=true
                 this.log( "지난 로그파일을 정리하겠습니다.")
 
                 todayString = %A_NOW%

@@ -47,7 +47,10 @@ Class StageMode extends AutoGameMode{
         return 0		
     }
 
-    selectStageLevel(){
+    selectStageLevel(){ 
+        if( this.checkWantToModeQuit() ){
+            return 0
+        } 
         if ( this.gameController.searchImageFolder("0.기본UI\3-3.스테이지모드_Base") ){		
             this.continueControl()
             this.logger.log("입장합니다")
@@ -84,28 +87,30 @@ Class StageMode extends AutoGameMode{
     }
 
     startStageMode(){
-        if ( this.gameController.searchImageFolder("0.기본UI\3-3.스테이지모드_Base") ){		 
-            if(this.checkStageModeClose()){
-                return 1
-            }else{
-                this.continueControl()
-                this.logger.log("스테이지 모드를 준비합니다~")
-                if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
-                    return 1
-                } 
-            }
-
+        if( this.checkWantToModeQuit() ){
+            return 0
         }
-        return 0		
+        if(this.checkStageModeClose()){
+            return 1
+        }else{
+            this.continueControl()
+            this.logger.log("스테이지 모드를 준비합니다~")
+            if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
+                return 1
+            } 
+        }
     }
     playStageMode(){
+        if( this.checkWantToModeQuit() ){
+            return 0
+        }
         if ( this.gameController.searchImageFolder("스테이지모드\화면_대전준비") ){		 
             if(this.checkStageModeClose()){
                 return 1
             }else{
                 this.continueControl()
                 this.logger.log("스테이지 모드를 시작합니다~")
-                
+
                 this.setAutoMode(true)
                 if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
                     this.logger.log("고고변 받아봤자 캡틴 안나옴ㅋ")
@@ -164,44 +169,16 @@ Class StageMode extends AutoGameMode{
         return 0 
     }
 
-    checkGameResultWindow(){
-        if ( this.gameController.searchImageFolder("1.공통\화면_경기_결과" ) ){		
-            this.logger.log("경기 결과화면입니다..") 
-            this.continueControl()
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){ 
-                return 1
-            }
-        }
-        return 0 
-    }
-
-    checkMVPWindow(){
-        if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){		
-            this.continueControl()
-            this.logger.log("스테이지모드 종료를 확인했습니다.") 
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){
-                this.player.addResult()
-                if( this.player.needToStopBattle() ){
-                    this.logger.log("스테이지모드를 횟수만큼 다 돌았습니다.") 
-                    this.releaseControl()
-                }else{
-                    if( this.player.getRemainBattleCount() = "무한" ){
-                        this.logger.log("스테이지 볼을 다 쓸때까지 돕니다." )
-                    }else{
-                        this.logger.log("스테이지 모드를 " this.player.getRemainBattleCount() "번 더 돕니다." ) 
-                    }
-                    this.releaseControl()
-                }
-                return 1
-            }
-        }
-        return 0 
-    } 
-
     checkStageModeClose(){
         if ( this.gameController.searchImageFolder("스테이지모드\화면_볼없음" ) ){		 
             this.logger.log("볼이 없는거 보니 스테이지모드 다 돌았네요. ..")
-            this.releaseControl()
+            if( this.player.appRole == "단독" ){
+                this.stopControl()
+            }else{
+                this.logger.log( "스테이지 모드는 10초간 볼 찰동안 기다립니다.") 
+                this.releaseControl()
+                this.gameController.sleep(10)
+            } 
             return 1
         }
         return 0 
@@ -209,27 +186,34 @@ Class StageMode extends AutoGameMode{
 
     checkModeRunMore(){
         this.player.addResult()
-        if ( this.player.getWaitingResult() ){
-            this.logger.log( "종료 요청이 확인되었습니다.") 
-            this.player.setWantToWaitResult(false)
-            this.releaseControl() 
-            return 1
+        if( this.checkWantToModeQuit() ){
+            return 0
         }else{
-
-            if( this.player.needToStopBattle() ){
-                this.logger.log( "다 돌아 종료 하겠습니다.") 
-                this.releaseControl()
-            }else{
-                if( this.player.getRemainBattleCount() = "무한" ){
-                    this.logger.log( "돌 수 없을 때까지 돌게 됩니다.") 
+            if( this.player.appRole == "단독" ){
+                if( this.player.needToStopBattle() ){
+                    this.logger.log( "다 돌아 종료 하겠습니다.") 
+                    this.stopControl()
                 }else{
-                    this.logger.log( this.player.getRemainBattleCount() " 번 더 돌겠습니다.") 
-                } 
-                if( this.player.appRole != "단독" )
+                    if( this.player.getRemainBattleCount() = "무한" ){
+                        this.logger.log( "돌 수 없을 때까지 돌게 됩니다.") 
+                    }else{
+                        this.logger.log( this.player.getRemainBattleCount() " 번 더 돌겠습니다.") 
+                    } 
+                }
+            }else{
+                if( this.player.needToStopBattle() ){
+                    this.logger.log( "다 돌아 종료 하겠습니다.") 
                     this.releaseControl()
+                }else{
+                    if( this.player.getRemainBattleCount() = "무한" ){
+                        this.logger.log( "돌 수 없을 때까지 돌게 됩니다.") 
+                    }else{
+                        this.logger.log( this.player.getRemainBattleCount() " 번 더 돌겠습니다.") 
+                    } 
+                }
+                this.releaseControl()
             }
             return 1
         }
     }
-
 }

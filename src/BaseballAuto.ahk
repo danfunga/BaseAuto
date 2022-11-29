@@ -9,8 +9,10 @@
 #include %A_ScriptDir%\src\mode\HomrunDerbyMode.ahk
 #include %A_ScriptDir%\src\mode\HomrunRoyalMode.ahk
 #include %A_ScriptDir%\src\mode\HistoryMode.ahk
+
 #include %A_ScriptDir%\src\mode\ReceiveRewardMode.ahk
 #include %A_ScriptDir%\src\mode\StageMode.ahk
+#include %A_ScriptDir%\src\mode\TitleHolderMode.ahk
 #include %A_ScriptDir%\src\mode\LeagueUpgradeMode.ahk
 
 Class BaseballAuto{
@@ -56,6 +58,15 @@ Class BaseballAuto{
         this.typePerMode["스테"]:=[]
         this.typePerMode["스테"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["스테"].Push(new StageMode( this.gameController ) ) 
+
+        this.typePerMode["타홀"]:=[]
+        this.typePerMode["타홀"].Push(new GameStarterMode( this.gameController ) ) 
+        this.typePerMode["타홀"].Push(new TitleHolderMode( this.gameController ) ) 
+
+        this.typePerMode["클협"]:=[]
+        this.typePerMode["클협"].Push(new GameStarterMode( this.gameController ) ) 
+        this.typePerMode["클협"].Push(new ClubTogetherMode( this.gameController ) ) 
+
 		
 		this.typePerMode["히스"]:=[]
         this.typePerMode["히스"].Push(new GameStarterMode( this.gameController ) ) 
