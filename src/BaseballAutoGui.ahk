@@ -50,23 +50,11 @@ Class BaseballAutoGui{
 
     initConfigButton( _height ){
         currentWindowHeight:=15
-        ; option:=% "xs+5 ys+20 disabled"
-        ;    his.guiMain.Add("Button", "Bye", "x" 100 " y0", "ByeButton",0)
-        ;     this.guiMain.Add("Button", "Hi", "x" 150 " y0", "HiButton",0) t
-
-        ; this.guiMain.Add("Button", "Bye", "x" this.maxGroupWidth -200 " y0 w50", "ByeButton",0)
-        ; this.guiMain.Add("Button", "Hi", "x" this.maxGroupWidth -150 " y0 w50", "HiButton",0)
         this.guiMain.Add("Button", "Clear", "x" this.maxGroupWidth -90 " y0 w50", "StatClearButton",0)
         this.guiMain.Add("Button", "Save", "x" this.maxGroupWidth -40 " y0 w50", "SavePlayerButton",0)
 
-        ; this.guiMain.Add("Button", "pass", "x" this.maxGroupWidth -30 " y+10", "RolePassButton",0)
-        ; this.guiMain.Add("Button", "OK", "x" this.maxGroupWidth -30 " y+10", "RoleAllowButton",0)
-        ; this.guiMain.Controls["ByeButton"].BindMethod(this.byePlayerFunction.Bind(this))
-        ; this.guiMain.Controls["HiButton"].BindMethod(this.HiPlayerFunction.Bind(this))
         this.guiMain.Controls["SavePlayerButton"].BindMethod(this.savePlayerByGui.Bind(this))
         this.guiMain.Controls["StatClearButton"].BindMethod(this.clearStatsByGui.Bind(this))
-        ; this.guiMain.Controls["RolePassButton"].BindMethod(this.rolePassByGui.Bind(this))
-        ; this.guiMain.Controls["RoleAllowButton"].BindMethod(this.roleAllowByGui.Bind(this))
         return currentWindowHeight
     }
     initPlayerWindow( _height ){
@@ -231,7 +219,6 @@ Class BaseballAutoGui{
     }
     initWindowStatistic(_height){
 
-        
     }
     initLogWindow(_height){
         currentWindowHeight:=this.CONST_SIZE_LOG_HEIGHT
@@ -255,7 +242,7 @@ Class BaseballAutoGui{
     initConfigWindow(_height){
         global baseballAutoConfig
         currentWindowHeight:=this.CONST_SIZE_CONFIG_HEIGHT
-        
+
         this.guiMain.addGroupBox("Config", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
         ; this.guiMain.Add("CheckBox", "Pushbullet ", "xs+5 ys+20 h10", "configPushbulletEnabled",0)
         ; this.guiMain.Add("Button", "Save", "x" this.maxGroupWidth -45 " yp+10 w50", "buttonConfigSave",0)
@@ -271,22 +258,23 @@ Class BaseballAutoGui{
             guiLabel :=% "AloneMode" index "CheckBox"
             if ( memberIndex = 1 ){
                 option:=% "xs+5 y+5 checked disabled"
-            }else if(memberIndex=7 or memberIndex = 13){
-                option:=% "xs+5 y+5"
-            }
-            else{
-                option:="x+0 yp"
+            }else{
+                if(memberIndex=7 or memberIndex = 13){
+                    option:=% "xs+5 y+5"
+                }else{
+                    option:="x+0 yp"
+                }
                 if ( baseballAutoConfig.standaloneEnabledModeMap[value] ){
                     option:= % option " checked"
                 }
             } 
+
             this.guiMain.Add("CheckBox", value, option, guiLabel,0)
             memberIndex++
         } 
 
         this.guiMain.Add("Text", "단독 순서 : ", "xs y+20")
         this.guiMain.Add("Edit", "리그,실대,랭대,홈런,히스,스테,타홀,친구,보상", "xs y+3", "configJobOrder")
-    
 
         return currentWindowHeight
     }
@@ -421,7 +409,7 @@ Class BaseballAutoGui{
             if( value = "등반" or value ="로얄"){
                 continue
             }
-            guiLabel :=% "AloneMode" index "CheckBox"           
+            guiLabel :=% "AloneMode" index "CheckBox" 
             baseballAutoConfig.standaloneEnabledModeMap[value]:=this.guiMain.Controls[guiLabel].get()
             memberIndex++
         } 
