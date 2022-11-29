@@ -22,7 +22,7 @@ class BaseballAutoPlayer{
     static ASSIST_MODE_ENDLESS:=false
 
     ; 1번 돌때 도는 횟수
-    
+
     static COUNT_PER_ALONE_MODE:={ "리그":5, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":-1, "타홀":-1,"친구":10, "보상":1 } 
     static DEFULAT_LOOP_COUNT_PER_DAY :={ "리그":-1, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":2, "타홀":-1,"친구":-1, "보상":-1 } 
     ; 친구대전을 계속 돌 필요 없으니
@@ -53,10 +53,15 @@ class BaseballAutoPlayer{
             this.LOOP_PER_ALONE_MODE[key]:=BaseballAutoPlayer.DEFULAT_LOOP_COUNT_PER_DAY[key] 
         }
     }
-    addCurrentModeResult(modeName){
-        global baseballAutoGui
-        this.countPerMode[modeName]++                        
-        baseballAutoGui.updateStatus( BaseballAutoPlayer.STASTICS_KEY_MAP[modeName], this.countPerMode[modeName])
+    setCurrentModeResult(modeName, value){
+        global baseballAutoGui, baseballAutoConfig
+        if ( value ="" ){
+            value:=0
+        }
+        this.countPerMode[modeName]=value
+
+        baseballAutoConfig.savePlayerStatistic(player,modeName,value)
+        baseballAutoGui.updateStatus( BaseballAutoPlayer.STASTICS_KEY_MAP[modeName], value)
     }
     setResult( result ){
         global baseballAutoGui, baseballAutoConfig
@@ -104,7 +109,9 @@ class BaseballAutoPlayer{
     }
     addResult(){ 
         this.setResult( this.result + 1)
-        this.addCurrentModeResult(this.appMode)        
+        if( this.index = 1){            
+            this.setCurrentModeResult(this.appMode, this.countPerMode[modeName]+1) 
+        }
     } 
 
     getRemainBattleCount(){

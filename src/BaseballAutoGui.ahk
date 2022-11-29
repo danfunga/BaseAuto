@@ -220,12 +220,16 @@ Class BaseballAutoGui{
         this.guiMain.Controls[statusLabel].setText(status)
     }
     initWindowStatistic(_height){
+        global baseballAutoConfig
+
+        currentPlayer:=baseballAutoConfig.players[1]
+
         currentWindowHeight:=50
-        this.guiMain.addGroupBox("Statstics", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
+        this.guiMain.addGroupBox("Main Statstics", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
 
         existIndex:=1
         for index, value in BaseballAutoPlayer.AVAILABLE_MODES
-        {         
+        { 
             if( value = "등반" or value ="로얄"){
                 continue
             }
@@ -246,12 +250,12 @@ Class BaseballAutoGui{
 
         existIndex:=1
         for index, value in BaseballAutoPlayer.AVAILABLE_MODES
-        {         
+        { 
             if( value = "등반" or value ="로얄"){
                 continue
             }
             ; guiTitle:=% index ". " value
-            guiTitle:=0
+            guiTitle:=currentPlayer.countPerMode[value]
             guiLabel:=% "Statistic" index "Result"
             if ( existIndex = 1 ){
                 option:=% "xs+28 ys w22 right section"
@@ -261,9 +265,9 @@ Class BaseballAutoGui{
                 }else{
                     option:=% "x+36 yp wp right"
                 }
-            }             
+            } 
             this.guiMain.Add("Text", guiTitle, option, guiLabel,0)
-            BaseballAutoPlayer.STASTICS_KEY_MAP[value]:=guiLabel            
+            BaseballAutoPlayer.STASTICS_KEY_MAP[value]:=guiLabel 
             existIndex++
         } 
         return currentWindowHeight
@@ -436,6 +440,12 @@ Class BaseballAutoGui{
         for index,player in baseballAutoConfig.players
         {
             player.setResult(0)
+            if( index = 1){
+                for key in player.countPerMode
+                {
+                    player.setCurrentModeResult(key,0)
+                }
+            }
         }
     }
     savePlayerByGui(){

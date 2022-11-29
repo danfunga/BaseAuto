@@ -6,12 +6,12 @@ class BaseballAutoConfig{
         this.configFile := new IniController( configFileName )
 
         This.players := []
-        This.enabledPlayers:=Array()        
+        This.enabledPlayers:=Array() 
         this.standaloneEnabledModeMap:={}
-        
+
         for index, value in BaseballAutoPlayer.AVAILABLE_MODES
         {
-           if( value = "등반" or value="로얄"){
+            if( value = "등반" or value="로얄"){
                 continue
             }
             if( value = "리그" or value = "홈런" or value = "랭대" or value = "히스" or value = "친구" or value = "보상"){
@@ -72,6 +72,14 @@ class BaseballAutoConfig{
 
                 if (playerBattleType="")	
                     player.setBattleType("전체")
+                
+                for index, value in BaseballAutoPlayer.AVAILABLE_MODES
+                { 
+                    readValue:= this.configFile.loadValue("PLAYERS_STAISTICS", value )
+                    if( readValue = "")
+                        readValue:=0
+                    player.countPerMode[value]:=readValue                    
+                } 
             } 
             if( player.getEnabled() ){
                 this.enabledPlayers.push(player)
@@ -127,9 +135,9 @@ class BaseballAutoConfig{
             this.configFile.saveValue(PLAYER_KEY,element.getKeyRole(), element.getRole()) 
             this.configFile.saveValue(PLAYER_KEY,element.getKeyBattleType(), element.getBattleType()) 
         }
-         for index, value in BaseballAutoPlayer.AVAILABLE_MODES
+        for index, value in BaseballAutoPlayer.AVAILABLE_MODES
         { 
-             if( value = "등반" or value="로얄"){
+            if( value = "등반" or value="로얄"){
                 continue
             }
             this.configFile.saveValue("STANDALONE_ENABLED_MODE",value,this.standaloneEnabledModeMap[value]) 
@@ -141,6 +149,10 @@ class BaseballAutoConfig{
 
     savePlayerResult( player ){
         this.configFile.saveValue("PLAYERS_CONFIG",player.getKeyResult(), player.getResult()) 
+    }
+
+    savePlayerStatistic( player , mode , value){
+        this.configFile.saveValue("PLAYERS_STAISTICS",mode, value) 
     }
 }
 
