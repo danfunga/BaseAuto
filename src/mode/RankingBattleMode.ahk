@@ -26,7 +26,7 @@ Class RankingBattleMode extends AutoGameMode{
     }
 
     selectBattleMode(){
-        if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_대전_팀별") ){
+        if ( this.clickCommonBattleButton() ){
             this.logger.log(this.player.getAppTitle() "랭킹 대전을 위해 대전을 선택합니다.")
             return 1
         }else{

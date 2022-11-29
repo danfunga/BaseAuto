@@ -24,7 +24,7 @@ Class HistoryMode extends AutoGameMode{
     }
 
     selectSpecialMode(){ 
-        if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_스페셜_팀별") ){
+        if ( this.clickCommonSpecialButton() ){
             this.logger.log(this.player.getAppTitle() "히스토리 모드를 위해 스페셜 버튼을 클릭합니다.")
             return 1
         }else{

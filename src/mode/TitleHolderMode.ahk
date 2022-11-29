@@ -30,10 +30,13 @@ Class TitleHolderMode extends AutoGameMode{
     }
 
     selectSpecialMode(){
-        this.logger.log(this.player.getAppTitle() "타이틀홀드 시작합니다!")
-        this.continueControl()
-        if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_스페셜_팀별") ){
+        if ( this.clickCommonSpecialButton() ){
+            this.continueControl()
+            this.logger.log(this.player.getAppTitle() "타이틀 홀드 모드를위해 스페셜 버튼을 클릭했습니다.")
             return 1
+        }else{
+            this.logger.log(this.player.getAppTitle() "스페셜 버튼을 못찾았습니다")
+            return 0
         }
     }
 
@@ -42,7 +45,7 @@ Class TitleHolderMode extends AutoGameMode{
             return 0
         }
         this.continueControl()
-        this.logger.log("타이틀 홀더 모드를 시작합니다.~") 
+        this.logger.log("타이틀 홀더 모드에 입장합니다") 
         if ( this.gameController.searchAndClickFolder("0.기본UI\3.스페셜모드_버튼_타이틀홀드모드") ){
             this.logger.log("여기는 로딩이 긴거 같아 좀 쉬었다가.") 
             this.gameController.sleep(3)
@@ -117,11 +120,9 @@ Class TitleHolderMode extends AutoGameMode{
                 return 1
             }else{
                 this.continueControl()
-                this.logger.log("타이틀 홀드 모드를 시작합니다~")
-
+                this.logger.log("타이틀 홀드 모드를 플레이합니다")
                 this.setAutoMode(true)
                 if ( this.clickCommonStartButton() ){ 
-                    this.logger.log("시작해볼까?")
                     this.logger.log("6초 기다립니다.")
                     this.gameController.sleep(6)
                     return 1
@@ -140,7 +141,7 @@ Class TitleHolderMode extends AutoGameMode{
             }
             localCounter++ 
             this.checkPopup(localCounter)
-        }       
+        } 
         ; 아직 아래 없음
         if ( this.gameController.searchImageFolder("타이틀홀더모드\화면_팝업체크" ) ){		
             this.logger.log("팝업을 제거합니다. 보상을 안받았나.") 
@@ -158,7 +159,7 @@ Class TitleHolderMode extends AutoGameMode{
     checkPlaying(){
         this.gameController.sleep(2) 
         return 0 
-    }     
+    } 
 
     checkTitleHodlerModeClosed(){
         if ( this.gameController.searchImageFolder("타이틀홀더모드\화면_볼없음" ) ){		 
@@ -168,6 +169,7 @@ Class TitleHolderMode extends AutoGameMode{
         }
         return 0 
     }
+
     checkModeRunMore(){
         this.player.addResult()
         if( this.checkWantToModeQuit() ){

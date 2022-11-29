@@ -68,6 +68,9 @@ Class AutoGameMode{
         }
         return 0
     }
+    ;-------------------------------
+    ; 대전 화면
+    ;-------------------------------
     isBattleWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\2.대전모드_Base") ){		
             this.continueControl()
@@ -75,51 +78,12 @@ Class AutoGameMode{
         }
         return 0		
     }
-    isSpecialWindow( callback ){
-        if ( this.gameController.searchImageFolder("0.기본UI\3.스페셜모드_Base") ){		
-            this.continueControl()
-            return callback.Call(this)
-        }
-        return 0		
+    clickCommonBattleButton(){
+        return this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_대전_팀별")
     }
-    isHomerunDerbyWindow( callback ){
-        if ( this.gameController.searchImageFolder("0.기본UI\3-1.홈런더비_Base") ){		 
-            this.continueControl()
-            return callback.Call(this)
-        }
-        return 0		
-    }
-    isStageWindow( callback ){
-        if ( this.gameController.searchImageFolder("0.기본UI\3-3.스테이지모드_Base") ){		 
-            this.continueControl()
-            return callback.Call(this)
-        }
-        return 0
-    }
-
-    isTitleHolderModeWindow( callback ){
-        if ( this.gameController.searchImageFolder("0.기본UI\3-5.타이틀홀더모드_Base") ){		 
-            this.continueControl()
-            return callback.Call(this)
-        }
-        return 0
-    }
-
-    isHomerunRoyalWindow( callback ){
-        if ( this.gameController.searchImageFolder("0.기본UI\3-2.홈런로얄_Base") ){		 
-            this.continueControl()
-            return callback.Call(this)
-        }
-        return 0		
-    }
-    isHistoryModeWindow( callback ){
-        if ( this.gameController.searchImageFolder("0.기본UI\3-4.히스토리모드_Base") ){		 
-            this.continueControl()
-            return callback.Call(this)
-        }
-        return 0		
-    }
-
+    ;-------------------------------
+    ; 대전 화면 : 1. 랭킹대전
+    ;-------------------------------
     isRankingBattleWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\2-1.랭킹대전_Base") ){
             this.continueControl()
@@ -127,12 +91,127 @@ Class AutoGameMode{
         }
         return 0		
     }
+    ;-------------------------------
+    ; 대전 화면 : 2. 친구대전
+    ;-------------------------------
     isFriendsBattleWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\2-2.친구대전_Base") ){
             this.continueControl()
             return callback.Call(this)
         }
         return 0		
+    }
+    ;-------------------------------
+    ; 대전 화면 : 3. 실시간 대전
+    ;-------------------------------
+    isRealtimeBattleWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\2-3.실시간대전_Base") ){
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0		
+    }
+    ;-------------------------------
+    ; 스페셜 모드 화면
+    ;-------------------------------
+    isSpecialWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\3.스페셜모드_Base") ){		
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0		
+    }
+
+    clickCommonSpecialButton(){
+        return this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_스페셜_팀별")
+    }
+
+    ;-------------------------------
+    ; 스페셜 모드 화면 : 1. 홈런더비
+    ;-------------------------------
+     isHomerunDerbyWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\3-1.홈런더비_Base") ){		 
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0		
+    }
+    ;-------------------------------
+    ; 스페셜 모드 화면 : 2. 홈런로얄
+    ;-------------------------------
+    isHomerunRoyalWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\3-2.홈런로얄_Base") ){		 
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0		
+    }
+    
+    ;-------------------------------
+    ; 스페셜 모드 화면 : 3. 스테이지
+    ;-------------------------------
+    isStageWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\3-3.스테이지모드_Base") ){		 
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0
+    } 
+   
+    ;-------------------------------
+    ; 스페셜 모드 화면 : 4. 히스토리
+    ;-------------------------------
+    isHistoryModeWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\3-4.히스토리모드_Base") ){		 
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0		
+    }
+    ;-------------------------------
+    ; 스페셜 모드 화면 : 5. 타이틀홀드
+    ;-------------------------------
+    isTitleHolderModeWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\3-5.타이틀홀더모드_Base") ){		 
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0
+    }
+    
+
+    isClubWindow(callback){
+        if ( this.gameController.searchImageFolder("0.기본UI\6.클럽모드_Base") ){		 
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0
+    }
+
+    isClubBattleWindow(callback){
+        if ( this.gameController.searchImageFolder("0.기본UI\6-1.클럽대전_Base") ){		 
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0
+    }
+    isClubTogetherWindow(callback){
+        if ( this.gameController.searchImageFolder("0.기본UI\6-2.클럽협동전_Base") ){		 
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0
+    }
+
+    clickCommonClubButton(){
+        return this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_클럽_팀별")
+    }
+
+    clickCommonClubBattleButton(){
+        return this.gameController.searchAndClickFolder("0.기본UI\6.클럽모드_버튼_클럽대전")
+    }
+    clickCommonClubTogetherButton(){
+        return this.gameController.searchAndClickFolder("0.기본UI\6.클럽모드_버튼_클럽협동전")
     }
 
     isGameResultWindow( callback ){
@@ -173,7 +252,6 @@ Class AutoGameMode{
         }
         return 0 
     }	
-    
 
     afterSkipGameResultWindow( callback ){
         if( this.skipGameResultWindow() ){
@@ -198,7 +276,6 @@ Class AutoGameMode{
         }
         return 0 
     } 
-
 
     clickCommonStartButton(){
         return this.gameController.searchAndClickFolder("1.공통\버튼_게임시작")

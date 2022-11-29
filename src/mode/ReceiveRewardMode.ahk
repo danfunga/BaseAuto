@@ -74,7 +74,6 @@ Class ReceiveRewardMode extends AutoGameMode{
                     this.logger.log("받을 보상이 없는것 같습니다.") 
                     this.moveMainPageForNextJob()
                     this.gameController.sleep(3)
-
                 }
             }
             this.receiveFriendsPoint:=true
@@ -222,6 +221,7 @@ Class ReceiveRewardMode extends AutoGameMode{
             }
             this.checkPopup()
             this.receiveDailyReward:=true
+            this.player.addResult()
             this.moveMainPageForNextJob()
             this.stopControl()
             return 0

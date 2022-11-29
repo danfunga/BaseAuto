@@ -25,8 +25,8 @@ Class HomrunDerbyMode extends AutoGameMode{
     }
 
     selectSpecialMode(){ 
-        if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_스페셜_팀별") ){
-            this.logger.log(this.player.getAppTitle() "홈런더비를 위해 스페셜 버튼을 클릭합니다.")
+        if ( this.clickCommonSpecialButton()  ){
+            this.logger.log(this.player.getAppTitle() "홈런더비를 위해 스페셜 버튼을 클릭했습니다.")
             return 1
         }else{
             this.logger.log(this.player.getAppTitle() "스페셜 버튼을 못찾았습니다")

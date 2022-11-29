@@ -26,25 +26,22 @@ Class StageMode extends AutoGameMode{
     }
 
     selectSpecialMode(){
-        if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){
-            this.logger.log(this.player.getAppTitle() "스테이지모드를 시작합니다!")
+        if ( this.clickCommonSpecialButton() ){
             this.continueControl()
-            if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_스페셜_팀별") ){
-                return 1
-            }
-        }
-        return 0
+            this.logger.log(this.player.getAppTitle() "스테이지모드를 위해 스페셜 버튼을 클릭했습니다.")
+            return 1
+        }else{
+            this.logger.log(this.player.getAppTitle() "스페셜 버튼을 못찾았습니다")
+            return 0
+        } 
     }
 
     selectStageMode(){
-        if ( this.gameController.searchImageFolder("0.기본UI\3.스페셜모드_Base") ){		
-            this.continueControl()
-            this.logger.log("스테이지 모드를 선택합니다~") 
-            if ( this.gameController.searchAndClickFolder("0.기본UI\3.스페셜모드_버튼_스테이지모드") ){
-                return 1
-            }		 
-        }
-        return 0		
+        this.continueControl()
+        this.logger.log("스테이지 모드를 선택합니다~") 
+        if ( this.gameController.searchAndClickFolder("0.기본UI\3.스페셜모드_버튼_스테이지모드") ){
+            return 1
+        }		 
     }
 
     selectStageLevel(){ 
@@ -164,7 +161,6 @@ Class StageMode extends AutoGameMode{
         if ( this.gameController.searchImageFolder("스테이지모드\화면_진행중" ) ){		
             this.continueControl()
             this.logger.log("고고변을 향하여..")
-
         } 
         return 0 
     }
