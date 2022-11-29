@@ -4,7 +4,7 @@
 Class BaseballAutoGui{
     width:=330
     maxGroupWidth := this.width-20
-    CONST_SIZE_LOG_HEIGHT:=250
+    CONST_SIZE_LOG_HEIGHT:=200
     CONST_SIZE_CONFIG_HEIGHT:=130
     __NEW( title ){
         this.guiMain := new MC_GuiObj(title)
@@ -218,7 +218,68 @@ Class BaseballAutoGui{
         this.guiMain.Controls[statusLabel].setText(status)
     }
     initWindowStatistic(_height){
+        currentWindowHeight:=50
+        this.guiMain.addGroupBox("Statstics", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
 
+        existIndex:=1
+        for index, value in BaseballAutoPlayer.AVAILABLE_MODES
+        {         
+            if( value = "등반" or value ="로얄"){
+                continue
+            }
+            ; guiTitle:=% index ". " value
+            guiTitle:=% value ":"
+            ; guiLabel :=% "Statstics" index "Text"
+            if ( existIndex = 1 ){
+                option:=% "xs+10 ys+15 section"
+            }else{
+                if(existIndex=6 or existIndex = 11){
+                    option:=% "xs y+4"
+                }else{
+                    option:=% "x+30 yp"
+                }
+            } 
+            ; this.guiMain.Add("Text", "단독 활성화 : ", "xs+5 yp+20 section")
+            this.guiMain.Add("Text", guiTitle, option)
+            existIndex++
+        } 
+
+        existIndex:=1
+        for index, value in BaseballAutoPlayer.AVAILABLE_MODES
+        {         
+            if( value = "등반" or value ="로얄"){
+                continue
+            }
+            ; guiTitle:=% index ". " value
+            guiTitle:="0"
+            guiLabel :=% "Statstics" index "Text"
+            if ( existIndex = 1 ){
+                option:=% "xs+28 ys w22 right section"
+            }else{
+                if(existIndex=6 or existIndex = 11){
+                    option:=% "xs y+4 wp right"
+                }else{
+                    option:=% "x+36 yp wp right"
+                }
+            }             
+            this.guiMain.Add("Text", guiTitle, option, guiLable,0)
+            BaseballAutoPlayer.STASTICS_KEY_MAP[value]:=guiLabel
+            existIndex++
+        } 
+
+
+        ; for index, player in baseballAutoConfig.players
+        ; {
+        ;     guiType:="Text"
+        ;     guiTitle:=player.getStatus()
+        ;     guiLable:=player.getKeyStatus()
+        ;     option:="xp y+10 wp hp +Center"
+        ;     if( index = 1 ){
+        ;         option:="xs+245 ys+20 w60 +Center"
+        ;     }
+        ;     this.guiMain.Add(guiType, guiTitle, option, guiLable,0)
+        ; }
+        return currentWindowHeight
     }
     initLogWindow(_height){
         currentWindowHeight:=this.CONST_SIZE_LOG_HEIGHT

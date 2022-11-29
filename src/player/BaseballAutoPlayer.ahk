@@ -5,9 +5,10 @@ class BaseballAutoPlayer{
 
     ; static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","로얄","친구","보상","스테","히스","등반","클협","타홀"]
     static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","로얄","친구","보상","스테","히스","등반","타홀"]
-    static AVAILABLE_MODES:=["리그","실대","랭대","홈런","로얄","히스","스테","등반","타홀","친구","보상"]
+    static AVAILABLE_MODES:=["리그","랭대","홈런","히스","스테","등반","타홀","클협", "친구","보상", "실대" ,"로얄"]
     ; static AVAILABLE_MODES:=["리그","실대","랭대","홈런","로얄","친구","보상","히스","스테","등반","클협","타홀"]
     static AVAILABLE_PLAY_TYPE:=["전체","공격","수비"]
+    static STASTICS_KEY_MAP:={}
 
     static NEXT_PLAYER_STATUS:=["Unknwon","자동중","리그종료","끝","다음임무"]
     static STOP_PLAYER_STATUS:=["끝","리그종료"]
@@ -21,6 +22,7 @@ class BaseballAutoPlayer{
     static ASSIST_MODE_ENDLESS:=false
 
     ; 1번 돌때 도는 횟수
+    
     static COUNT_PER_ALONE_MODE:={ "리그":5, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":-1, "타홀":-1,"친구":10, "보상":1 } 
     static DEFULAT_LOOP_COUNT_PER_DAY :={ "리그":-1, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":2, "타홀":-1,"친구":-1, "보상":-1 } 
     ; 친구대전을 계속 돌 필요 없으니
@@ -50,6 +52,11 @@ class BaseballAutoPlayer{
         { 
             this.LOOP_PER_ALONE_MODE[key]:=BaseballAutoPlayer.DEFULAT_LOOP_COUNT_PER_DAY[key] 
         }
+    }
+    addCurrentModeResult(modeName){
+        this.countPerMode[modeName]++
+        global baseballAutoGui        
+        baseballAutoGui.updateStatus( BaseballAutoPlayer.STASTICS_KEY_MAP[modeName], this.countPerMode[modeName])
     }
     setResult( result ){
         global baseballAutoGui, baseballAutoConfig
@@ -97,7 +104,9 @@ class BaseballAutoPlayer{
     }
     addResult(){ 
         this.setResult( this.result + 1)
-        this.countPerMode[this.appMode]++
+        this.addCurrentModeResult(this.appMode)
+        
+        
     } 
 
     getRemainBattleCount(){
