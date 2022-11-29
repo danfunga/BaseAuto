@@ -58,7 +58,7 @@ class BaseballAutoPlayer{
         if ( value ="" ){
             value:=0
         }
-        this.countPerMode[modeName]=value
+        this.countPerMode[modeName]:=value
 
         baseballAutoConfig.savePlayerStatistic(player,modeName,value)
         baseballAutoGui.updateStatus( BaseballAutoPlayer.STASTICS_KEY_MAP[modeName], value)
@@ -109,7 +109,7 @@ class BaseballAutoPlayer{
     }
     addResult(){ 
         this.setResult( this.result + 1)
-        if( this.index = 1){            
+        if( this.index = 1){ 
             this.setCurrentModeResult(this.appMode, this.countPerMode[this.appMode]+1) 
         }
     } 
