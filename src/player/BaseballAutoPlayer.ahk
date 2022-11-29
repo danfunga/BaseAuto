@@ -322,11 +322,11 @@ class BaseballAutoPlayer{
                 loopString :=% this.LOOP_PER_ALONE_MODE[this.appMode] "회"
             }
             if ( this.currentBattleRemainCount = -1){
-                thisTimeRepeatString :="끝까지 "
+                thisTimeRepeatString :="돌수 있을 때까지 "
             }else{
                 thisTimeRepeatString :=% this.currentBattleRemainCount "번"
             }
-            this.logger.log( this.appTitle "[" this.appMode "] 반복: " loopString ", 횟수: " thisTimeRepeatString " 돕니다.")            
+            this.logger.log("loop: " loopString ", Count: " thisTimeRepeatString )            
             return true
         } 
         else{
