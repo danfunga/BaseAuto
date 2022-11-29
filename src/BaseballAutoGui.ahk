@@ -4,7 +4,7 @@
 Class BaseballAutoGui{
     width:=330
     maxGroupWidth := this.width-20
-    CONST_SIZE_LOG_HEIGHT:=200
+    CONST_SIZE_LOG_HEIGHT:=170
     CONST_SIZE_CONFIG_HEIGHT:=130
     __NEW( title ){
         this.guiMain := new MC_GuiObj(title)
