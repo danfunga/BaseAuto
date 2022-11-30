@@ -24,6 +24,9 @@ Class TitleHolderMode extends AutoGameMode{
         this.addAction(this.afterSkipMVPWindow,this.checkModeRunMore)
 
         this.addAction(this.skipCommonPopup)
+        this.addAction(this.checkTitleHolderLeagueEnd)
+        this.addAction(this.skipTitleHolderModeReward)
+        
         this.addAction(this.checkTitleHodlerModeClosed)
         this.addAction(this.checkPopup) 
         this.addAction(this.checkAndGoHome) 
@@ -171,6 +174,20 @@ Class TitleHolderMode extends AutoGameMode{
         return 0 
     }
 
+    checkTitleHolderLeagueEnd(){
+        if ( this.gameController.searchImageFolder("타이틀홀더모드\화면_리그종료") ){
+            this.logger.log(this.player.getAppTitle() " 타이틀 홀더 모드 리그가 종료 되었습니다.") 
+            return this.clickNextAndConfirmButton() 
+        }
+        return 0				
+    }
+     skipTitleHolderModeReward(){
+        if ( this.gameController.searchImageFolder("타이틀홀더모드\화면_종료보상") ){
+            this.logger.log(this.player.getAppTitle() "보상을 스킵합니다.") 
+            return this.clickNextAndConfirmButton() 
+        }
+        return 0				
+    }
     checkModeRunMore(){
         this.player.addResult()
         if( this.checkWantToModeQuit() ){
