@@ -33,6 +33,7 @@ Class AutoGameMode{
         }else{
             this.actionList.push( [firstMethod,secondMethod] )
         }
+        this.actionList.push(this.defaultActionDelay)        
     }
     checkAndRun()
     {
@@ -60,6 +61,9 @@ Class AutoGameMode{
         }
         return counter 
     } 
+    defaultActionDelay(){
+        this.gameController.sleep(1)
+    }
 
     isMainWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){ 
