@@ -12,7 +12,7 @@ class MC_GameController{
         global DEFAULT_APP_ID
         ; this.imageSearcher := new ActiveImageSearcher( this.logger )
         this.imageSearcher := new InActiveImageSearcher( this.logger ) 
-        this.controller := new InActiveInputController( this.logger )         
+        this.controller := new InActiveInputController( this.logger ) 
         this.currentTargetTitle:=DEFAULT_APP_ID
     }
     setActiveId(title){
@@ -44,7 +44,7 @@ class MC_GameController{
         }
 
         this.imageSearcher.prepare()
-        findResult:=false        
+        findResult:=false 
         Loop, %A_ScriptDir%\Resource\Image\%targetFolder%\*
         {
             if A_LoopFileExt in % this.extensions
@@ -70,7 +70,7 @@ class MC_GameController{
                 this.click( targetX, targetY, boolDelay, clickTitle )		
             }else{
                 this.randomClick(targetX, targetY, 0, 10, boolDelay, clickTitle)
-            }            
+            } 
             Return true
 
         }else{
@@ -82,8 +82,31 @@ class MC_GameController{
     click( positionX, positionY, needDelay , clickTitle=false){
         this.controller.click(positionX, positionY, clickTitle)
         if( needDelay ){
-            this.sleep(2)
+            this.waitDelayForClick()
         }
+    }
+
+    waitDelayForClick(){
+        global baseballAutoConfig 
+        this.sleep(baseballAutoConfig.delaySecForClick)
+    }
+    waitDelayForLoading(){
+        global baseballAutoConfig 
+        this.sleep(baseballAutoConfig.delaySecChangeWindow/2)
+    }
+
+    waitDelayForChangeWindow(){
+        global baseballAutoConfig 
+        this.sleep(baseballAutoConfig.delaySecChangeWindow)
+    }
+    waitDelayForSkip(){
+        global baseballAutoConfig 
+        this.sleep(baseballAutoConfig.delaySecSkip)
+    }
+    waitDelayForReboot(){
+        global baseballAutoConfig 
+        this.logger.log( baseballAutoConfig.delaySecReboot "를 기다립니다." )
+        this.sleep(baseballAutoConfig.delaySecReboot)
     }
 
     randomClick( positionX, positionY , randomStart:=0, randomEnd:=15 , needDelay:=true , clickTitle:=false){
@@ -104,6 +127,7 @@ class MC_GameController{
     }
     clickESC(){
         this.controller.postClickESC()
+        this.waitDelayForClick() 
     }
     ;이미지 찾을때까지 대기후 클릭
     ; delay & 횟수가 필요

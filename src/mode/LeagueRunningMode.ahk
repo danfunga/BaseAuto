@@ -132,19 +132,16 @@ Class LeagueRunningMode extends AutoGameMode{
             if ( this.player.getBattleType() = "수비" ) {
                 this.logger.log("수비 방식을 선택합니다.") 
                 if ( this.gameController.searchAndClickFolder("리그모드\Window_ChoicePlayType\Button_OnlyDepence") ){
-                    this.gameController.sleep(1)
                     return 1
                 }
             } else if( this.player.getBattleType() = "공격" ){
                 this.logger.log("공격 방식을 선택합니다.") 
                 if ( this.gameController.searchAndClickFolder("리그모드\Window_ChoicePlayType\Button_OnlyOppence") ){
-                    this.gameController.sleep(1)
                     return 1
                 }
             }else{
                 this.logger.log("전체 플레이 방식을 선택합니다.") 
                 if ( this.gameController.searchAndClickFolder("리그모드\Window_ChoicePlayType\Button_FullPlay") ){
-                    this.gameController.sleep(1)
                     return 1
                 }
             } 
@@ -156,7 +153,6 @@ Class LeagueRunningMode extends AutoGameMode{
         result:=before
         if( this.gameController.searchAndClickFolder("리그모드\Button_skipBeforePlay") = true ){				
             this.logger.log(this.player.getAppTitle() " 라인업 등을 넘어갑니다.") 
-            this.gameController.sleep(1)
             result+=1
             if( result > 4 )
                 return result
@@ -187,7 +183,7 @@ Class LeagueRunningMode extends AutoGameMode{
         global baseballAutoConfig
         if ( this.gameController.searchImageFolder("리그모드\화면_게임정지상태") ){
 
-            this.gameController.sleep(2)			
+            this.gameController.waitDelayForLoading()
             if ( this.gameController.searchImageFolder("리그모드\화면_게임정지상태") ){
                 this.logger.log("자동 방식을 활성화 합니다.") 
                 WinGetPos, , , winW, winH, % this.player.getAppTitle
@@ -196,7 +192,7 @@ Class LeagueRunningMode extends AutoGameMode{
                 else
                     this.gameController.clickRatioPos(0.76, 0.097, 20)
 
-                this.gameController.sleep(2)			
+                this.gameController.waitDelayForLoading()
                 if ( this.gameController.searchImageFolder("리그모드\화면_게임정지상태") != true ){
                     this.logger.log(this.player.getAppTitle() " 자동 게임이 시작되었습니다.") 
                     this.releaseControl()
@@ -252,11 +248,11 @@ Class LeagueRunningMode extends AutoGameMode{
             }			
         }else{
             if ( this.gameController.searchImageFolder("리그모드\화면_결과_플레이오프") ){ 
-                this.gameController.sleep(4)			
+                this.gameController.waitDelayForLoading()			
                 if ( this.gameController.searchImageFolder("리그모드\화면_결과_플레이오프") ){								
                     this.logger.log("플레이 오프 경기가 종료 된거 같습니다")
                     if( this.gameController.searchAndClickFolder("리그모드\화면_결과_플레이오프" ) ){
-                        this.gameController.sleep(3)			
+                        this.gameController.waitDelayForLoading()			
                         if ( this.gameController.searchImageFolder("리그모드\화면_결과_플레이오프") ){
                             this.logger.log("오류 인거 같으니 넘어가준다.") 
                             this.releaseControl()

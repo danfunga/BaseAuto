@@ -125,7 +125,7 @@ Class StageMode extends AutoGameMode{
         if ( this.gameController.searchAndClickFolder("스테이지모드\화면_투수프로필") ){		 
             this.continueControl()
             this.logger.log("스테이지 모드 프로필 클릭 합니다~") 
-            this.gameController.sleep(1)
+            this.gameController.waitDelayForLoading()
             this.logger.log("스테이지 모드 시작 하자!!") 
             this.gameController.clickRatioPos(0.5, 0.6, 80)
         }

@@ -32,9 +32,9 @@ Class ReceiveRewardMode extends AutoGameMode{
         }
         this.logger.log(this.player.getAppTitle() "우정포인트 받기를 시작합니다")
         if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구") ){
-			this.gameController.sleep(10)
+            this.gameController.waitDelayForChangeWindow()
             return 1
-        }         
+        } 
     }
 
     selectFriendsList(){
@@ -42,7 +42,7 @@ Class ReceiveRewardMode extends AutoGameMode{
             this.continueControl()
             this.logger.log("친구 목록을 선택합니다") 
             if ( this.gameController.searchAndClickFolder("보상모드\버튼_친구목록") ){
-                this.gameController.sleep(10)
+                this.gameController.waitDelayForChangeWindow()
                 return 1
             }		 
         }
@@ -53,18 +53,16 @@ Class ReceiveRewardMode extends AutoGameMode{
             this.continueControl()
             this.logger.log("친구 목록 화면입니다") 
             if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
-				this.gameController.sleep(3)
+                this.gameController.waitDelayForClick()
                 this.logger.log("보내기 받기를 눌렀습니다.") 
                 this.checkPopup()
 
                 this.moveMainPageForNextJob()
-                this.gameController.sleep(6)
                 return 1
             }else{
                 if ( this.gameController.searchImageFolder("보상모드\화면_보상없음") ){		
                     this.logger.log("받을 보상이 없는것 같습니다.") 
                     this.moveMainPageForNextJob()
-                    this.gameController.sleep(6)
                 }
             }
             this.receiveFriendsPoint:=true
@@ -129,7 +127,7 @@ Class ReceiveRewardMode extends AutoGameMode{
             this.logger.log(this.player.getAppTitle() "도전과제로 이동합니다.")
             this.continueControl()
             if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_도전과제_팀별") ){
-                this.gameController.sleep(6)
+                this.gameController.waitDelayForChangeWindow()
                 return 1
             }else{
                 this.logger.log(this.player.getAppTitle() "도전 과제 팀별을 못찾으면 보상을 못받아..")
@@ -146,7 +144,7 @@ Class ReceiveRewardMode extends AutoGameMode{
 
             if ( this.gameController.searchImageFolder("보상모드\화면_일일미션") ){			
                 if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
-					this.gameController.sleep(3)
+                    this.gameController.waitDelayForLoading()
                     this.logger.log("일일 보상 모두 받기를 수행합니다.") 
                     this.checkPopup()
                     return 1
@@ -155,11 +153,11 @@ Class ReceiveRewardMode extends AutoGameMode{
                 }
                 this.logger.log("주간 미션으로 이동") 
                 this.gameController.searchAndClickFolder("보상모드\버튼_주간미션")
-				this.gameController.sleep(6)
+                this.gameController.waitDelayForChangeWindow()
             }
             if ( this.gameController.searchImageFolder("보상모드\화면_주간미션") ){				
                 if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
-					this.gameController.sleep(3)
+                    this.gameController.waitDelayForLoading()
                     this.logger.log("주간 보상 모두 받기를 수행합니다.") 
                     this.checkPopup()
                     return 1
@@ -168,43 +166,35 @@ Class ReceiveRewardMode extends AutoGameMode{
                 }
                 this.logger.log("앰블럼으로 이동") 
                 this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼")
-				this.gameController.sleep(6)
+                this.gameController.waitDelayForChangeWindow()
             }
             if ( this.gameController.searchImageFolder("보상모드\화면_앰블럼") ){
                 pieceCount:=0
                 completeCount:=0
                 loop 10{
                     if ( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성") ){ 
-						this.gameController.sleep(1)
                         if ( this.gameController.searchImageFolder("보상모드\버튼_앰블럼생성\선택" ) ){
                             if ( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성\선택\0먼저") ){
-								this.gameController.sleep(1)
                                 this.logger.log("한개도 없는걸 먼저 선택")
                                 if( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성\선택\확인") ){
-									this.gameController.sleep(1)
                                     pieceCount++
                                     this.logger.log("앰블럼 획득 - " pieceCount)
                                 }
                             }else if ( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성\선택\1까지") ){
-								this.gameController.sleep(1)
                                 this.logger.log("1개짜리 선택")								
                                 if( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성\선택\확인") ){
-									this.gameController.sleep(1)
                                     pieceCount++
                                     this.logger.log("앰블럼 획득 - " pieceCount)
                                 }
                             }else if ( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성\선택\2이상") ){
-								this.gameController.sleep(1)
                                 this.logger.log("2 이상뿐이냐?")
                                 if( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성\선택\확인") ){
-									this.gameController.sleep(1)
                                     pieceCount++
                                     this.logger.log("앰블럼 획득 - " pieceCount)
                                 }
                             }
                             this.checkPopup()
                             if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
-								this.gameController.sleep(1)
                                 completeCount++
                                 this.logger.log("앰블럼 제작 - " completeCount) 
                                 this.checkPopup()
@@ -217,7 +207,6 @@ Class ReceiveRewardMode extends AutoGameMode{
                         this.logger.log("더이상 제작 불가능") 
                         break
                     }else if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
-						this.gameController.sleep(1)
                         this.logger.log("앰블럼 제작 - " A_INDEX) 
                         this.checkPopup()
                     } 

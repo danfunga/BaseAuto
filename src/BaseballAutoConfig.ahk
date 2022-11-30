@@ -5,23 +5,26 @@ class BaseballAutoConfig{
     __NEW( configFileName ){
         this.configFile := new IniController( configFileName )
 
+        ; 플레이어 설정
         This.players := []
         This.enabledPlayers:=Array() 
+
+        ; 단독 모드 설정
         this.standaloneEnabledModeMap:={}
+        this.standAloneModeOrderString:=""
 
-        for index, value in BaseballAutoPlayer.AVAILABLE_MODES
-        {
-            if( value = "등반" or value="로얄"){
-                continue
-            }
-            if( value = "리그" or value = "홈런" or value = "랭대" or value = "히스" or value = "친구" or value = "보상"){
-                this.standaloneEnabledModeMap[value]:=true 
-            }else{
-                this.standaloneEnabledModeMap[value]:=false
-            } 
-        }
+        ; 장비 설정
+        this.usingEquipmentFlag:=false
+        this.usingBoostItemFlag:=false
+        this.usingStageModeEquipmentFlag:=false
+
+        ; 딜레이 설정
+        this.delaySecForClick:=2
+        this.delaySecChangeWindow:=5
+        this.delaySecSkip:=0.1
+        this.delaySecReboot:=60
+
         this.initConfig()
-
     }
     getDefaultPlayer(){
         return this.players[1]
@@ -43,9 +46,25 @@ class BaseballAutoConfig{
     }
 
     initConfig(){
-
-        This.players := []
-        This.enabledPlayers:= Array()
+        ; init 단독 모드 활성화 상태
+        for index, value in BaseballAutoPlayer.AVAILABLE_MODES
+        { 
+            if( value = "등반" or value="로얄"){
+                continue
+            }
+            loadValue := this.configFile.loadValue("STANDALONE_ENABLED_MODE", value )
+            if( loadValue != "" ){
+                this.standaloneEnabledModeMap[value]:=loadValue 
+            } else{
+                if( value = "리그" or value = "홈런" or value = "랭대" or value = "히스" or value = "친구" or value = "보상"){
+                    this.standaloneEnabledModeMap[value]:=true 
+                }else{
+                    this.standaloneEnabledModeMap[value]:=false
+                } 
+            }
+        } 
+        ; 단독 모드 순서 
+        this.setStandAloneModeOrderString(this.configFile.loadValue("GLOBAL_CONFIG","JobOrder")) 
 
         PLAYER_KEY:="PLAYERS_CONFIG"
         loop, 2
@@ -72,61 +91,96 @@ class BaseballAutoConfig{
 
                 if (playerBattleType="")	
                     player.setBattleType("전체")
-                
+
+                ; Main Static 설정
                 for index, value in BaseballAutoPlayer.AVAILABLE_MODES
                 { 
                     readValue:= this.configFile.loadValue("PLAYERS_STAISTICS", value )
                     if( readValue = "")
                         readValue:=0
-                    player.countPerMode[value]:=readValue                    
+                    player.countPerMode[value]:=readValue 
                 } 
             } 
+            player.setStandAloneModeOrder(this.standAloneModeOrderString)
+            player.setStandAloneModeEnableMap(this.standaloneEnabledModeMap)
+
             if( player.getEnabled() ){
                 this.enabledPlayers.push(player)
             }
-            ; msgbox % "player " A_Index " Enabled : " player["ENABLE"] " Title: " player["TITLE"] " Role : "player["ROLE"]
             this.players.Push( player)
         }
+        this.setUsingEquipmentFlag( this.configFile.loadValue("GLOBAL_CONFIG","UseEquip") )
+        this.setUsingBoostItemFlag( this.configFile.loadValue("GLOBAL_CONFIG","UseBooster") )
+        this.setUsingStageModeEquipmentFlag( this.configFile.loadValue("GLOBAL_CONFIG","UseStageModeEquipment") )
 
-        for index, value in BaseballAutoPlayer.AVAILABLE_MODES
-        { 
-            if( value = "등반" or value="로얄"){
-                continue
-            }
-            loadValue := this.configFile.loadValue("STANDALONE_ENABLED_MODE", value )
-            if( loadValue != "" ){
-                this.standaloneEnabledModeMap[value]:=loadValue 
-            } 
-        } 
+        this.setDelySecForClick( this.configFile.loadValue("DELAY_CONFIG","clickDelay") )
+        this.setDelaySecChangeWindow( this.configFile.loadValue("DELAY_CONFIG","changeWindowDelay") )
+        this.setDelaySecSkip( this.configFile.loadValue("DELAY_CONFIG","skipDelay") )
+        this.setDelaySecReboot( this.configFile.loadValue("DELAY_CONFIG","rebootDelay") )
     }
+
     loadConfig(){
-        global baseballAutoGui
-        loadedJobOrder:=this.configFile.loadValue("GLOBAL_CONFIG","JobOrder")
-        if( loadedJobOrder = ""){
-            loadedJobOrder:="리그,실대,홈런,랭대,히스,스테,타홀,클협,친구,보상"
-        }
-        baseballAutoGui.setJobOrder(loadedJobOrder)
+        global baseballAutoGui 
 
-        loadedUseEquip:=this.configFile.loadValue("GLOBAL_CONFIG","UseEquip")
-        if( loadedUseEquip = ""){
-            loadedUseEquip:=0
-        }
-        baseballAutoGui.setUsingEquipment(loadedUseEquip)
-
-        loadedUseBooster:=this.configFile.loadValue("GLOBAL_CONFIG","UseBooster")
-        if( loadedUseBooster = ""){
-            loadedUseBooster:=0
-        }
-        baseballAutoGui.setUseBooster(loadedUseBooster)
-        for index, targetPlayer in this.enabledPlayers
-        {
-            targetPlayer.setStandAloneModeOrder(loadedJobOrder)
-            targetPlayer.setStandAloneModeEnableMap(this.standaloneEnabledModeMap)
-        }
+        ; baseballAutoGui.setJobOrder(this.standAloneModeOrderString)
+        ; baseballAutoGui.setUsingEquipment(this.usingEquipmentFlag)
+        ; baseballAutoGui.setUseBooster(this.usingBoostItemFlag)
+        ; baseballAutoGui.setUseStageEquip(this.usingStageModeEquipmentFlag)
     }
 
-    saveConfig(){
-        global baseballAutoGui
+    setStandAloneModeOrderString( value ){
+        if(value =""){
+            value:="리그,실대,홈런,랭대,히스,스테,타홀,클협,친구,보상"
+        }
+        this.standAloneModeOrderString:=value
+    }
+    getStandAloneModeOrderString(){
+        return this.standAloneModeOrderString
+    }
+    setUsingEquipmentFlag( value ){
+        if(value =""){
+            value:=false
+        }
+        this.usingEquipmentFlag:=value
+    }
+    setUsingBoostItemFlag( value ){
+        if(value =""){
+            value:=false
+        }
+        this.usingBoostItemFlag:=value
+    }
+    setUsingStageModeEquipmentFlag( value ){
+        if(value =""){
+            value:=false
+        }
+        this.usingStageModeEquipmentFlag:=value
+    }
+    setDelySecForClick(value){
+        if(value =""){
+            value:=2
+        }
+        this.delaySecForClick:=value
+    }
+    setDelaySecChangeWindow(value){
+        if(value =""){
+            value:=5
+        }
+        this.delaySecChangeWindow:=value
+    }
+    setDelaySecSkip(value){
+        if(value =""){
+            value:=0.1
+        }
+        this.delaySecSkip:=value
+    }
+    setDelaySecReboot(value){
+        if(value =""){
+            value:=60
+        }
+        this.delaySecReboot:=value
+    }
+
+    saveConfigFile(){
         PLAYER_KEY:="PLAYERS_CONFIG"
         for index, element in this.players
         {
@@ -135,16 +189,20 @@ class BaseballAutoConfig{
             this.configFile.saveValue(PLAYER_KEY,element.getKeyRole(), element.getRole()) 
             this.configFile.saveValue(PLAYER_KEY,element.getKeyBattleType(), element.getBattleType()) 
         }
-        for index, value in BaseballAutoPlayer.AVAILABLE_MODES
+        for index, value in this.standaloneEnabledModeMap
         { 
-            if( value = "등반" or value="로얄"){
-                continue
-            }
-            this.configFile.saveValue("STANDALONE_ENABLED_MODE",value,this.standaloneEnabledModeMap[value]) 
+            this.configFile.saveValue("STANDALONE_ENABLED_MODE",index,this.standaloneEnabledModeMap[index]) 
         }
-        this.configFile.saveValue("GLOBAL_CONFIG","JobOrder",baseballAutoGui.getJobOrder())
-        this.configFile.saveValue("GLOBAL_CONFIG","UseEquip",baseballAutoGui.getUsingEquipment()) 
-        this.configFile.saveValue("GLOBAL_CONFIG","UseBooster",baseballAutoGui.getUseBooster()) 
+
+        this.configFile.saveValue("GLOBAL_CONFIG","JobOrder",this.standAloneModeOrderString)
+        this.configFile.saveValue("GLOBAL_CONFIG","UseEquip",this.usingEquipmentFlag) 
+        this.configFile.saveValue("GLOBAL_CONFIG","UseBooster",this.usingBoostItemFlag) 
+        this.configFile.saveValue("GLOBAL_CONFIG","UseStageModeEquipment",this.usingStageModeEquipmentFlag) 
+
+        this.configFile.saveValue("DELAY_CONFIG","clickDelay",this.delaySecForClick) 
+        this.configFile.saveValue("DELAY_CONFIG","changeWindowDelay",this.delaySecChangeWindow) 
+        this.configFile.saveValue("DELAY_CONFIG","skipDelay",this.delaySecSkip) 
+        this.configFile.saveValue("DELAY_CONFIG","rebootDelay",this.delaySecReboot) 
     }
 
     savePlayerResult( player ){

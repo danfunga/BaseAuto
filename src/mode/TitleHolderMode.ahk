@@ -48,7 +48,7 @@ Class TitleHolderMode extends AutoGameMode{
         this.logger.log("타이틀 홀더 모드에 입장합니다") 
         if ( this.gameController.searchAndClickFolder("0.기본UI\3.스페셜모드_버튼_타이틀홀드모드") ){
             this.logger.log("여기는 로딩이 긴거 같아 좀 쉬었다가.") 
-            this.gameController.sleep(3)
+            this.gameController.waitDelayForLoading()
             return 1
         }		 
     }
@@ -158,7 +158,7 @@ Class TitleHolderMode extends AutoGameMode{
 
     waitPlaying(){
         this.logger.log("자동 진행 중 화면으로 보입니다.")
-        this.gameController.sleep(2) 
+        this.gameController.waitDelayForLoading()
         return 1 
     } 
 

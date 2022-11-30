@@ -62,7 +62,7 @@ Class AutoGameMode{
         return counter 
     } 
     defaultActionDelay(){
-        this.gameController.sleep(0.1) 
+        this.gameController.waitDelayForSkip()
     }
 
     isMainWindow( callback ){
@@ -332,6 +332,7 @@ Class AutoGameMode{
         if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){
             this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
             if( this.gameController.searchAndClickFolder("1.공통\버튼_홈으로" ) ){
+                this.gameController.waitDelayForChangeWindow()
                 return 1
             }
         }
@@ -342,7 +343,7 @@ Class AutoGameMode{
         this.player.setBye()
         this.returnFlag:=true
         ; 왠지 맞지 않지만 정상 동작을 위해 넣는다.
-        this.gameController.sleep(1)
+        this.gameController.waitDelayForClick()    
         this.moveMainPageForNextJob()
     }
     releaseControl(){
@@ -359,15 +360,13 @@ Class AutoGameMode{
     }
 
     goBackward(){
-        this.gameController.clickESC()
         this.logger.log(this.player.getAppTitle() " 뒤로가기 - ESC ") 
-        this.gameController.sleep(0.3)
+        this.gameController.clickESC()        
     }
     quitCom2usBaseball(){
         if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야끄기",0,0,false,true) ){
             this.logger.log("컴프야를 강제 종료 했습니다.")
             this.releaseControl()
-            ; this.gameController.sleep(2)
             return true
         } else{
             this.logger.log("ERROR: 컴프야를 종료 못하니 앱플레이어를 강제로 재시작해봅니다.")
@@ -414,14 +413,13 @@ Class AutoGameMode{
         }
         this.logger.log( "앱 플레이어의 강제 재기동을 수행합니다. " ) 
         this.gameController.setActiveId(this.player.getAppTitle())
-        if( this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료",0,0,false,true) ){
-            this.gameController.sleep(1)
+        if( this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료",0,0,true,true) ){
             this.gameController.setActiveId(popupTitle)
             if ( this.gameController.searchImageFolder("1.공통\버튼_앱강제종료\화면_재시작확인") ){
                 this.logger.log("재기동을 선택합니다.") 
                 if( this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료\화면_재시작확인\버튼_재시작",0,0,false,true ) ){ 
-                    this.logger.log( "60초를 기다립니다.") 
-                    this.gameController.sleep(60)
+                    this.logger.log( "리붓 딜레이 만큼 기다립니다.") 
+                    this.gameController.waitDelayForReboot()
                     this.gameController.setActiveId(this.player.getAppTitle())
                     this.releaseControl()
                     return true

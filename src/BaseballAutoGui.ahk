@@ -5,7 +5,7 @@ Class BaseballAutoGui{
     width:=330
     maxGroupWidth := this.width-20
     CONST_SIZE_LOG_HEIGHT:=170
-    CONST_SIZE_CONFIG_HEIGHT:=130
+    CONST_SIZE_CONFIG_HEIGHT:=160
     __NEW( title ){
         this.guiMain := new MC_GuiObj(title)
         this.mainHeight:=this.init()
@@ -43,8 +43,8 @@ Class BaseballAutoGui{
         mainHeight+=this.initButtonWindow(mainHeight)
         mainHeight+=this.initWindowStatistic(mainHeight)
         mainHeight+=this.initLogWindow(mainHeight)
-        ; mainHeight+=this.initConfigWindow(mainHeight)+5
-        this.totalHeight:=mainHeight+this.initConfigWindow(mainHeight)+5
+        mainHeight+=this.initConfigWindow(mainHeight)+5
+        ; this.totalHeight:=mainHeight+this.initConfigWindow(mainHeight)+5
         return mainHeight
     }
 
@@ -294,6 +294,7 @@ Class BaseballAutoGui{
     initConfigWindow(_height){
         global baseballAutoConfig
         currentWindowHeight:=this.CONST_SIZE_CONFIG_HEIGHT
+        ; currentWindowHeight:=300
 
         this.guiMain.addGroupBox("Config", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
         ; this.guiMain.Add("CheckBox", "Pushbullet ", "xs+5 ys+20 h10", "configPushbulletEnabled",0)
@@ -329,8 +330,23 @@ Class BaseballAutoGui{
             memberIndex++
         } 
 
-        this.guiMain.Add("Text", "단독 순서 : ", "xs y+20")
-        this.guiMain.Add("Edit", "A,B,C", "xs y+3 w" this.maxGroupWidth-10, "configJobOrder")
+        this.guiMain.Add("Text", "단독 순서 : ", "xs y+13") 
+        this.guiMain.Add("Edit", baseballAutoConfig.standAloneModeOrderString, "xs y+3 h17 w" this.maxGroupWidth-10, "configJobOrder")
+
+        ; baseballAutoConfig.delaySecForClick
+        ; baseballAutoConfig.delaySecChangeWindow
+        ; baseballAutoConfig.delaySecSkip
+        ; baseballAutoConfig.delaySecReboot
+        this.guiMain.Add("Text", "딜레이 : ", "xs y+13")
+        this.guiMain.Add("Text", "클릭: ", "xs y+3 section")
+        this.guiMain.Add("Edit", baseballAutoConfig.delaySecForClick, "x+0 ys-2 w20 h15 +Right", "delayForClickConfigEdit")
+        this.guiMain.Add("Text", "초   화면: ", "x+0 ys+0")
+        this.guiMain.Add("Edit", baseballAutoConfig.delaySecChangeWindow, "x+0 ys-2 w20 h15 Right", "delayForChangeWindowConfigEdit")
+        this.guiMain.Add("Text", "초   스킵: ", "x+0 ys+0")
+        this.guiMain.Add("Edit", baseballAutoConfig.delaySecSkip, "x+0 ys-2 w20 h15 Right", "delayForSkipConfigEdit")
+        this.guiMain.Add("Text", "초   리붓: ", "x+0 ys+0")
+        this.guiMain.Add("Edit", baseballAutoConfig.delaySecReboot, "x+0 ys-2 w20 h15 Right", "delayForRebootConfigEdit")
+        this.guiMain.Add("Text", "초 ", "x+0 ys+0")
 
         return currentWindowHeight
     }
@@ -340,9 +356,24 @@ Class BaseballAutoGui{
 
         currentWindowHeight=40
         this.guiMain.addGroupBox("Options", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
-        this.guiMain.Add("Checkbox", "장비사용", "xs+10 ys+20", "EquipmentCheck", 0)
-        this.guiMain.Add("Checkbox", "부스터", "X+1", "BoosterChk", 0)
-        this.guiMain.Add("Checkbox", "스테장비", "X+2", "StageEquipChk", 0)
+
+        option:="xs+10 ys+20"
+        if( baseballAutoConfig.usingEquipmentFlag){
+            option:= % option " checked"
+        }
+        this.guiMain.Add("Checkbox", "장비사용", option, "EquipmentCheck", 0)
+
+        option:="x+10 yp"
+        if( baseballAutoConfig.usingBoostItemFlag){
+            option:= % option " checked"
+        }
+        this.guiMain.Add("Checkbox", "부스터", option, "BoosterChk", 0)
+
+        option:="x+10 yp"
+        if( baseballAutoConfig.usingStageModeEquipmentFlag){
+            option:= % option " checked"
+        }
+        this.guiMain.Add("Checkbox", "스테장비", option, "StageEquipChk", 0)
 
         return currentWindowHeight
     }
@@ -457,15 +488,8 @@ Class BaseballAutoGui{
 
     saveGuiConfigs(){
         global baseballAutoConfig
-        baseballAutoConfig.enabledPlayers:=[]
-        for index,player in baseballAutoConfig.players
-        {
-            this.getGuiInfo(player)
-            if( player.getEnabled() ){
-                baseballAutoConfig.enabledPlayers.push(player)
-            }
-        }
         memberIndex:=1
+
         for index, value in BaseballAutoPlayer.AVAILABLE_MODES
         { 
             if( value = "등반" or value ="로얄"){
@@ -475,7 +499,28 @@ Class BaseballAutoGui{
             baseballAutoConfig.standaloneEnabledModeMap[value]:=this.guiMain.Controls[guiLabel].get()
             memberIndex++
         } 
-        baseballAutoConfig.saveConfig()
+
+        baseballAutoConfig.setStandAloneModeOrderString(this.getJobOrder())
+        baseballAutoConfig.enabledPlayers:=[]
+        for index,player in baseballAutoConfig.players
+        {
+            this.getGuiInfo(player)
+            player.setStandAloneModeOrder(baseballAutoConfig.standAloneModeOrderString)
+            player.setStandAloneModeEnableMap(baseballAutoConfig.standaloneEnabledModeMap)
+            if( player.getEnabled() ){
+                baseballAutoConfig.enabledPlayers.push(player)
+            }
+        }
+        baseballAutoConfig.setUsingEquipmentFlag(this.getUsingEquipment())
+        baseballAutoConfig.setUsingBoostItemFlag(this.getUseBooster())
+        baseballAutoConfig.setUsingStageModeEquipmentFlag(this.getUseStageEquip())
+
+        baseballAutoConfig.setDelySecForClick(this.getGuiValueDelayForClick())
+        baseballAutoConfig.setDelaySecChangeWindow(this.getGuiValueDelayForChangeWindow())
+        baseballAutoConfig.setDelaySecSkip(this.getGuiValueDelayForSkip())
+        baseballAutoConfig.setDelaySecReboot(this.getGuiValueDelayForReboot())
+
+        baseballAutoConfig.saveConfigFile()
     }
     rolePassByGui(){
         global globalContinueFlag
@@ -501,8 +546,6 @@ Class BaseballAutoGui{
     }
     getGuiInfo(player){
         player.setEnabled(this.guiMain.Controls[player.getKeyEnable()].get())
-        ; ToolTip % player.getKeyEnable()
-        ; ToolTip % this.guiMain.Controls[player.getKeyAppTitle()].get()
         player.setAppTitle(this.guiMain.Controls[player.getKeyAppTitle()].get())
         player.setRole(this.guiMain.Controls[player.getKeyRole()].get())
         player.setBattleType(this.guiMain.Controls[player.getKeyBattleType()].get())
@@ -514,15 +557,28 @@ Class BaseballAutoGui{
         this.guiMain.Controls["configJobOrder"].set(order)
     }
 
-    started(){
-        ; msgbox % "Started " this.BoolPaused
-        this.statusPaused:=false
+    getGuiValueDelayForClick(){
+        return this.guiMain.Controls["delayForClickConfigEdit"].get()
+    }
 
+    getGuiValueDelayForChangeWindow(){
+        return this.guiMain.Controls["delayForChangeWindowConfigEdit"].get()
+    }
+
+    getGuiValueDelayForSkip(){
+        return this.guiMain.Controls["delayForSkipConfigEdit"].get()
+    }
+    getGuiValueDelayForReboot(){
+        return this.guiMain.Controls["delayForRebootConfigEdit"].get()
+    }
+    
+    started(){
+        this.statusPaused:=false
         this.guiMain.Controls["GuiStopButton"].show()
         this.guiMain.Controls["GuiPauseButton"].show()
-        ; this.guiMain.Controls["GuiResumeButton"].show()
         this.guiMain.Controls["GuiStartButton"].hide()
     }
+
     pauseByGui(){
         if( this.statusPaused = false ){
             this.statusPaused:= true
@@ -531,6 +587,7 @@ Class BaseballAutoGui{
             pause
         }
     }
+
     resumeByGui(){
         if( this.statusPaused = true ){
             this.statusPaused:= false
