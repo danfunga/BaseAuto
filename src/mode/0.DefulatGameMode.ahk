@@ -307,16 +307,18 @@ Class AutoGameMode{
         }
     }
     unsetEquipment(){
-        if ( this.gameController.searchImageFolder("1.공통\화면_장비없음") ){
-            this.logger.log("착용 중인 장비가 없습니다.")
-        }else if( this.gameController.searchAndClickFolder("1.공통\버튼_장비착용") ){
-            this.logger.log("장비를 해제 하겠습니다.")
-            if(this.gameController.searchImageFolder("1.공통\버튼_장비착용\화면_모두해제")){
-                this.logger.log("장비가 없는데 여긴 왜 들어왔을까요 - 확인하세요")
-            }
-            this.gameController.searchAndClickFolder("1.공통\버튼_장비착용\버튼_모두해제") 
-            this.gameController.searchAndClickFolder("1.공통\버튼_장비착용\버튼_장비닫기") 
-        }
+        this.setBattleModeEquipment(false)
+
+        ; if ( this.gameController.searchImageFolder("1.공통\화면_장비없음") ){
+        ;     this.logger.log("착용 중인 장비가 없습니다.")
+        ; }else if( this.gameController.searchAndClickFolder("1.공통\버튼_장비착용") ){
+        ;     this.logger.log("장비를 해제 하겠습니다.")
+        ;     if(this.gameController.searchImageFolder("1.공통\버튼_장비착용\화면_모두해제")){
+        ;         this.logger.log("장비가 없는데 여긴 왜 들어왔을까요 - 확인하세요")
+        ;     }
+        ;     this.gameController.searchAndClickFolder("1.공통\버튼_장비착용\버튼_모두해제") 
+        ;     this.gameController.searchAndClickFolder("1.공통\버튼_장비착용\버튼_장비닫기") 
+        ; }
     }
 
     checkAndGoHome( searchCounter ){ 
@@ -343,7 +345,7 @@ Class AutoGameMode{
         this.player.setBye()
         this.returnFlag:=true
         ; 왠지 맞지 않지만 정상 동작을 위해 넣는다.
-        this.gameController.waitDelayForClick()    
+        this.gameController.waitDelayForClick() 
         this.moveMainPageForNextJob()
     }
     releaseControl(){
@@ -361,7 +363,7 @@ Class AutoGameMode{
 
     goBackward(){
         this.logger.log(this.player.getAppTitle() " 뒤로가기 - ESC ") 
-        this.gameController.clickESC()        
+        this.gameController.clickESC() 
     }
     quitCom2usBaseball(){
         if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야끄기",0,0,false,true) ){
@@ -402,6 +404,132 @@ Class AutoGameMode{
         }
         ; }
     }
+
+    setBattleModeEquipment( mode:=true ){
+        success:=false
+        if( mode ){
+            if ( this.gameController.searchImageFolder("1.공통\모드_장비착용\화면_장비착용중") ){
+                this.logger.log("대전장비 체크 ==> 착용 중입니다.") 
+                success:=true
+            }else if ( this.gameController.searchImageFolder("1.공통\모드_장비착용\화면_장비착용아님") ){ 
+                this.logger.log("대전장비 체크 ==> 착용을 시작합니다.") 
+                this.logger.log("장비 관리에 들어갑니다.")
+                if ( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\버튼_장비버튼") ){
+                    if ( this.gameController.searchImageFolder("1.공통\모드_장비착용\화면_장비관리") ){
+                        batter1:=false ,batter2:=false ,batter3:=false , batter4:=false ,batter5:=false 
+                        pitcher1:=false ,pitcher2:=false ,pitcher3:=false , pitcher4:=false ,pitcher5:=false 
+                        Loop, 6
+                        {
+                            if ( A_Index <= 3){
+                                if( !batter1 ){
+                                    if ( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\화면_장비관리\장비선택\장비_타자_1") ){
+                                        batter1:=true
+                                        continue
+                                    }
+                                }
+                                if( !batter2 ){
+                                    if ( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\화면_장비관리\장비선택\장비_타자_2") ){
+                                        batter2:=true
+                                        continue
+                                    }
+                                }
+                                if( !batter3 ){
+                                    if ( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\화면_장비관리\장비선택\장비_타자_3") ){
+                                        batter3:=true
+                                        continue
+                                    }
+                                }
+                                if( !batter4 ){
+                                    if ( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\화면_장비관리\장비선택\장비_타자_4") ){
+                                        batter4:=true
+                                        continue
+                                    }
+                                }
+                                if( !batter5 ){
+                                    if ( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\화면_장비관리\장비선택\장비_타자_5") ){
+                                        batter5:=true
+                                        continue
+                                    }
+                                }
+                                continue 
+                            }else{
+                                if( !pitcher1 ){
+                                    if ( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\화면_장비관리\장비선택\장비_투수_1") ){
+                                        pitcher1:=true
+                                        continue
+                                    }
+                                }
+                                if( !pitcher2 ){
+                                    if ( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\화면_장비관리\장비선택\장비_투수_2") ){
+                                        pitcher2:=true
+                                        continue
+                                    }
+                                }
+                                if( !pitcher3 ){
+                                    if ( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\화면_장비관리\장비선택\장비_투수_3") ){
+                                        pitcher3:=true
+                                        continue
+                                    }
+                                }
+                                if( !pitcher4 ){
+                                    if ( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\화면_장비관리\장비선택\장비_투수_4") ){
+                                        pitcher4:=true
+                                        continue
+                                    }
+                                }
+                                if( !pitcher5 ){
+                                    if ( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\화면_장비관리\장비선택\장비_투수_5") ){
+                                        pitcher5:=true
+                                        continue
+                                    }
+                                }
+                                continue 
+                            }
+                        }
+                        if( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\화면_장비관리\버튼_닫기") ){
+                            success:=true
+                            this.logger.log("장비를 착용 하였습니다.") 
+                        }
+                    }
+                }
+            }
+        }else{
+            if ( this.gameController.searchImageFolder("1.공통\모드_장비착용\화면_장비착용중") ){
+                this.logger.log("대전장비 체크 ==> 해제를 시작합니다.") 
+                this.logger.log("장비 관리에 들어갑니다.")
+                if ( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\버튼_장비버튼") ){
+                    if ( this.gameController.searchImageFolder("1.공통\모드_장비착용\화면_장비관리") ){
+
+                        this.gameController.searchAndClickFolder("1.공통\모드_장비착용\화면_장비관리\버튼_모두해제")
+
+                        if(this.gameController.searchImageFolder("1.공통\모드_장비착용\화면_장비관리\화면_해제상태") ){
+                            if( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\화면_장비관리\버튼_닫기") ){
+                                success:=true
+                                this.logger.log("장비를 정상적으로 해제 하였습니다.") 
+                            }
+                        } else{
+                            if( this.gameController.searchAndClickFolder("1.공통\모드_장비착용\화면_장비관리\버튼_닫기") ){
+                                this.logger.log("모두 해제 버튼이 정상적으로 안되는거 같네요") 
+                            }
+                        }
+                    }
+                }
+
+            }else if ( this.gameController.searchImageFolder("1.공통\모드_장비착용\화면_장비착용아님") ){ 
+                this.logger.log("대전장비 체크 ==> 이미 해제 상태입니다.") 
+                success:=true
+            } 
+        }
+
+        if( !success ){
+            if( mode ){
+                this.logger.log("장비 착용을 실패했습니다.") 
+            }else{
+                this.logger.log("장비 해제를 실패했습니다.") 
+            }
+        }
+    }
+
     restartAppPlayer(){
         WinGetClass, targetClassName , % this.player.getAppTitle() 		 
         if ( InStr(targetClassName ,"LDPlayer" ) ){

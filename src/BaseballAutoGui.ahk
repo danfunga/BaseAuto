@@ -358,10 +358,10 @@ Class BaseballAutoGui{
         this.guiMain.addGroupBox("Options", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
 
         option:="xs+10 ys+20"
-        if( baseballAutoConfig.usingEquipmentFlag){
+        if( baseballAutoConfig.usingEquipmentForRankingBattleFlag){
             option:= % option " checked"
         }
-        this.guiMain.Add("Checkbox", "장비사용", option, "EquipmentCheck", 0)
+        this.guiMain.Add("Checkbox", "랭킹장비", option, "RankingBattleEquipmentCheckBox", 0)
 
         option:="x+10 yp"
         if( baseballAutoConfig.usingBoostItemFlag){
@@ -378,11 +378,11 @@ Class BaseballAutoGui{
         return currentWindowHeight
     }
     getUsingEquipment(){
-        return this.guiMain.Controls["EquipmentCheck"].get()
+        return this.guiMain.Controls["RankingBattleEquipmentCheckBox"].get()
     } 
     setUsingEquipment(bool){
         ; configFile 에서 설정되는 부분
-        this.guiMain.Controls["EquipmentCheck"].set(bool)
+        this.guiMain.Controls["RankingBattleEquipmentCheckBox"].set(bool)
     }
 
     getUseStageEquip(){
@@ -511,7 +511,7 @@ Class BaseballAutoGui{
                 baseballAutoConfig.enabledPlayers.push(player)
             }
         }
-        baseballAutoConfig.setUsingEquipmentFlag(this.getUsingEquipment())
+        baseballAutoConfig.setUsingEquipmentForRankingBattleFlag(this.getUsingEquipment())
         baseballAutoConfig.setUsingBoostItemFlag(this.getUseBooster())
         baseballAutoConfig.setUsingStageModeEquipmentFlag(this.getUseStageEquip())
 

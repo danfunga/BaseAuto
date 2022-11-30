@@ -9,7 +9,7 @@ Class RankingBattleMode extends AutoGameMode{
 
     initMode(){
         this.addAction(this.isMainWindow,this.selectBattleMode)
-        this.addAction(this.isBattleWindow,this.selectRankingBattle)
+        this.addAction(this.isBattleWindow,this.selectRankingBattle) 
         this.addAction(this.isRankingBattleWindow,this.startRankingBattle)
 
         this.addAction(this.playRankingBattle)
@@ -42,7 +42,7 @@ Class RankingBattleMode extends AutoGameMode{
         }else{
             this.logger.log("랭킹 대전을 찾지 못했습니다")
         }
-    }
+    } 
     startRankingBattle(){ 
         if( this.checkWantToModeQuit() ){
             return 0
@@ -57,36 +57,22 @@ Class RankingBattleMode extends AutoGameMode{
         if ( this.gameController.searchImageFolder("랭대모드\화면_상대있음") ){
             this.checkAndSetBattleEquips()
 
-            this.logger.log("랭킹 대전을 시작합니다")
-            if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
+            this.logger.log("랭킹 대전 준비 화면으로 넘어갑니다.")
+            if ( this.clickCommonStartButton() ){
                 return 1
             }
         }
     }
     checkAndSetBattleEquips(){
-        if( baseballAutoGui.getUsingEquipment() ){
-            this.logger.log("장비 착용이 설정 되어 있습니다.")
-            this.setBattleEquips()
+        global baseballAutoConfig
+        if( baseballAutoConfig.usingRankingBattleEquipment() ){
+            this.logger.log("랭킹 대전 장비를 사용합니다.")
+            this.setBattleModeEquipment(true)
         }else{
-            this.logger.log("장비 착용이 설정 되어 있지 않습니다.")
-            this.unsetEquipment()
-        }
-    }
-
-    setBattleEquips(){ 
-        if ( this.gameController.searchAndClickFolder("1.공통\화면_장비없음") ){
-            this.logger.log("랭킹배틀용 장비를 착용합니다.")
-            Loop, 6
-            {
-                this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비")
-                this.ransleep(200,500)
-            }
-            this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비\닫기")
-
-        }else if( this.gameController.searchImageFolder("1.공통\버튼_장비착용") ){
-            this.logger.log("착용 중인 장비를 사용합니다.")
-        } 
-    }
+            this.logger.log("랭킹 대전 장비를 사용하지 않습니다.")
+            this.setBattleModeEquipment(false)
+        }        
+    }   
 
     ransleep(min, max)
     {
@@ -102,7 +88,7 @@ Class RankingBattleMode extends AutoGameMode{
             }
             this.continueControl()
             this.logger.log("경기를 시작합니다")
-            if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
+            if ( tthis.clickCommonStartButton() ){
                 this.logger.log("6초 기다립니다")
                 this.gameController.sleep(6)
                 return 1

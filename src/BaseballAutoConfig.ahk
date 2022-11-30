@@ -14,7 +14,7 @@ class BaseballAutoConfig{
         this.standAloneModeOrderString:=""
 
         ; 장비 설정
-        this.usingEquipmentFlag:=false
+        this.usingEquipmentForRankingBattleFlag:=false
         this.usingBoostItemFlag:=false
         this.usingStageModeEquipmentFlag:=false
 
@@ -109,7 +109,7 @@ class BaseballAutoConfig{
             }
             this.players.Push( player)
         }
-        this.setUsingEquipmentFlag( this.configFile.loadValue("GLOBAL_CONFIG","UseEquip") )
+        this.setUsingEquipmentForRankingBattleFlag( this.configFile.loadValue("GLOBAL_CONFIG","UseRankingBattleEquipment") )
         this.setUsingBoostItemFlag( this.configFile.loadValue("GLOBAL_CONFIG","UseBooster") )
         this.setUsingStageModeEquipmentFlag( this.configFile.loadValue("GLOBAL_CONFIG","UseStageModeEquipment") )
 
@@ -137,12 +137,16 @@ class BaseballAutoConfig{
     getStandAloneModeOrderString(){
         return this.standAloneModeOrderString
     }
-    setUsingEquipmentFlag( value ){
+    setUsingEquipmentForRankingBattleFlag( value ){
         if(value =""){
             value:=false
         }
-        this.usingEquipmentFlag:=value
+        this.usingEquipmentForRankingBattleFlag:=value
     }
+    usingRankingBattleEquipment(){
+        return this.usingEquipmentForRankingBattleFlag
+    }
+
     setUsingBoostItemFlag( value ){
         if(value =""){
             value:=false
@@ -195,7 +199,7 @@ class BaseballAutoConfig{
         }
 
         this.configFile.saveValue("GLOBAL_CONFIG","JobOrder",this.standAloneModeOrderString)
-        this.configFile.saveValue("GLOBAL_CONFIG","UseEquip",this.usingEquipmentFlag) 
+        this.configFile.saveValue("GLOBAL_CONFIG","UseRankingBattleEquipment",this.usingEquipmentForRankingBattleFlag) 
         this.configFile.saveValue("GLOBAL_CONFIG","UseBooster",this.usingBoostItemFlag) 
         this.configFile.saveValue("GLOBAL_CONFIG","UseStageModeEquipment",this.usingStageModeEquipmentFlag) 
 
