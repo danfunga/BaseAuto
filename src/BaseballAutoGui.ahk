@@ -43,8 +43,8 @@ Class BaseballAutoGui{
         mainHeight+=this.initButtonWindow(mainHeight)
         mainHeight+=this.initWindowStatistic(mainHeight)
         mainHeight+=this.initLogWindow(mainHeight)
-        mainHeight+=this.initConfigWindow(mainHeight)+5
-        ; this.totalHeight:=mainHeight+this.initConfigWindow(mainHeight)+5
+        ; mainHeight+=this.initConfigWindow(mainHeight)+5
+        this.totalHeight:=mainHeight+this.initConfigWindow(mainHeight)+5
         return mainHeight
     }
 
