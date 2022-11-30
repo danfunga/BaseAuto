@@ -239,11 +239,9 @@ class BaseballAutoPlayer{
             role:=BaseballAutoPlayer.AVAILABLE_ROLES[1]
         }
         this.appRole:=role
-        this.setMode(role)
     }
 
     setMode( targetMode ){
-
         if( this.appRole ="일꾼" ){
             if( targetMode = "일꾼" ){
                 targetMode:=BaseballAutoPlayer.ASSIST_MODE_ARRAY[1]
@@ -269,7 +267,7 @@ class BaseballAutoPlayer{
         }else if( this.appRole = "단독" ){
             if( this.logger.isDayChanged() ){ 
                 this.initTodayLoopCount()
-                this.logger.log("새로운 날이 되어서 Loop를 초기화 합니다.")
+                this.logger.log("Loop 횟수를 초기화 합니다.")
             }
             if( targetMode = "단독" ){ 
                 targetMode:=this.ALONE_MODE_ARRAY[1]
@@ -334,7 +332,14 @@ class BaseballAutoPlayer{
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_MODE[this.appMode]
         }
     }
+    initPlayerMode(){
+        if(this.appRole = "일꾼" or this.appRole = "단독"){
+            this.logger.log( this.getAppTitle() " 실제 모드로 초기화 합니다.")
+            this.setMode(this.appRole)
+        }        
+    }
     getMode(){
+        
         return this.appMode
     }
     getRole(){

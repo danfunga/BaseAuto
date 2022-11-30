@@ -81,12 +81,18 @@ Class BaseballAuto{
     start(){
         global BaseballAutoGui, baseballAutoConfig, globalCurrentPlayer, globalContinueFlag, AUTO_RUNNING
         BaseballAutoGui.saveGuiConfigs()
-        this.currentEnablePlayers:=this.loadPlayerConfig()
+        ; 데이터 불일치가 일어 나더라도 기존 설정 값이 변경 되지 않도록 Copy를 유지한다.
+        ; this.currentEnablePlayers:=baseballAutoConfig.enabledPlayers
+        this.currentEnablePlayers:=this.loadPlayerConfig()        
 
         if ( ! this.started ){
             this.started:=true
             AUTO_RUNNING:=true
             this.logger.log("BaseballAuto Started!!")
+            
+            for playerIndex, player in this.currentEnablePlayers{
+                player.initPlayerMode()
+            }
 
             BaseballAutoGui.started()
             while( AUTO_RUNNING = true ){ 

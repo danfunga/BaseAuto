@@ -340,11 +340,11 @@ Class BaseballAutoGui{
         this.guiMain.Add("Text", "딜레이 : ", "xs y+13")
         this.guiMain.Add("Text", "클릭: ", "xs y+3 section")
         this.guiMain.Add("Edit", baseballAutoConfig.delaySecForClick, "x+0 ys-2 w20 h15 +Right", "delayForClickConfigEdit")
-        this.guiMain.Add("Text", "초   화면: ", "x+0 ys+0")
+        this.guiMain.Add("Text", "초 화면: ", "x+0 ys+0")
         this.guiMain.Add("Edit", baseballAutoConfig.delaySecChangeWindow, "x+0 ys-2 w20 h15 Right", "delayForChangeWindowConfigEdit")
-        this.guiMain.Add("Text", "초   스킵: ", "x+0 ys+0")
+        this.guiMain.Add("Text", "초 스킵: ", "x+0 ys+0")
         this.guiMain.Add("Edit", baseballAutoConfig.delaySecSkip, "x+0 ys-2 w20 h15 Right", "delayForSkipConfigEdit")
-        this.guiMain.Add("Text", "초   리붓: ", "x+0 ys+0")
+        this.guiMain.Add("Text", "초 리붓: ", "x+0 ys+0")
         this.guiMain.Add("Edit", baseballAutoConfig.delaySecReboot, "x+0 ys-2 w20 h15 Right", "delayForRebootConfigEdit")
         this.guiMain.Add("Text", "초 ", "x+0 ys+0")
 
@@ -571,7 +571,7 @@ Class BaseballAutoGui{
     getGuiValueDelayForReboot(){
         return this.guiMain.Controls["delayForRebootConfigEdit"].get()
     }
-    
+
     started(){
         this.statusPaused:=false
         this.guiMain.Controls["GuiStopButton"].show()

@@ -47,7 +47,7 @@
             if( this.checkDay != sFileName ){ 
                 this.checkDay:=sFileName
                 this.dayChanged:=true
-                this.log( "지난 로그파일을 정리하겠습니다.")
+                ; this.log( "지난 로그파일을 정리하겠습니다.")
 
                 todayString = %A_NOW%
                 EnvAdd, todayString, -4, Days
@@ -60,7 +60,7 @@
                     if FileExist(this.directory "\log(" targetFileName ").txt")
                     {
                         FileDelete, % this.directory "\log(" targetFileName ").txt"
-                        this.log( "로그 파일 [ \log(" targetFileName ").txt] 을 지웠습니다.")
+                        this.log( "지난 로그 파일 [ \log(" targetFileName ").txt] 을 지웠습니다.")
                     }else{
                         Break
                     }
