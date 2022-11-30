@@ -19,7 +19,7 @@ Class TitleHolderMode extends AutoGameMode{
         this.addAction(this.isTitleHolderModeWindow,this.startTitleHolderMode)
         this.addAction(this.playTitleHolderMode)
 
-        this.addAction(this.checkPlaying)
+        this.addAction(this.isAutoModePlayingWindow, this.waitPlaying)
         this.addAction(this.skipGameResultWindow)
         this.addAction(this.afterSkipMVPWindow,this.checkModeRunMore)
 
@@ -156,9 +156,10 @@ Class TitleHolderMode extends AutoGameMode{
         return localCounter
     }
 
-    checkPlaying(){
+    waitPlaying(){
+        this.logger.log("자동 진행 중 화면으로 보입니다.")
         this.gameController.sleep(2) 
-        return 0 
+        return 1 
     } 
 
     checkTitleHodlerModeClosed(){

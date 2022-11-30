@@ -20,7 +20,7 @@ Class RankingBattleMode extends AutoGameMode{
 
         this.addAction(this.skipCommonPopup)
         this.addAction(this.checkLocalModePopup)
-        this.addAction(this.checkPlaying)
+        this.addAction(this.isAutoModePlayingWindow, this.checkPlaying)
         this.addAction(this.checkRankingClose)
         this.addAction(this.checkAndGoHome) 
     }
@@ -146,13 +146,11 @@ Class RankingBattleMode extends AutoGameMode{
     }
 
     checkPlaying(){
-        if ( this.gameController.searchImageFolder("랭대모드\화면_자동중" ) ){
-            this.continueControl()
-            ; this.logger.log("....")
-            this.gameController.sleep(2)
-            return 1
-        }
-        return 0
+        this.continueControl()
+        this.logger.log("자동 진행중..")
+        this.gameController.sleep(2)
+        return 1
+
     }
 
     checkRankingClose(){

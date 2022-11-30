@@ -33,7 +33,7 @@ Class AutoGameMode{
         }else{
             this.actionList.push( [firstMethod,secondMethod] )
         }
-        this.actionList.push(this.defaultActionDelay)        
+        this.actionList.push( [this.defaultActionDelay] ) 
     }
     checkAndRun()
     {
@@ -62,7 +62,7 @@ Class AutoGameMode{
         return counter 
     } 
     defaultActionDelay(){
-        this.gameController.sleep(1)
+        this.gameController.sleep(0.1) 
     }
 
     isMainWindow( callback ){
@@ -133,7 +133,7 @@ Class AutoGameMode{
     ;-------------------------------
     ; 스페셜 모드 화면 : 1. 홈런더비
     ;-------------------------------
-     isHomerunDerbyWindow( callback ){
+    isHomerunDerbyWindow( callback ){
         if ( this.gameController.searchImageFolder("0.기본UI\3-1.홈런더비_Base") ){		 
             this.continueControl()
             return callback.Call(this)
@@ -150,7 +150,7 @@ Class AutoGameMode{
         }
         return 0		
     }
-    
+
     ;-------------------------------
     ; 스페셜 모드 화면 : 3. 스테이지
     ;-------------------------------
@@ -161,7 +161,7 @@ Class AutoGameMode{
         }
         return 0
     } 
-   
+
     ;-------------------------------
     ; 스페셜 모드 화면 : 4. 히스토리
     ;-------------------------------
@@ -182,7 +182,6 @@ Class AutoGameMode{
         }
         return 0
     }
-    
 
     isClubWindow(callback){
         if ( this.gameController.searchImageFolder("0.기본UI\6.클럽모드_Base") ){		 
@@ -216,6 +215,14 @@ Class AutoGameMode{
     }
     clickCommonClubTogetherButton(){
         return this.gameController.searchAndClickFolder("0.기본UI\6.클럽모드_버튼_클럽협동전")
+    }
+
+    isAutoModePlayingWindow( callback){
+        if( this.gameController.searchImageFolder("1.공통\화면_자동진행중" ) ){
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0
     }
 
     isGameResultWindow( callback ){
