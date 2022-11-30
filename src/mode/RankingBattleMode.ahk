@@ -88,7 +88,7 @@ Class RankingBattleMode extends AutoGameMode{
             }
             this.continueControl()
             this.logger.log("경기를 시작합니다")
-            if ( tthis.clickCommonStartButton() ){
+            if ( this.clickCommonStartButton() ){
                 this.logger.log("6초 기다립니다")
                 this.gameController.sleep(6)
                 return 1
