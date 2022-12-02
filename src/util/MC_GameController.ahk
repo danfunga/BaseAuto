@@ -97,6 +97,7 @@ class MC_GameController{
 
     waitDelayForChangeWindow(){
         global baseballAutoConfig 
+        this.logger.log( "화면 딜레이(" baseballAutoConfig.delaySecChangeWindow " 초) 기다립니다." )
         this.sleep(baseballAutoConfig.delaySecChangeWindow)
     }
     waitDelayForSkip(){

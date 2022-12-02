@@ -329,14 +329,15 @@ class BaseballAutoPlayer{
         } 
         else{
             this.appMode:=this.appRole
+            this.logger.log(this.appTitle "가 [" this.appMode "] 모드로 동작합니다.")
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_MODE[this.appMode]
         }
     }
     initPlayerMode(){
-        if(this.appRole = "일꾼" or this.appRole = "단독"){
+        ; if(this.appRole = "일꾼" or this.appRole = "단독"){
             this.logger.log( this.getAppTitle() " 실제 모드로 초기화 합니다.")
             this.setMode(this.appRole)
-        }        
+        ; }        
     }
     getMode(){
         

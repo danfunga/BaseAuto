@@ -8,7 +8,7 @@ Class StageMode extends AutoGameMode{
     }
 
     initMode(){
-        this.addAction(this.isMainWindow,this.selectSpecialMode)
+        this.addAction(this.isMainWindow,this.commonSelectSpecialMode)
         this.addAction(this.isSpecialWindow,this.selectStageMode)
         this.addAction(this.isStageWindow,this.selectStageLevel)
         this.addAction(this.isStageWindow,this.startStageMode)
@@ -23,17 +23,6 @@ Class StageMode extends AutoGameMode{
         this.addAction(this.checkStageModeClose)
         this.addAction(this.checkPopup) 
         this.addAction(this.checkAndGoHome) 
-    }
-
-    selectSpecialMode(){
-        if ( this.clickCommonSpecialButton() ){
-            this.continueControl()
-            this.logger.log(this.player.getAppTitle() "스테이지모드를 위해 스페셜 버튼을 클릭했습니다.")
-            return 1
-        }else{
-            this.logger.log(this.player.getAppTitle() "스페셜 버튼을 못찾았습니다")
-            return 0
-        } 
     }
 
     selectStageMode(){

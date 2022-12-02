@@ -46,8 +46,8 @@ Class BaseballAuto{
         this.typePerMode["홈런"]:=[]
         this.typePerMode["홈런"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["홈런"].Push(new HomrunDerbyMode( this.gameController ) ) 
-		
-		this.typePerMode["로얄"]:=[]
+
+        this.typePerMode["로얄"]:=[]
         this.typePerMode["로얄"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["로얄"].Push(new HomrunRoyalMode( this.gameController ) ) 
 
@@ -67,8 +67,7 @@ Class BaseballAuto{
         this.typePerMode["클협"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["클협"].Push(new ClubTogetherMode( this.gameController ) ) 
 
-		
-		this.typePerMode["히스"]:=[]
+        this.typePerMode["히스"]:=[]
         this.typePerMode["히스"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["히스"].Push(new HistoryMode( this.gameController ) ) 
 
@@ -83,13 +82,13 @@ Class BaseballAuto{
         BaseballAutoGui.saveGuiConfigs()
         ; 데이터 불일치가 일어 나더라도 기존 설정 값이 변경 되지 않도록 Copy를 유지한다.
         ; this.currentEnablePlayers:=baseballAutoConfig.enabledPlayers
-        this.currentEnablePlayers:=this.loadPlayerConfig()        
+        this.currentEnablePlayers:=this.loadPlayerConfig() 
 
         if ( ! this.started ){
             this.started:=true
             AUTO_RUNNING:=true
             this.logger.log("BaseballAuto Started!!")
-            
+
             for playerIndex, player in this.currentEnablePlayers{
                 player.initPlayerMode()
             }
@@ -127,7 +126,7 @@ Class BaseballAuto{
                             break
 
                         if( player.needToStop()){
-                            this.logger.log( "STOP " this.getPlayerResult(player)) 
+                            ; this.logger.log( "STOP " this.getPlayerResult(player)) 
                             this.stopPlayer(playerIndex) 
                             break
                         }else if( player.needToNextPlayer() and this.currentEnablePlayers.length() > 1 ){
@@ -242,10 +241,9 @@ Class BaseballAuto{
         global BaseballAutoGui, globalCurrentPlayer
         if ( this.started ){
             this.started:=false
-
-            for playerIndex, player in this.currentEnablePlayers{
-                this.logger.log( this.getPlayerResult(player)) 
-            }
+            ; for playerIndex, player in this.currentEnablePlayers{
+            ;     this.logger.log( this.getPlayerResult(player)) 
+            ; }
             this.logger.log("BaseballAuto Stopped!!")
             BaseballAutoGui.stopped()
 

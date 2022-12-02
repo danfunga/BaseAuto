@@ -125,7 +125,16 @@ Class AutoGameMode{
         }
         return 0		
     }
-
+    commonSelectSpecialMode(){
+        this.logger.log(this.player.getAppTitle() "스페셜 버튼을 클릭합니다.")
+        if(this.clickCommonSpecialButton()){
+            this.continueControl() 
+            return 1
+        }else{
+            this.logger.log(this.player.getAppTitle() "스페셜 버튼을 찾지 못했습니다.")
+            return 0
+        }
+    }
     clickCommonSpecialButton(){
         return this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_스페셜_팀별")
     }

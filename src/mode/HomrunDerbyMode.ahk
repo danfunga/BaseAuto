@@ -8,7 +8,7 @@ Class HomrunDerbyMode extends AutoGameMode{
     }
 
     initMode(){
-        this.addAction(this.isMainWindow,this.selectSpecialMode)
+        this.addAction(this.isMainWindow,this.commonSelectSpecialMode)
         this.addAction(this.isSpecialWindow,this.selectHomrunDerby)
         this.addAction(this.isHomerunDerbyWindow,this.startHomerunDerby)
 
@@ -22,16 +22,6 @@ Class HomrunDerbyMode extends AutoGameMode{
         this.addAction(this.checkHomerunDerbyClose)
         this.addAction(this.checkPopupClose) 
         this.addAction(this.checkAndGoHome) 
-    }
-
-    selectSpecialMode(){ 
-        if ( this.clickCommonSpecialButton()  ){
-            this.logger.log(this.player.getAppTitle() "홈런더비를 위해 스페셜 버튼을 클릭했습니다.")
-            return 1
-        }else{
-            this.logger.log(this.player.getAppTitle() "스페셜 버튼을 못찾았습니다")
-            return 0
-        }
     }
 
     selectHomrunDerby(){

@@ -7,7 +7,7 @@ Class HistoryMode extends AutoGameMode{
         base.__NEW("히스토리", controller)
     }
     initMode(){
-        this.addAction(this.isMainWindow,this.selectSpecialMode)
+        this.addAction(this.isMainWindow,this.commonSelectSpecialMode)
         this.addAction(this.isSpecialWindow,this.selectHistoryMode)
         this.addAction(this.isHistoryModeWindow,this.selectLastHistory)
         this.addAction(this.isHistoryModeWindow,this.startHistoryMode)
@@ -21,16 +21,6 @@ Class HistoryMode extends AutoGameMode{
         this.addAction(this.skipCommonPopup)
         this.addAction(this.checkLocalModePopup)
         this.addAction(this.checkAndGoHome) 
-    }
-
-    selectSpecialMode(){ 
-        if ( this.clickCommonSpecialButton() ){
-            this.logger.log(this.player.getAppTitle() "히스토리 모드를 위해 스페셜 버튼을 클릭합니다.")
-            return 1
-        }else{
-            this.logger.log(this.player.getAppTitle() "스페셜 버튼을 못찾았습니다")
-            return 0
-        }
     }
 
     selectHistoryMode(){
