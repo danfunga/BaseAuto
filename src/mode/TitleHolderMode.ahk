@@ -47,7 +47,10 @@ Class TitleHolderMode extends AutoGameMode{
             this.logger.log("플레이어 선택이 필요하다.") 
             this.logger.log("1번 타자를 선택합니다.") 
             if ( this.gameController.searchAndClickFolder("타이틀홀더모드\버튼_1번타자",20,-30) ){ 
-                this.clickNextAndConfirmButton() 
+                this.logger.log("확인을 누릅니다.") 
+                if( !this.clickNextAndConfirmButton() ){
+                    this.logger.log("왜 확인 버튼이 안되느뇨...") 
+                }
                 return 1
             }else{
                 return 0
