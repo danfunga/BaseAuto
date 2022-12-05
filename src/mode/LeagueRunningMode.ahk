@@ -119,8 +119,8 @@ Class LeagueRunningMode extends AutoGameMode{
             }
 
             if ( this.clickCommonStartButton() ){
-                this.logger.log("경기가 시작 됩니다. 20초 기다립니다.")
-                this.gameController.sleep(20)
+                this.logger.log("경기가 시작 됩니다. 30초 기다립니다.")
+                this.gameController.sleep(30)
                 return 1
             }
         }
