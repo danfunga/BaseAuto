@@ -44,6 +44,7 @@
 
     postClickESC( ){
         PostMessage, 0x100, 27, 65537, , % this.currentTargetTitle ;WM_LBUTTONDOWN
+        sleep, 50	
         PostMessage, 0x101, 27, 65537, , % this.currentTargetTitle ;WM_LBUTTONUP       
     }
 }
