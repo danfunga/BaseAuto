@@ -5,7 +5,7 @@ class BaseballAutoPlayer{
 
     ; static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","로얄","친구","보상","스테","히스","등반","클협","타홀"]
     static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","로얄","친구","보상","스테","히스","등반","타홀"]
-    static AVAILABLE_MODES:=["리그","랭대","홈런","히스","스테","등반","타홀","클협", "친구","보상", "실대" ,"로얄"]
+    static AVAILABLE_MODES:=["리그","홈런","랭대","히스","스테","타홀","클협", "친구","보상", "실대","등반","로얄"]
     ; static AVAILABLE_MODES:=["리그","실대","랭대","홈런","로얄","친구","보상","히스","스테","등반","클협","타홀"]
     static AVAILABLE_PLAY_TYPE:=["전체","공격","수비"]
     static STASTICS_KEY_MAP:={}
