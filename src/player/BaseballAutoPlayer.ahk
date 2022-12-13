@@ -9,6 +9,7 @@ class BaseballAutoPlayer{
     ; static AVAILABLE_MODES:=["리그","실대","랭대","홈런","로얄","친구","보상","히스","스테","등반","클협","타홀"]
     static AVAILABLE_PLAY_TYPE:=["전체","공격","수비"]
     static STASTICS_KEY_MAP:={}
+    static STASTICS_TITLE_KEY_MAP:={}
 
     static NEXT_PLAYER_STATUS:=["Unknwon","자동중","리그종료","끝","다음임무"]
     static STOP_PLAYER_STATUS:=["끝","리그종료"]
@@ -45,12 +46,16 @@ class BaseballAutoPlayer{
         this.remainFriendsBattleCount:=40
         this.remainRealTimeBattleCount:=2
         this.countPerMode := { "리그":0, "실대":0,"랭대":0,"홈런":0,"히스":0, "스테":0,"클협":0, "타홀":0,"친구":0, "보상":0, "로얄":0, "등반":0,"클협":0 } 
-        this.initTodayLoopCount()
+        this.initTodayLoopCount( false )
     } 
-    initTodayLoopCount(){ 
+    initTodayLoopCount( needUpdate:=true){ 
+        global baseballAutoGui
         for key in BaseballAutoPlayer.DEFULAT_LOOP_COUNT_PER_DAY
         { 
             this.LOOP_PER_ALONE_MODE[key]:=BaseballAutoPlayer.DEFULAT_LOOP_COUNT_PER_DAY[key] 
+            if( needUpdate ) {
+                baseballAutoGui.statsticsHighlight(key, false)
+            }
         }
     }
     setCurrentModeResult(modeName, value){
@@ -242,6 +247,7 @@ class BaseballAutoPlayer{
     }
 
     setMode( targetMode ){
+        global baseballAutoGui
         if( this.appRole ="일꾼" ){
             if( targetMode = "일꾼" ){
                 targetMode:=BaseballAutoPlayer.ASSIST_MODE_ARRAY[1]
@@ -266,7 +272,7 @@ class BaseballAutoPlayer{
             return true
         }else if( this.appRole = "단독" ){
             if( this.logger.isDayChanged() ){ 
-                this.initTodayLoopCount()
+                this.initTodayLoopCount(true)
                 this.logger.log("Loop 횟수를 초기화 합니다.")
             }
             if( targetMode = "단독" ){ 
@@ -274,22 +280,15 @@ class BaseballAutoPlayer{
                 currentIndex:=1
             }else{
                 if( targetMode = "next" ){
+                    baseballAutoGui.statsticsHighlight(this.appMode, false)
                     currentIndex:=this.getIndex(this.appMode,this.ALONE_MODE_ARRAY)
                     if( this.LOOP_PER_ALONE_MODE[this.appMode] <= 0 ){
-                        ; 무한으로 돌아야 하는 모드면 그냥 Index만 넘기고
+                        ; 이미 종료 되었거나, 무한일 경우 넘긴다.
                         currentIndex++
                     }else{
                         this.LOOP_PER_ALONE_MODE[this.appMode]--
                         currentIndex++ 
-                        ; if( this.LOOP_PER_ALONE_MODE[this.appMode] == 0 ){
-                        ;     ; 그만 돌아야 하니 빼줘라
-                        ;     ; this.ALONE_MODE_ARRAY.remove(currentIndex)
-                        ;     currentIndex++ 
-                        ; }else{
-                        ;     currentIndex++ 
-                        ; }
                     }
-
                     if( currentIndex > this.ALONE_MODE_ARRAY.length() ){
                         currentIndex:=1
                     }
@@ -301,7 +300,8 @@ class BaseballAutoPlayer{
             } 
             while(true){
                 targetMode:=this.ALONE_MODE_ARRAY[currentIndex] 
-                if( this.ALONE_MODE_ENABLED_MAP[targetMode]=false){
+                if( this.ALONE_MODE_ENABLED_MAP[targetMode]=false or this.LOOP_PER_ALONE_MODE[targetMode] = 0){
+                    baseballAutoGui.disableHighlight(targetMode)
                     currentIndex++ 
                     if( currentIndex > this.ALONE_MODE_ARRAY.length() ){
                         currentIndex:=1
@@ -313,6 +313,7 @@ class BaseballAutoPlayer{
             } 
             this.appMode:=this.ALONE_MODE_ARRAY[currentIndex] 
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_ALONE_MODE[this.appMode]
+            baseballAutoGui.statsticsHighlight(this.appMode, true)
             this.logger.log(this.appTitle "가 [" this.appRole "][" this.appMode "] 모드로 동작합니다.")
             if ( this.LOOP_PER_ALONE_MODE[this.appMode] = -1){
                 loopString :="무한"
@@ -324,7 +325,7 @@ class BaseballAutoPlayer{
             }else{
                 thisTimeRepeatString :=% this.currentBattleRemainCount "번"
             }
-            this.logger.log("loop: " loopString ", Count: " thisTimeRepeatString )            
+            this.logger.log("loop: " loopString ", Count: " thisTimeRepeatString ) 
             return true
         } 
         else{
@@ -335,12 +336,12 @@ class BaseballAutoPlayer{
     }
     initPlayerMode(){
         ; if(this.appRole = "일꾼" or this.appRole = "단독"){
-            this.logger.log( this.getAppTitle() " 실제 모드로 초기화 합니다.")
-            this.setMode(this.appRole)
+        this.logger.log( this.getAppTitle() " 실제 모드로 초기화 합니다.")
+        this.setMode(this.appRole)
         ; }        
     }
     getMode(){
-        
+
         return this.appMode
     }
     getRole(){

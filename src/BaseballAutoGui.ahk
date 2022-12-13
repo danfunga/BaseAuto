@@ -202,6 +202,36 @@ Class BaseballAutoGui{
         return currentWindowHeight
 
     }
+
+    disableHighlight(appName){ 
+        titleLabelName:=BaseballAutoPlayer.STASTICS_TITLE_KEY_MAP[appName]
+        resultLabelName:=BaseballAutoPlayer.STASTICS_KEY_MAP[appName]
+        this.guiMain.Controls[titleLabelName].SetOptions("+cGray")
+        this.guiMain.Controls[resultLabelName].SetOptions("+cGray")
+        this.guiMain.Controls[titleLabelName].setText(this.guiMain.Controls[titleLabelName].get())
+        this.guiMain.Controls[resultLabelName].setText(this.guiMain.Controls[resultLabelName].get())
+
+    }
+    statsticsHighlight( appName, enableFlag){
+        if( enableFlag ){
+            titleLabelName:=BaseballAutoPlayer.STASTICS_TITLE_KEY_MAP[appName]
+            resultLabelName:=BaseballAutoPlayer.STASTICS_KEY_MAP[appName]
+
+            this.guiMain.Controls[titleLabelName].SetOptions("+cRed")
+            this.guiMain.Controls[resultLabelName].SetOptions("+cRed")
+
+            this.guiMain.Controls[titleLabelName].setText(this.guiMain.Controls[titleLabelName].get())
+            this.guiMain.Controls[resultLabelName].setText(this.guiMain.Controls[resultLabelName].get())
+        }else{
+            titleLabelName:=BaseballAutoPlayer.STASTICS_TITLE_KEY_MAP[appName]
+            resultLabelName:=BaseballAutoPlayer.STASTICS_KEY_MAP[appName]
+            this.guiMain.Controls[titleLabelName].SetOptions("+cBlack")
+            this.guiMain.Controls[resultLabelName].SetOptions("+cBlack")
+            this.guiMain.Controls[titleLabelName].setText(this.guiMain.Controls[titleLabelName].get())
+            this.guiMain.Controls[resultLabelName].setText(this.guiMain.Controls[resultLabelName].get())
+        }
+    }
+
     updateStatusColor( statusLabel, status , changeColor:=0 ){
         if( changeColor = 1 ){
             this.guiMain.Controls[statusLabel].SetOptions("+cBlue")
@@ -234,6 +264,7 @@ Class BaseballAutoGui{
                 continue
             }
             guiTitle:=% value ":"
+            guiLabel:=% "Statistic" index "Title"
             if ( existIndex = 1 ){
                 option:=% "xs+10 ys+15 section"
             }else{
@@ -244,7 +275,8 @@ Class BaseballAutoGui{
                 }
             } 
             ; this.guiMain.Add("Text", "단독 활성화 : ", "xs+5 yp+20 section")
-            this.guiMain.Add("Text", guiTitle, option)
+            this.guiMain.Add("Text", guiTitle, option,guiLabel,0)
+            BaseballAutoPlayer.STASTICS_TITLE_KEY_MAP[value]:=guiLabel 
             existIndex++
         } 
 
