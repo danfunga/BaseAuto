@@ -206,11 +206,15 @@ Class BaseballAutoGui{
     disableHighlight(appName){ 
         titleLabelName:=BaseballAutoPlayer.STASTICS_TITLE_KEY_MAP[appName]
         resultLabelName:=BaseballAutoPlayer.STASTICS_KEY_MAP[appName]
-        this.guiMain.Controls[titleLabelName].SetOptions("+cRed")
-        this.guiMain.Controls[resultLabelName].SetOptions("+cRed")
+        if( appName = "리그"){
+            this.guiMain.Controls[titleLabelName].SetOptions("+cRed")
+            this.guiMain.Controls[resultLabelName].SetOptions("+cRed")
+        }else{
+            this.guiMain.Controls[titleLabelName].SetOptions("+cGray")
+            this.guiMain.Controls[resultLabelName].SetOptions("+cGray")
+        }
         this.guiMain.Controls[titleLabelName].setText(this.guiMain.Controls[titleLabelName].get())
         this.guiMain.Controls[resultLabelName].setText(this.guiMain.Controls[resultLabelName].get())
-
     }
     statsticsHighlight( appName, enableFlag){
         if( enableFlag ){
