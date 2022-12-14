@@ -288,6 +288,8 @@ class BaseballAutoPlayer{
                 { 
                     if( this.ALONE_MODE_ENABLED_MAP[key] = false or this.LOOP_PER_ALONE_MODE[key] = 0 ) {
                         baseballAutoGui.disableHighlight(key)
+                    }else{
+                        baseballAutoGui.statsticsHighlight(key, false)
                     }
                 } 
             }else{
