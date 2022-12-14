@@ -59,7 +59,7 @@ Class FriendsBattleMode extends AutoGameMode{
                 return 1
             }		 
         }else{
-            this.logger.log("친구가 더이상 없어 시작하지 않습니다. 내일보자.")             
+            this.logger.log("친구 리셋을 위해 내일까지 돌지 않습니다.")
             this.stopThisMode()
             return 0
         }

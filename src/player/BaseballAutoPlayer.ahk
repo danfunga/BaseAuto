@@ -195,7 +195,7 @@ class BaseballAutoPlayer{
         if( this.appRole ="일꾼" or this.appRole="단독"){ 
             ; 리그모드일테니깐 리그를 못돌게 하자
             this.LOOP_PER_ALONE_MODE[this.appMode]:=0
-            this.logger.log("지금 모드를 이제 돌지 않습니다. 내일이 되면 돌것입니다.")
+            this.logger.log( "[" this.appRole "][" this.appMode "] 는 이제 돌지 않습니다.")
             if( this.appMode ="리그 "){
                 this.setResultColor(3)
             }
@@ -336,7 +336,7 @@ class BaseballAutoPlayer{
             this.appMode:=this.ALONE_MODE_ARRAY[currentIndex] 
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_ALONE_MODE[this.appMode]
             baseballAutoGui.statsticsHighlight(this.appMode, true)
-            this.logger.log(this.appTitle "가 [" this.appRole "][" this.appMode "] 모드로 동작합니다.")
+            this.logger.log("[" this.appRole "][" this.appMode "] 모드로 동작하려 합니다.")
             if ( this.LOOP_PER_ALONE_MODE[this.appMode] = -1){
                 loopString :="무한"
             }else{
