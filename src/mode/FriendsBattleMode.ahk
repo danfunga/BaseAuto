@@ -53,15 +53,14 @@ Class FriendsBattleMode extends AutoGameMode{
     }
 
     startFriendsBattle(){
-
         if ( this.gameController.searchImageFolder("친구대전\화면_대상선택상태") ){		
             this.logger.log("친구 대전을 시작합니다") 
             if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
                 return 1
             }		 
         }else{
-            this.logger.log("친구가 더이상 없어 시작하지 않습니다.") 
-            this.stopControl()
+            this.logger.log("친구가 더이상 없어 시작하지 않습니다. 내일보자.")             
+            this.stopThisMode()
             return 0
         }
     }

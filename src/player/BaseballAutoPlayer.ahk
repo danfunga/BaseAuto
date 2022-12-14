@@ -185,28 +185,29 @@ class BaseballAutoPlayer{
             if( this.setMode("next") ){
                 this.setStatus("다음임무") 
             }else{
-                this.setStatus("끝") 
+                this.setStatus( this.appMode " 종료")  
             }
         }else{
-            this.setStatus("끝") 
+            this.setStatus( this.appRole " 종료") 
         } 
     }
     setRealFree(){
         if( this.appRole ="일꾼" or this.appRole="단독"){ 
             ; 리그모드일테니깐 리그를 못돌게 하자
             this.LOOP_PER_ALONE_MODE[this.appMode]:=0
-            this.logger.log("아마 이 화면을 못벗어 날거 같지만 행운을 빕니다.")
-            this.logger.log("운이 좋아 튕긴다면 다음 모드만 돌것입니다.")
-            this.setResultColor(3)
+            this.logger.log("지금 모드를 이제 돌지 않습니다. 내일이 되면 돌것입니다.")
+            if( this.appMode ="리그 "){
+                this.setResultColor(3)
+            }
             if( this.setMode("next") ){
                 this.setStatus("다음임무")
                 return true
             }else{
-                this.setStatus("리그종료")
+                this.setStatus( this.appMode " 종료")                
                 return false
             }
         }else{
-            this.setStatus("리그종료")		
+            this.setStatus( this.appRole " 종료")
             return false
         }
     }
