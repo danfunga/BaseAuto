@@ -357,6 +357,12 @@ Class AutoGameMode{
         this.gameController.waitDelayForClick() 
         this.moveMainPageForNextJob()
     }
+    stopThisMode(){
+        this.player.setRealFree()
+        this.returnFlag:=true
+        this.gameController.waitDelayForClick() 
+        this.moveMainPageForNextJob()
+    }
     releaseControl(){
         this.player.setFree()
     }

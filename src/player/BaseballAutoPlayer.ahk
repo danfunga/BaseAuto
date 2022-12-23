@@ -54,7 +54,9 @@ class BaseballAutoPlayer{
         { 
             this.LOOP_PER_ALONE_MODE[key]:=BaseballAutoPlayer.DEFULAT_LOOP_COUNT_PER_DAY[key] 
             if( needUpdate ) {
-                baseballAutoGui.statsticsHighlight(key, false)
+                if( this.ALONE_MODE_ENABLED_MAP[key] ) {
+                    baseballAutoGui.statsticsHighlight(key, false)
+                }
             }
         }
     }
@@ -171,7 +173,9 @@ class BaseballAutoPlayer{
         this.setStatusColor(1)
     }
     setCheckDone(){
+        global baseballAutoGui
         this.setStatusColor(0)
+        baseballAutoGui.statsticsHighlight(this.appMode, false)
     }
     setStay(){
         this.setStatus("조작중")
@@ -181,28 +185,29 @@ class BaseballAutoPlayer{
             if( this.setMode("next") ){
                 this.setStatus("다음임무") 
             }else{
-                this.setStatus("끝") 
+                this.setStatus( this.appMode " 종료")  
             }
         }else{
-            this.setStatus("끝") 
+            this.setStatus( this.appRole " 종료") 
         } 
     }
     setRealFree(){
         if( this.appRole ="일꾼" or this.appRole="단독"){ 
             ; 리그모드일테니깐 리그를 못돌게 하자
             this.LOOP_PER_ALONE_MODE[this.appMode]:=0
-            this.logger.log("아마 이 화면을 못벗어 날거 같지만 행운을 빕니다.")
-            this.logger.log("운이 좋아 튕긴다면 다음 모드만 돌것입니다.")
-            this.setResultColor(3)
+            this.logger.log( "[" this.appRole "][" this.appMode "] 는 이제 돌지 않습니다.")
+            if( this.appMode ="리그 "){
+                this.setResultColor(3)
+            }
             if( this.setMode("next") ){
                 this.setStatus("다음임무")
                 return true
             }else{
-                this.setStatus("리그종료")
+                this.setStatus( this.appMode " 종료")                
                 return false
             }
         }else{
-            this.setStatus("리그종료")		
+            this.setStatus( this.appRole " 종료")
             return false
         }
     }
@@ -276,22 +281,38 @@ class BaseballAutoPlayer{
                 this.logger.log("Loop 횟수를 초기화 합니다.")
             }
             if( targetMode = "단독" ){ 
+                ; First Mode init
                 targetMode:=this.ALONE_MODE_ARRAY[1]
                 currentIndex:=1
+
+                for key in BaseballAutoPlayer.DEFULAT_LOOP_COUNT_PER_DAY
+                { 
+                    if( this.ALONE_MODE_ENABLED_MAP[key] = false or this.LOOP_PER_ALONE_MODE[key] = 0 ) {
+                        baseballAutoGui.disableHighlight(key)
+                    }else{
+                        baseballAutoGui.statsticsHighlight(key, false)
+                    }
+                } 
             }else{
                 if( targetMode = "next" ){
-                    baseballAutoGui.statsticsHighlight(this.appMode, false)
-                    currentIndex:=this.getIndex(this.appMode,this.ALONE_MODE_ARRAY)
-                    if( this.LOOP_PER_ALONE_MODE[this.appMode] <= 0 ){
-                        ; 이미 종료 되었거나, 무한일 경우 넘긴다.
-                        currentIndex++
-                    }else{
-                        this.LOOP_PER_ALONE_MODE[this.appMode]--
-                        currentIndex++ 
+                    if( this.LOOP_PER_ALONE_MODE[this.appMode] > 0 ){
+                        ; 횟수 -1 을 진행                                                                      
+                        this.LOOP_PER_ALONE_MODE[this.appMode]-- 
                     }
+
+                    if( this.LOOP_PER_ALONE_MODE[this.appMode] = 0 ){
+                        ; 더이상 돌 필요 없을 경우 
+                        baseballAutoGui.disableHighlight(this.appMode)
+                    }else{
+                        ; 이번에 끝난 경우 
+                        baseballAutoGui.statsticsHighlight(this.appMode, false)
+                    }
+                    currentIndex:=this.getIndex(this.appMode, this.ALONE_MODE_ARRAY)
+                    currentIndex++ 
                     if( currentIndex > this.ALONE_MODE_ARRAY.length() ){
                         currentIndex:=1
                     }
+
                     if( this.ALONE_MODE_ARRAY.length() = 0 ){
                         this.setStatus("끝") 
                         return false
@@ -299,9 +320,10 @@ class BaseballAutoPlayer{
                 }
             } 
             while(true){
-                targetMode:=this.ALONE_MODE_ARRAY[currentIndex] 
-                if( this.ALONE_MODE_ENABLED_MAP[targetMode]=false or this.LOOP_PER_ALONE_MODE[targetMode] = 0){
-                    baseballAutoGui.disableHighlight(targetMode)
+                nextMode:=this.ALONE_MODE_ARRAY[currentIndex] 
+                if( this.ALONE_MODE_ENABLED_MAP[nextMode]=false or this.LOOP_PER_ALONE_MODE[nextMode] = 0){
+                    ; 여기서 체크는 중복일듯 하다 ==> 없애고 추후 확인 필요.
+                    ; baseballAutoGui.disableHighlight(nextMode)
                     currentIndex++ 
                     if( currentIndex > this.ALONE_MODE_ARRAY.length() ){
                         currentIndex:=1
@@ -314,7 +336,7 @@ class BaseballAutoPlayer{
             this.appMode:=this.ALONE_MODE_ARRAY[currentIndex] 
             this.currentBattleRemainCount:=BaseballAutoPlayer.COUNT_PER_ALONE_MODE[this.appMode]
             baseballAutoGui.statsticsHighlight(this.appMode, true)
-            this.logger.log(this.appTitle "가 [" this.appRole "][" this.appMode "] 모드로 동작합니다.")
+            this.logger.log("[" this.appRole "][" this.appMode "] 모드로 동작하려 합니다.")
             if ( this.LOOP_PER_ALONE_MODE[this.appMode] = -1){
                 loopString :="무한"
             }else{
