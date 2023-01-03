@@ -381,7 +381,7 @@ Class AutoGameMode{
         this.gameController.clickESC() 
     }
     quitCom2usBaseball(){
-        if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야끄기",0,0,false,true) ){
+        if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야탭닫기",0,0,false,true) ){
             this.logger.log("컴프야를 강제 종료 했습니다.")
             this.releaseControl()
             return true
@@ -390,7 +390,6 @@ Class AutoGameMode{
             result:=this.restartAppPlayer()
             this.gameController.setActiveId(this.player.getAppTitle())
             return result
-
         }
     }
     setAutoMode( mode:=true ){

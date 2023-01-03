@@ -43,8 +43,17 @@
     }
 
     postClickESC( ){
-        PostMessage, 0x100, 27, 65537, , % this.currentTargetTitle ;WM_LBUTTONDOWN
-        sleep, 50	
-        PostMessage, 0x101, 27, 65537, , % this.currentTargetTitle ;WM_LBUTTONUP       
+        WinGetClass, target , % this.currentTargetTitle              
+        if ( InStr(target ,"LDPlayer" ) && !clickTitle )
+        {           
+            PostMessage, 0x201, 27, 65537, TheRender, % this.currentTargetTitle ;WM_LBUTTONDOWN
+            sleep, 50	
+            PostMessage, 0x202, 27, 65537, TheRender, % this.currentTargetTitle ;WM_LBUTTONUP       
+        }
+        else{
+            PostMessage, 0x100, 27, 65537, , % this.currentTargetTitle ;WM_LBUTTONDOWN
+            sleep, 50	
+            PostMessage, 0x101, 27, 65537, , % this.currentTargetTitle ;WM_LBUTTONUP                   
+        }        
     }
 }

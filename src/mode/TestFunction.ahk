@@ -1,6 +1,10 @@
 ﻿; #include %A_ScriptDir%\src\util\MC_GameController.ahk
 
 #include %A_ScriptDir%\src\player\BaseballAutoPlayer.ahk
+#include %A_ScriptDir%\src\mode\0.DefulatGameMode.ahk
+#include %A_ScriptDir%\src\mode\GameStarterMode.ahk
+#include %A_ScriptDir%\src\util\AutoLogger.ahk
+#include %A_ScriptDir%\src\util\MC_GameController.ahk
 
 Class MC_ScanWindow {
 
@@ -96,15 +100,29 @@ Class MC_ScanWindow {
 }
 
 !F6::
+    logger:= new AutoLogger( "시 스 템" )
+    gameController := new MC_GameController()
+    typePerMode := Object()
 
-    player := new BaseballAutoPlayer(4)
-    ; role:="리그"
-    ; stringArray:=["리그","대전","랭대","홈런","친구","일꾼","기타"]
-    ; msg
-    ; if( !BaseballAutoPlayer.hasValue( role, BaseballAutoPlayer.AVAILABLE_ROLES) ){
-        msgbox % BaseballAutoPlayer.ASSIST_MODE_ARRAY.length()
-        
-    ; }else{
+
+    player := new BaseballAutoPlayer(0)
+    player.setEnabled(true)
+    player.setAppTitle("main")
+    player.setRole("테스트") 
+
+    gameController.setActiveId("main")
+    startMode:= new GameStarterMode( gameController )
+    gameMode.setPlayer(player)
+    ; if not ( gameController.checkAppPlayer() ){
+    ;     this.logger.log("아이디 잘못되었음")
+    ; } else{
+    ;     this.logger.log("정상 동작 중 ")
+    ; }
+; restartAppPlayer()
+    startMode.quitCom2usBaseball()
+    ; startMode.restartAppPlayer()
+
+    ;  }else{
     ;     MsgBox, % "찾았다"
     ; }
     ; find:=false
@@ -124,7 +142,7 @@ Class MC_ScanWindow {
     ;     }
     ; }  
 
-    player.setRole("바보")
+    ; player.setRole("바보")
     ; IfExist, A_ScriptDir
     ; globalCurrentPlayer.setStay()
     ; targetX:=178
