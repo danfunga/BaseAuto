@@ -63,7 +63,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
                 this.gameController.sleep(600)
                 return 1
             }
-
+             ; 단독 모드의 리그를 빼고 진행하자.                
             if ( this.player.getWaitingResult() ){
                 if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
                     this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
@@ -185,8 +185,11 @@ Class LeagueUpgradeMode extends AutoGameMode{
             this.continueControl()
             this.logger.log(this.player.getAppTitle() " 무조건 우승이다.") 
             if ( this.gameController.searchImageFolder("리그모드\화면_리그_완전종료") ){
-                this.sendESCUntilConfirm()
-
+                this.player.appRole("단독")
+                this.player.appMode:="리그"
+                if( this.stopAndQuitConrol() ){
+                    return this.quitCom2usBaseball()
+                }
                 return 1
             }
             return 0				

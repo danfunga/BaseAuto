@@ -347,6 +347,17 @@ Class AutoGameMode{
                 return 1
             }
         }
+        this.logger.log("홈 버튼을 정상적으로 찾지 못합니다.") 
+        this.logger.log("무식하게 ESC를 3번 트라이 할겁니다.") 
+        loop 3
+        {
+            if not ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){ 
+                this.goBackward()
+                this.gameController.waitDelayForChangeWindow()
+            }else{
+                return 1
+            }
+        }
         return 0
     } 
 
