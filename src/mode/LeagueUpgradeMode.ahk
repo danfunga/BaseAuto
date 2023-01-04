@@ -185,7 +185,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
             this.continueControl()
             this.logger.log(this.player.getAppTitle() " 무조건 우승이다.") 
             if ( this.gameController.searchImageFolder("리그모드\화면_리그_완전종료") ){
-                this.player.appRole("단독")
+                this.player.setRole("단독")
                 this.player.appMode:="리그"
                 if( this.stopAndQuitConrol() ){
                     return this.quitCom2usBaseball()
