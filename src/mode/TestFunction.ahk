@@ -119,7 +119,7 @@ Class MC_ScanWindow {
     ;     this.logger.log("정상 동작 중 ")
     ; }
 ; restartAppPlayer()
-    startMode.quitCom2usBaseball()
+    startMode.goBackward()
     ; startMode.restartAppPlayer()
 
     ;  }else{

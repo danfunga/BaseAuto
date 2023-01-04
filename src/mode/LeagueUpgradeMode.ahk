@@ -185,11 +185,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
             this.continueControl()
             this.logger.log(this.player.getAppTitle() " 무조건 우승이다.") 
             if ( this.gameController.searchImageFolder("리그모드\화면_리그_완전종료") ){
-                this.player.setRole("단독")
-                this.player.appMode:="리그"
-                if( this.stopAndQuitConrol() ){
-                    return this.quitCom2usBaseball()
-                }
+                this.sendESCUntilConfirm()
                 return 1
             }
             return 0				
@@ -214,9 +210,11 @@ Class LeagueUpgradeMode extends AutoGameMode{
             if ( this.gameController.searchImageFolder("등반모드\화면_여기까지") ){
                 break 
             }else{
-                this.logger.log(this.player.getAppTitle() " 뒤로가기 - ESC ") 
-                this.gameController.clickESC() 
-                this.gameController.sleep(1)
+                this.goBackward()
+                ; this.gameController.clickESC() 
+                ; this.logger.log(this.player.getAppTitle() " 뒤로가기 - ESC ") 
+                ; this.gameController.clickESC() 
+                ; this.gameController.sleep(1)
             }
         }
     }
