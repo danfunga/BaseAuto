@@ -17,6 +17,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
         this.addAction(this.choicePlayType)
         this.addAction(this.checkSpeedUp)
         this.addAction(this.closeGame)
+        this.addAction(this.checkLimitInning)
         this.addAction(this.skippPlayLineupStatus)
         this.addAction(this.closeGame)
         this.addAction(this.skippChanceStatus)
@@ -45,11 +46,15 @@ Class LeagueUpgradeMode extends AutoGameMode{
     checkLimitInning(){
         if ( this.gameController.searchImageFolder("등반모드\화면_한계이닝\점수판") ){ 
             if ( this.gameController.searchImageFolder("등반모드\화면_한계이닝") ){ 
-                this.giveUpFlag:=true
-                this.logger.log(this.player.getAppTitle() " 등반을 포기하겠습니다.")
+                if not (this.giveUpFlag){
+                    this.giveUpFlag:=true
+                    this.logger.log(this.player.getAppTitle() " 등반을 포기하겠습니다.")
+                }
             }else{
-                this.giveUpFlag:=false
-                this.logger.log(this.player.getAppTitle() " 등반을 계속합니다.")
+                if(this.giveUpFlag){
+                    this.giveUpFlag:=false
+                    this.logger.log(this.player.getAppTitle() " 등반을 계속합니다.")
+                }
             } 
         }
     }
@@ -77,6 +82,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
             ; 단독 모드의 리그를 빼고 진행하자.                
             if ( this.player.getWaitingResult() ){
                 if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
+                    this.giveUpFlag:=false
                     this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
                     this.player.setWantToWaitResult(false)
                     this.stopControl()
@@ -87,6 +93,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
                 }
             }else{ 
                 if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
+                    this.giveUpFlag:=false
                     if( this.player.getRemainBattleCount() = 0 ){
                         this.stopControl()
                         return 0
@@ -107,7 +114,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
         if( this.autoFlag ){
             if ( this.gameController.searchImageFolder("등반모드\화면_종료플래그") ){
                 if (this.giveUpFlag){
-                    this.logger.log("이번 경기를 포기합니다...")
+                    this.logger.log("이번 경기를 포기하고 종료 하지 않습니다. 24회인가..")
                     return 1
                 }
                 if( this.quitCom2usBaseball() ){
@@ -155,6 +162,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
             this.continueControl()
 
             if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
+                this.giveUpFlag:=false
                 this.logger.log("경기가 시작 됩니다. 10초 기다립니다.")
                 this.gameController.sleep(10)
                 return 1
