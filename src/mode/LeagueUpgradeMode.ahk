@@ -10,6 +10,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
     initMode(){
         this.addAction(this.closeGame)
         this.addAction(this.isMainWindow, this.selectLeagueButton) 
+        this.addAction(this.checkLimitInning)
         this.addAction(this.skippLeagueSchedule)
         this.addAction(this.closeGame)
         this.addAction(this.skippBattleHistory)
@@ -41,7 +42,17 @@ Class LeagueUpgradeMode extends AutoGameMode{
         this.addAction(this.closeGame)
         this.addAction(this.checkAndGoHome) 
     }
-
+    checkLimitInning(){
+        if ( this.gameController.searchImageFolder("등반모드\화면_한계이닝\점수판") ){ 
+            if ( this.gameController.searchImageFolder("등반모드\화면_한계이닝") ){ 
+                this.giveUpFlag:=true
+                this.logger.log(this.player.getAppTitle() " 등반을 포기하겠습니다.")
+            }else{
+                this.giveUpFlag:=false
+                this.logger.log(this.player.getAppTitle() " 등반을 계속합니다.")
+            } 
+        }
+    }
     selectLeagueButton(){
         if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_리그_팀별") ){
             this.logger.log(this.player.getAppTitle() " 등반을 위해 리그를 돌겠습니다.")
@@ -63,7 +74,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
                 this.gameController.sleep(600)
                 return 1
             }
-             ; 단독 모드의 리그를 빼고 진행하자.                
+            ; 단독 모드의 리그를 빼고 진행하자.                
             if ( this.player.getWaitingResult() ){
                 if ( this.gameController.searchImageFolder("1.공통\버튼_게임시작") ){
                     this.logger.log(this.player.getAppTitle() " 정상 종료를 요청을 확인했습니다.")
@@ -95,6 +106,10 @@ Class LeagueUpgradeMode extends AutoGameMode{
     closeGame(){
         if( this.autoFlag ){
             if ( this.gameController.searchImageFolder("등반모드\화면_종료플래그") ){
+                if (this.giveUpFlag){
+                    this.logger.log("이번 경기를 포기합니다...")
+                    return 1
+                }
                 if( this.quitCom2usBaseball() ){
                     this.continueControl() 
                 }else{
@@ -108,7 +123,6 @@ Class LeagueUpgradeMode extends AutoGameMode{
                         }
                     }
                 }
-
             }
         }
     }
@@ -185,6 +199,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
             this.continueControl()
             this.logger.log(this.player.getAppTitle() " 무조건 우승이다.") 
             if ( this.gameController.searchImageFolder("리그모드\화면_리그_완전종료") ){
+                ; this.stopAndQuitConrol()
                 this.sendESCUntilConfirm()
                 return 1
             }
@@ -349,11 +364,11 @@ Class LeagueUpgradeMode extends AutoGameMode{
                 if ( this.gameController.searchImageFolder("게임실행모드\Button_GameIcon") ){
                     this.logger.log("시작이 왜 안됐나요... ")
                     if( this.gameController.searchAndClickFolder("게임실행모드\Button_GameIcon") ){
-                        this.gameController.sleep(13)        
+                        this.gameController.sleep(13) 
                     }
                 }else{
-                    this.gameController.sleep(13)    
-                }                    
+                    this.gameController.sleep(13) 
+                } 
                 return 1
             } 
         }
