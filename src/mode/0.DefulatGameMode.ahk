@@ -226,6 +226,33 @@ Class AutoGameMode{
         return this.gameController.searchAndClickFolder("0.기본UI\6.클럽모드_버튼_클럽협동전")
     }
 
+    ; ////////
+    ; 팀관리
+    ; ////////
+    clickCommonTeamManageButton(){
+        return this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_팀관리_팀별")
+    }
+
+    isTeamManageWindow(callback){
+        if ( this.gameController.searchImageFolder("0.기본UI\7.팀관리_Base") ){		 
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0
+    }
+    
+    clickCommonFruntManageButton(){
+        return this.gameController.searchAndClickFolder("0.기본UI\7.팀관리_버튼_프런트관리")
+    }
+
+    isFruntManageWindow(callback){
+        if ( this.gameController.searchImageFolder("0.기본UI\7-1.프런트_Base") ){		 
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0
+    }
+
     isAutoModePlayingWindow( callback){
         if( this.gameController.searchImageFolder("1.공통\화면_자동진행중" ) ){
             this.continueControl()
@@ -349,7 +376,7 @@ Class AutoGameMode{
             }
         }
     }
-    
+
     moveMainPageForNextJob(){
         if ( this.gameController.searchImageFolder("1.공통\버튼_홈으로" ) ){
             this.logger.log("다음 임무를 위해 시작 화면으로 갑니다.") 
@@ -364,7 +391,7 @@ Class AutoGameMode{
         {
             if not ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){ 
                 this.goBackward()
-                this.gameController.waitDelayForChangeWindow()
+                this.gameController.waitDelayForClick()
             }else{
                 return 1
             }
@@ -379,6 +406,8 @@ Class AutoGameMode{
         this.gameController.waitDelayForClick() 
         this.moveMainPageForNextJob()
     }
+
+    
     stopThisMode(){
         this.player.setRealFree()
         this.returnFlag:=true

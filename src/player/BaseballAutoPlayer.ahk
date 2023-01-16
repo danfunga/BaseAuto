@@ -180,17 +180,19 @@ class BaseballAutoPlayer{
     setStay(){
         this.setStatus("조작중")
     }
+
     setBye(){
         if( this.appRole ="일꾼" or this.appRole="단독"){ 
             if( this.setMode("next") ){
                 this.setStatus("다음임무") 
             }else{
-                this.setStatus( this.appMode " 종료")  
+                this.setStatus( "끝") 
             }
         }else{
-            this.setStatus( this.appRole " 종료") 
+            this.setStatus("끝") 
         } 
     }
+
     setRealFree(){
         if( this.appRole ="일꾼" or this.appRole="단독"){ 
             ; 리그모드일테니깐 리그를 못돌게 하자
@@ -203,11 +205,11 @@ class BaseballAutoPlayer{
                 this.setStatus("다음임무")
                 return true
             }else{
-                this.setStatus( this.appMode " 종료")                
+                this.setStatus( "끝") 
                 return false
             }
         }else{
-            this.setStatus( this.appRole " 종료")
+            this.setStatus( "끝")
             return false
         }
     }

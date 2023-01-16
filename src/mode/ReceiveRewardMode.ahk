@@ -10,9 +10,16 @@ Class ReceiveRewardMode extends AutoGameMode{
     initForThisPlayer(){
         this.receiveFriendsPoint:=false
         this.receiveDailyReward:=false
+        this.receiveFruntReward:=false
     }
 
     initMode(){
+
+        this.addAction(this.isMainWindow,this.selectTeamManageButtonWithDelay)
+        this.addAction(this.isTeamManageWindow,this.selectFruntButtonWithDelay)
+        this.addAction(this.checkFruntAdPopup)
+        this.addAction(this.isFruntManageWindow,this.selectReceiveFruntMoney)
+
         this.addAction(this.isMainWindow,this.selectFriendButton)
         this.addAction(this.selectFriendsList)
         this.addAction(this.receiveAndSendFriendPoint)
@@ -21,6 +28,52 @@ Class ReceiveRewardMode extends AutoGameMode{
         this.addAction(this.checkPopup)
         this.addAction(this.skipMVPWindow)
         this.addAction(this.checkAndGoHome) 
+    }
+
+    selectTeamManageButtonWithDelay(){
+         if( this.checkWantToModeQuit() ){
+            return 0
+        }
+        if ( this.receiveFruntReward ){
+            return 0
+        }
+        if( this.clickCommonTeamManageButton() ){
+            this.gameController.waitDelayForClick()
+        }else{
+            return 0
+        }
+    }
+    
+    selectFruntButtonWithDelay(){
+         if( this.checkWantToModeQuit() ){
+            return 0
+        }
+        if( this.clickCommonFruntManageButton() ){
+            this.gameController.waitDelayForClick()
+        }else{
+            return 0
+        }
+    }
+    checkFruntAdPopup(){
+        loop ,3
+        {
+            if ( this.gameController.searchImageFolder("보상모드\화면_프런트_광고") ){
+                this.logger.log("광고를 없애자..")
+                this.goBackward()
+            }else{
+                return 0
+            }
+        }
+    }
+    selectReceiveFruntMoney(){
+        this.logger.log("정기 운영비를 수령합니다.")
+        if ( this.gameController.searchAndClickFolder("보상모드\버튼_정기운영비수령") ){
+            this.gameController.waitDelayForClick()
+            this.receiveFruntReward:=true
+        }else{
+            this.logger.log("시간이 안되었거나... 팝업 상태 인가요")
+        }
+        this.moveMainPageForNextJob()
     }
 
     selectFriendButton(){ 
