@@ -10,6 +10,8 @@ Class StageMode extends AutoGameMode{
     initMode(){
         this.addAction(this.isMainWindow,this.commonSelectSpecialMode)
         this.addAction(this.isSpecialWindow,this.selectStageMode)
+        this.addAction(this.checkStageModeClose)
+
         this.addAction(this.isStageWindow,this.selectStageLevel)
         this.addAction(this.isStageWindow,this.startStageMode)
         this.addAction(this.playStageMode)
@@ -155,6 +157,11 @@ Class StageMode extends AutoGameMode{
     }
 
     checkStageModeClose(){
+        if ( this.gameController.searchImageFolder("스테이지모드\화면_스테이지_종료") ){
+            this.logger.log("스테이지가 종료 되어서 안됩니다.")
+            this.stopControl()
+            return 1
+        }
         if ( this.gameController.searchImageFolder("스테이지모드\화면_볼없음" ) ){		 
             this.logger.log("볼이 없는거 보니 스테이지모드 다 돌았네요. ..")
             if( this.player.appRole == "단독" ){
