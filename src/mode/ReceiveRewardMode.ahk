@@ -19,6 +19,8 @@ Class ReceiveRewardMode extends AutoGameMode{
         this.addAction(this.isTeamManageWindow,this.selectFruntButtonWithDelay)
         this.addAction(this.checkFruntAdPopup)
         this.addAction(this.isFruntManageWindow,this.selectReceiveFruntMoney)
+        this.addAction(this.isFruntManageWindow,this.selectOuterHelper)
+        this.addAction(this.isFruntManageWindow,this.activeFront)
 
         this.addAction(this.isMainWindow,this.selectFriendButton)
         this.addAction(this.selectFriendsList)
@@ -31,7 +33,7 @@ Class ReceiveRewardMode extends AutoGameMode{
     }
 
     selectTeamManageButtonWithDelay(){
-         if( this.checkWantToModeQuit() ){
+        if( this.checkWantToModeQuit() ){
             return 0
         }
         if ( this.receiveFruntReward ){
@@ -43,9 +45,9 @@ Class ReceiveRewardMode extends AutoGameMode{
             return 0
         }
     }
-    
+
     selectFruntButtonWithDelay(){
-         if( this.checkWantToModeQuit() ){
+        if( this.checkWantToModeQuit() ){
             return 0
         }
         if( this.clickCommonFruntManageButton() ){
@@ -73,9 +75,49 @@ Class ReceiveRewardMode extends AutoGameMode{
         }else{
             this.logger.log("시간이 안되었거나... 팝업 상태 인가요")
         }
+    }
+    selectOuterHelper(){
+        this.logger.log("외부 자문을 선택합니다.")
+        if ( this.gameController.searchAndClickFolder("보상모드\버튼_외부자문임명") ){
+            this.gameController.waitDelayForClick()
+            if ( this.gameController.searchAndClickFolder("보상모드\버튼_외부자문임명\버튼_선택") ){
+                if ( this.gameController.searchImageFolder("보상모드\버튼_외부자문임명\버튼_선택\화면_자문선택") ){
+                    if( this.clickNextAndConfirmButton() ){
+                        this.gameController.waitDelayForClick()
+                        this.logger.log("외부 자문을 선택했습니다.")
+                    }
+                }
+                this.gameController.clickESC() 
+            }else{
+                this.logger.log("가능한 외부 자문이 없습니다.")
+                this.gameController.clickESC()
+            }
+        }else{
+            this.logger.log("이미 외부 자문이 있습니다.")
+        }
+    }
+    activeFront(){
+        global baseballAutoConfig
+
+        if( baseballAutoConfig.getFrontAutoActive() ){
+            this.logger.log("프런트를 활성화를 진행하겠습니다.")
+            if ( this.gameController.searchAndClickFolder("보상모드\버튼_프론트활성화") ){
+                if ( this.gameController.searchImageFolder("보상모드\버튼_프론트활성화\화면_활성화확인") ){
+                    if( this.clickNextAndConfirmButton() ){
+                        this.logger.log("프런트를 활성화 했습니다.")
+                    }
+                }else{
+                    this.logger.log("프런트 활성화 확인 화면이 안나오네요.. 고치던가 하세요")
+                    this.gameController.clickESC()
+                }
+            }else{
+                this.logger.log("프런트가 이미 활성화 되어 있거나, 운영비가 부족합니다.")
+            }
+        }else{
+            this.logger.log("프런트 옵션이 꺼져있어 활성화 시키지 않습니다.")
+        }
         this.moveMainPageForNextJob()
     }
-
     selectFriendButton(){ 
         if( this.checkWantToModeQuit() ){
             return 0

@@ -411,6 +411,10 @@ Class BaseballAutoGui{
         }
         this.guiMain.Add("Checkbox", "스테장비", option, "StageEquipChk", 0)
 
+        option:="x+10 yp"
+        this.addFrontActive(option)
+        this.setFrontActive(baseballAutoConfig.getFrontAutoActive())
+        
         return currentWindowHeight
     }
     getUsingEquipment(){
@@ -436,6 +440,17 @@ Class BaseballAutoGui{
     setUseBooster( bool ) {
         ; configFile 에서 설정되는 부분
         this.guiMain.Controls["BoosterChk"].set(bool)
+    }
+
+    addFrontActive(option){
+        this.guiMain.Add("Checkbox", "프론트", option, "FrontActiveChk", 0)
+    }
+    getFrontActive() {
+        return this.guiMain.Controls["FrontActiveChk"].get()
+    }
+    setFrontActive( bool ) {
+        ; configFile 에서 설정되는 부분
+        this.guiMain.Controls["FrontActiveChk"].set(bool)
     }
 
     getPaused(){
@@ -550,7 +565,8 @@ Class BaseballAutoGui{
         baseballAutoConfig.setUsingEquipmentForRankingBattleFlag(this.getUsingEquipment())
         baseballAutoConfig.setUsingBoostItemFlag(this.getUseBooster())
         baseballAutoConfig.setUsingStageModeEquipmentFlag(this.getUseStageEquip())
-
+        baseballAutoConfig.setFrontAutoActive(this.getFrontActive())
+        
         baseballAutoConfig.setDelySecForClick(this.getGuiValueDelayForClick())
         baseballAutoConfig.setDelaySecChangeWindow(this.getGuiValueDelayForChangeWindow())
         baseballAutoConfig.setDelaySecSkip(this.getGuiValueDelayForSkip())

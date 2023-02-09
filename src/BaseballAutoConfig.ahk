@@ -17,6 +17,7 @@ class BaseballAutoConfig{
         this.usingEquipmentForRankingBattleFlag:=false
         this.usingBoostItemFlag:=false
         this.usingStageModeEquipmentFlag:=false
+        this.usingAutofrontActive:=false
 
         ; 딜레이 설정
         this.delaySecForClick:=2
@@ -112,6 +113,7 @@ class BaseballAutoConfig{
         this.setUsingEquipmentForRankingBattleFlag( this.configFile.loadValue("GLOBAL_CONFIG","UseRankingBattleEquipment") )
         this.setUsingBoostItemFlag( this.configFile.loadValue("GLOBAL_CONFIG","UseBooster") )
         this.setUsingStageModeEquipmentFlag( this.configFile.loadValue("GLOBAL_CONFIG","UseStageModeEquipment") )
+        this.setFrontAutoActive( this.configFile.loadValue("GLOBAL_CONFIG","UseAutoFrontActive") )
 
         this.setDelySecForClick( this.configFile.loadValue("DELAY_CONFIG","clickDelay") )
         this.setDelaySecChangeWindow( this.configFile.loadValue("DELAY_CONFIG","changeWindowDelay") )
@@ -159,6 +161,18 @@ class BaseballAutoConfig{
         }
         this.usingStageModeEquipmentFlag:=value
     }
+
+    setFrontAutoActive( value ){
+        if(value =""){
+            value:=false
+        }
+        this.usingAutofrontActive:=value
+    }
+    getFrontAutoActive(){
+        return this.usingAutofrontActive
+    }
+   
+
     setDelySecForClick(value){
         if(value =""){
             value:=2
@@ -202,6 +216,7 @@ class BaseballAutoConfig{
         this.configFile.saveValue("GLOBAL_CONFIG","UseRankingBattleEquipment",this.usingEquipmentForRankingBattleFlag) 
         this.configFile.saveValue("GLOBAL_CONFIG","UseBooster",this.usingBoostItemFlag) 
         this.configFile.saveValue("GLOBAL_CONFIG","UseStageModeEquipment",this.usingStageModeEquipmentFlag) 
+        this.configFile.saveValue("GLOBAL_CONFIG","UseAutoFrontActive",this.usingAutofrontActive) 
 
         this.configFile.saveValue("DELAY_CONFIG","clickDelay",this.delaySecForClick) 
         this.configFile.saveValue("DELAY_CONFIG","changeWindowDelay",this.delaySecChangeWindow) 
