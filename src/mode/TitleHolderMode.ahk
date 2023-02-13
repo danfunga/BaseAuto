@@ -85,7 +85,7 @@ Class TitleHolderMode extends AutoGameMode{
     }
     selectBatterType(){
         if ( this.gameController.searchImageFolder("타이틀홀더모드\화면_유형선택") ){		 
-            if ( this.gameController.searchAndClickFolder("타이틀홀더모드\버튼_교타자") ){ 
+            if ( this.gameController.searchAndClickFolder("타이틀홀더모드\버튼_장타자") ){ 
                 this.clickNextAndConfirmButton()
                 return 1
             } 
@@ -164,9 +164,11 @@ Class TitleHolderMode extends AutoGameMode{
     }
 
     checkTitleHolderLeagueEnd(){
-        if ( this.gameController.searchImageFolder("타이틀홀더모드\화면_리그종료") ){
+        this.logger.log("종료 상태인지 확인 확인")        
+        if ( this.gameController.searchImageFolder("타이틀홀더모드\화면_리그종료" ) ){         
             this.logger.log(this.player.getAppTitle() " 타이틀 홀더 모드 리그가 종료 되었습니다.") 
-            return this.clickNextAndConfirmButton() 
+            this.stopControl() 
+            return 1
         }
         return 0				
     }
