@@ -625,6 +625,17 @@ Class AutoGameMode{
         }else{
             this.logger.log("앱플레이어의 X 버튼을 못찾습니다.") 
             this.gameController.setActiveId(this.player.getAppTitle())
+            
+            this.gameController.setActiveId("LDMultiPlayer 매니저")
+            if(this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료",0,0,true,false)){
+                this.gameController.setActiveId("알림")
+                if(this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료\확인",0,0,true,false)){
+                    this.gameController.setActiveId("LDMultiPlayer 매니저")
+                    this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료\화면_재시작확인\버튼_재시작",0,0,true,false )
+                    return ture
+                }
+            }
+            
             return false
         }
     }
