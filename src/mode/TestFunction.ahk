@@ -99,7 +99,7 @@ Class MC_ScanWindow {
 
 }
 
-!F6::
+^F6::
     logger:= new AutoLogger( "시 스 템" )
     gameController := new MC_GameController()
     typePerMode := Object()
@@ -169,7 +169,7 @@ return
 
 return 
 
-^F6::
+!F6::
     WinGetClass, target , LDsub
     MsgBox, %target%
     ; testWindow := new MC_ScanWindow("OK")
