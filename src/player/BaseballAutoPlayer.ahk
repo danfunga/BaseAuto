@@ -6,8 +6,12 @@ class BaseballAutoPlayer{
     ; static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","로얄","친구","보상","스테","히스","등반","클협","타홀"]
     static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","로얄","친구","보상","스테","히스","등반","타홀"]
     static AVAILABLE_MODES:=["리그","홈런","랭대","히스","스테","타홀","클협", "친구","보상", "실대","등반","로얄"]
+    static SYSTEM_STATISTIC_STATUS:=["재기동_시도","재기동_성공","재기동_실패","매니저_시도","매니저_성공","매니저_실패"]
     ; static AVAILABLE_MODES:=["리그","실대","랭대","홈런","로얄","친구","보상","히스","스테","등반","클협","타홀"]
     static AVAILABLE_PLAY_TYPE:=["전체","공격","수비"]
+    static SYSTEM_STATUS_KEY_MAP:={}
+    static SYSTEM_STATUS_TITLE_KEY_MAP:={}
+
     static STASTICS_KEY_MAP:={}
     static STASTICS_TITLE_KEY_MAP:={}
 
@@ -46,6 +50,7 @@ class BaseballAutoPlayer{
         this.remainFriendsBattleCount:=40
         this.remainRealTimeBattleCount:=2
         this.countPerMode := { "리그":0, "실대":0,"랭대":0,"홈런":0,"히스":0, "스테":0,"클협":0, "타홀":0,"친구":0, "보상":0, "로얄":0, "등반":0,"클협":0 } 
+        this.countPerStatus := { "재기동_시도":0, "재기동_성공":0,"재기동_실패":0,"매니저_시도":0,"매니저_성공":0, "매니저_실패":0} 
         this.initTodayLoopCount( false )
     } 
     initTodayLoopCount( needUpdate:=true){ 
@@ -70,6 +75,17 @@ class BaseballAutoPlayer{
         baseballAutoConfig.savePlayerStatistic(player,modeName,value)
         baseballAutoGui.updateStatus( BaseballAutoPlayer.STASTICS_KEY_MAP[modeName], value)
     }
+
+    setCurrentSystemStatisticResult(modeName, value){
+        global baseballAutoGui, baseballAutoConfig
+        if ( value ="" ){
+            value:=0
+        }
+        this.countPerStatus[modeName]:=value
+
+        baseballAutoConfig.saveSystemStatus(player,modeName,value)
+        baseballAutoGui.updateStatus( BaseballAutoPlayer.SYSTEM_STATUS_KEY_MAP[modeName], value)
+    }
     setResult( result ){
         global baseballAutoGui, baseballAutoConfig
         if ( result ="" ){
@@ -82,6 +98,9 @@ class BaseballAutoPlayer{
     }
     getCountPerMode(){
         return this.countPerMode
+    }
+    getCountPerStatus(){
+        return this.countPerStatus
     }
     setNeedSkip( needSkip:=false){
         if( needSkip )
@@ -120,6 +139,10 @@ class BaseballAutoPlayer{
             this.setCurrentModeResult(this.appMode, this.countPerMode[this.appMode]+1) 
         }
     } 
+    
+    addSystemStatus( modeName ){        
+        this.setCurrentSystemStatisticResult(modeName, this.countPerStatus[modeName]+1)         
+    }
 
     getRemainBattleCount(){
         if( this.currentBattleRemainCount < 0 ){

@@ -101,6 +101,14 @@ class BaseballAutoConfig{
                         readValue:=0
                     player.countPerMode[value]:=readValue 
                 } 
+                for index, key in BaseballAutoPlayer.SYSTEM_STATISTIC_STATUS
+                {
+                    readValue:= this.configFile.loadValue("SYSTEM_STATUS", key )
+                    if( readValue = ""){
+                        readValue:=0 
+                    }
+                    player.countPerStatus[key]:=readValue
+                }
             } 
             player.setStandAloneModeOrder(this.standAloneModeOrderString)
             player.setStandAloneModeEnableMap(this.standaloneEnabledModeMap)
@@ -171,7 +179,6 @@ class BaseballAutoConfig{
     getFrontAutoActive(){
         return this.usingAutofrontActive
     }
-   
 
     setDelySecForClick(value){
         if(value =""){
@@ -231,5 +238,9 @@ class BaseballAutoConfig{
     savePlayerStatistic( player , mode , value){
         this.configFile.saveValue("PLAYERS_STAISTICS",mode, value) 
     }
+
+    saveSystemStatus( player , mode , value){
+        this.configFile.saveValue("SYSTEM_STATUS",mode, value) 
+    } 
 }
 

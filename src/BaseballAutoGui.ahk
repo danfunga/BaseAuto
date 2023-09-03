@@ -42,6 +42,7 @@ Class BaseballAutoGui{
         mainHeight+=this.initOptionWindow(mainHeight)
         mainHeight+=this.initButtonWindow(mainHeight)
         mainHeight+=this.initWindowStatistic(mainHeight)
+        mainHeight+=this.initWindowStatus(mainHeight)
         mainHeight+=this.initLogWindow(mainHeight)
         ; mainHeight+=this.initConfigWindow(mainHeight)+5
         this.totalHeight:=mainHeight+this.initConfigWindow(mainHeight)+5
@@ -306,8 +307,57 @@ Class BaseballAutoGui{
             BaseballAutoPlayer.STASTICS_KEY_MAP[value]:=guiLabel 
             existIndex++
         } 
+
         return currentWindowHeight
     }
+    initWindowStatus(_height){
+        global baseballAutoConfig
+
+        currentPlayer:=baseballAutoConfig.players[1]
+
+        currentWindowHeight:=50
+        this.guiMain.addGroupBox("System Status", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
+
+        existIndex:=1
+        for index, value in BaseballAutoPlayer.SYSTEM_STATISTIC_STATUS
+        { 
+            guiTitle:=% value ":"
+            guiLabel:=% "SystemStatus" index "Title"
+            if ( existIndex = 1 ){
+                option:=% "xs+10 ys+15 section"
+            }else{
+                if(existIndex=4 ){
+                    option:=% "xs y+4"
+                }else{
+                    option:=% "x+30 yp"
+                }
+            } 
+            this.guiMain.Add("Text", guiTitle, option,guiLabel,0)
+            BaseballAutoPlayer.SYSTEM_STATUS_TITLE_KEY_MAP[value]:=guiLabel 
+            existIndex++
+        } 
+
+        existIndex:=1
+        for index, value in BaseballAutoPlayer.SYSTEM_STATISTIC_STATUS
+        { 
+            guiTitle:=currentPlayer.countPerStatus[value]
+            guiLabel:=% "SystemStatus" index "Result"
+            if ( existIndex = 1 ){
+                option:=% "xs+70 ys w22 right section"
+            }else{
+                if(existIndex=4){
+                    option:=% "xs y+4 wp right"
+                }else{
+                    option:=% "x+78 yp wp right"
+                }
+            } 
+            this.guiMain.Add("Text", guiTitle, option, guiLabel,0)
+            BaseballAutoPlayer.SYSTEM_STATUS_KEY_MAP[value]:=guiLabel 
+            existIndex++
+        } 
+        return currentWindowHeight
+    }
+
     initLogWindow(_height){
         currentWindowHeight:=this.CONST_SIZE_LOG_HEIGHT
         ; this.guiMain.Add("Edit", "Logs", "Readonly xp y+5 w" this.maxGroupWidth-1 " h" currentWindowHeight-30 , "GuiLoggerLogging",0)
@@ -414,7 +464,7 @@ Class BaseballAutoGui{
         option:="x+10 yp"
         this.addFrontActive(option)
         this.setFrontActive(baseballAutoConfig.getFrontAutoActive())
-        
+
         return currentWindowHeight
     }
     getUsingEquipment(){
@@ -527,7 +577,11 @@ Class BaseballAutoGui{
                 {
                     player.setCurrentModeResult(key,0)
                 }
-            }
+                for statusKey in player.countPerStatus
+                {
+                    player.setCurrentSystemStatisticResult(statusKey,0)
+                }
+            } 
         }
     }
     savePlayerByGui(){
@@ -566,7 +620,7 @@ Class BaseballAutoGui{
         baseballAutoConfig.setUsingBoostItemFlag(this.getUseBooster())
         baseballAutoConfig.setUsingStageModeEquipmentFlag(this.getUseStageEquip())
         baseballAutoConfig.setFrontAutoActive(this.getFrontActive())
-        
+
         baseballAutoConfig.setDelySecForClick(this.getGuiValueDelayForClick())
         baseballAutoConfig.setDelaySecChangeWindow(this.getGuiValueDelayForChangeWindow())
         baseballAutoConfig.setDelaySecSkip(this.getGuiValueDelayForSkip())
