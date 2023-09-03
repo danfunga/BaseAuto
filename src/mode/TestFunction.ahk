@@ -119,8 +119,8 @@ Class MC_ScanWindow {
     ;     this.logger.log("정상 동작 중 ")
     ; }
 ; restartAppPlayer()
-    startMode.goBackward()
-    ; startMode.restartAppPlayer()
+    ; startMode.goBackward()
+    startMode.restartAppPlayer()
 
     ;  }else{
     ;     MsgBox, % "찾았다"
