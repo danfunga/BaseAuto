@@ -611,6 +611,7 @@ Class AutoGameMode{
         }
 
         this.logger.log("앱 플레이어의 강제 재기동을 수행합니다. ")
+        this.player.addSystemStatus("재기동_시도")
         this.gameController.setActiveId(this.player.getAppTitle())
         if (this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료", 0, 0, true, true)) {
             this.logger.log("앱플레이어 강제 종료 X 를 눌렀습니다.")
@@ -623,16 +624,19 @@ Class AutoGameMode{
                     this.gameController.setActiveId(this.player.getAppTitle())
                     this.releaseControl()
                     this.logger.log("정상 재기동이 되었기를 ...")
+                    this.player.addSystemStatus("재기동_성공")
                     return true
                 }
             }
         }
+        this.player.addSystemStatus("재기동_실패")
         if(!isLDPlayer){
             this.logger.log("정상적으로 재시작을 못했습니다.")
             this.gameController.setActiveId(this.player.getAppTitle())
             return false
         } 
         this.logger.log("멀티 매니저로 종료해봅시다")
+        this.player.addSystemStatus("매니저_시도")
         this.gameController.setActiveId(managerTitle)
         if (this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료\버튼_LD매니저_종료")) {
             this.logger.log("매니저의 종료 버튼을 눌렀습니다.")
@@ -652,12 +656,15 @@ Class AutoGameMode{
                         this.gameController.setActiveId(this.player.getAppTitle())
                         this.releaseControl()
                         this.logger.log("정상 재기동이 되었기를 ...")
+                        this.player.addSystemStatus("매니저_성공")
                         return true
                     }
                 }
             }
         }
-
+        this.gameController.setActiveId(this.player.getAppTitle())
+        this.releaseControl()
+        this.player.addSystemStatus("매니저_실패")
         return false
     }
 

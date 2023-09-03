@@ -112,7 +112,7 @@ Class MC_ScanWindow {
 
     gameController.setActiveId("main")
     startMode:= new GameStarterMode( gameController )
-    gameMode.setPlayer(player)
+    startMode.setPlayer(player)
     ; if not ( gameController.checkAppPlayer() ){
     ;     this.logger.log("아이디 잘못되었음")
     ; } else{
