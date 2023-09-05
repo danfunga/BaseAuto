@@ -101,13 +101,13 @@ class BaseballAutoConfig{
                         readValue:=0
                     player.countPerMode[value]:=readValue 
                 } 
-                for index, key in BaseballAutoPlayer.SYSTEM_STATISTIC_STATUS
+                for index, key in BaseballAutoPlayer.RESTART_TYPES
                 {
-                    readValue:= this.configFile.loadValue("SYSTEM_STATUS", key )
+                    readValue:= this.configFile.loadValue("RESTART_COUNTS", key )
                     if( readValue = ""){
                         readValue:=0 
                     }
-                    player.countPerStatus[key]:=readValue
+                    player.countPerRestart[key]:=readValue
                 }
             } 
             player.setStandAloneModeOrder(this.standAloneModeOrderString)
@@ -239,8 +239,8 @@ class BaseballAutoConfig{
         this.configFile.saveValue("PLAYERS_STAISTICS",mode, value) 
     }
 
-    saveSystemStatus( player , mode , value){
-        this.configFile.saveValue("SYSTEM_STATUS",mode, value) 
+    saveRestartCount( player , mode , value){
+        this.configFile.saveValue("RESTART_COUNTS",mode, value) 
     } 
 }
 

@@ -42,7 +42,7 @@ Class BaseballAutoGui{
         mainHeight+=this.initOptionWindow(mainHeight)
         mainHeight+=this.initButtonWindow(mainHeight)
         mainHeight+=this.initWindowStatistic(mainHeight)
-        mainHeight+=this.initWindowStatus(mainHeight)
+        mainHeight+=this.initRestartCounts(mainHeight)
         mainHeight+=this.initLogWindow(mainHeight)
         ; mainHeight+=this.initConfigWindow(mainHeight)+5
         this.totalHeight:=mainHeight+this.initConfigWindow(mainHeight)+5
@@ -310,49 +310,52 @@ Class BaseballAutoGui{
 
         return currentWindowHeight
     }
-    initWindowStatus(_height){
+    initRestartCounts(_height){
         global baseballAutoConfig
 
         currentPlayer:=baseballAutoConfig.players[1]
 
         currentWindowHeight:=50
-        this.guiMain.addGroupBox("System Status", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
+        this.guiMain.addGroupBox("Restart Counts", 10, _height, this.maxGroupWidth, currentWindowHeight , , true )
 
         existIndex:=1
-        for index, value in BaseballAutoPlayer.SYSTEM_STATISTIC_STATUS
+        for index, value in BaseballAutoPlayer.RESTART_TYPES
         { 
-            guiTitle:=% value ":"
-            guiLabel:=% "SystemStatus" index "Title"
+            if ( existIndex < 4 ){
+                guiTitle:=% value ":"
+            }else{
+                guiTitle:=% "성   공:"
+            }
+            guiLabel:=% "RestartCount" index "Title"
             if ( existIndex = 1 ){
                 option:=% "xs+10 ys+15 section"
             }else{
                 if(existIndex=4 ){
                     option:=% "xs y+4"
                 }else{
-                    option:=% "x+30 yp"
+                    option:=% "x+70 yp"
                 }
             } 
             this.guiMain.Add("Text", guiTitle, option,guiLabel,0)
-            BaseballAutoPlayer.SYSTEM_STATUS_TITLE_KEY_MAP[value]:=guiLabel 
+            BaseballAutoPlayer.RESTART_COUNTS_TITLE_KEY_MAP[value]:=guiLabel 
             existIndex++
         } 
 
         existIndex:=1
-        for index, value in BaseballAutoPlayer.SYSTEM_STATISTIC_STATUS
+        for index, value in BaseballAutoPlayer.RESTART_TYPES
         { 
-            guiTitle:=currentPlayer.countPerStatus[value]
-            guiLabel:=% "SystemStatus" index "Result"
+            guiTitle:=currentPlayer.countPerRestart[value]
+            guiLabel:=% "RestartCount" index "Result"
             if ( existIndex = 1 ){
-                option:=% "xs+70 ys w22 right section"
-            }else{
-                if(existIndex=4){
+                option:=% "xs+65 ys w22 right section"
+            }else{ if(existIndex=4 ){
                     option:=% "xs y+4 wp right"
                 }else{
-                    option:=% "x+78 yp wp right"
+                option:=% "x+75 yp wp right"
                 }
             } 
             this.guiMain.Add("Text", guiTitle, option, guiLabel,0)
-            BaseballAutoPlayer.SYSTEM_STATUS_KEY_MAP[value]:=guiLabel 
+            BaseballAutoPlayer.RESTART_COUNTS_KEY_MAP[value]:=guiLabel 
             existIndex++
         } 
         return currentWindowHeight
@@ -577,9 +580,10 @@ Class BaseballAutoGui{
                 {
                     player.setCurrentModeResult(key,0)
                 }
-                for statusKey in player.countPerStatus
+                for statusKey in player.countPerRestart
                 {
-                    player.setCurrentSystemStatisticResult(statusKey,0)
+                    
+                    player.setRestartCountResult(statusKey,0)
                 }
             } 
         }

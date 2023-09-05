@@ -431,16 +431,10 @@ Class AutoGameMode{
         this.gameController.clickESC()
     }
     quitCom2usBaseball(){
-        if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야탭닫기",0,0,false,true) ){
-            this.logger.log("컴프야를 강제 종료 했습니다.")
-            this.releaseControl()
-            return true
-        } else{
-            this.logger.log("ERROR: 컴프야를 종료 못하니 앱플레이어를 강제로 재시작해봅니다.")
-            result:=this.restartAppPlayer()
-            this.gameController.setActiveId(this.player.getAppTitle())
-            return result
-        }
+        this.logger.log("컴프야 강제 종료를시작합니다.")
+        result:=this.restartAppPlayer()
+        this.gameController.setActiveId(this.player.getAppTitle())
+        return result 
     }
     setAutoMode( mode:=true ){
         success:=false
@@ -595,6 +589,13 @@ Class AutoGameMode{
     }
 
     restartAppPlayer() {
+        this.player.addRestartCount("탭닫기")
+        if( this.gameController.searchAndClickFolder("1.공통\버튼_컴프야탭닫기",0,0,false,true) ){
+            this.logger.log("컴프야를 강제 종료 했습니다.") 
+            this.releaseControl()
+            this.player.addRestartCount("탭닫기_성공")
+            return true
+        }
         WinGetClass, targetClassName, % this.player.getAppTitle()
 
         isLDPlayer:=false 
@@ -611,7 +612,7 @@ Class AutoGameMode{
         }
 
         this.logger.log("앱 플레이어의 강제 재기동을 수행합니다. ")
-        this.player.addSystemStatus("재기동_시도")
+        this.player.addRestartCount("재기동")
         this.gameController.setActiveId(this.player.getAppTitle())
         if (this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료", 0, 0, true, true)) {
             this.logger.log("앱플레이어 강제 종료 X 를 눌렀습니다.")
@@ -623,20 +624,24 @@ Class AutoGameMode{
                     this.gameController.waitDelayForReboot()
                     this.gameController.setActiveId(this.player.getAppTitle())
                     this.releaseControl()
-                    this.logger.log("정상 재기동이 되었기를 ...")
-                    this.player.addSystemStatus("재기동_성공")
+                    this.logger.log("정상 재기동이 되었기를 ...") 
+                    this.player.addRestartCount("재기동_성공")
                     return true
                 }
             }
         }
-        this.player.addSystemStatus("재기동_실패")
-        if(!isLDPlayer){
-            this.logger.log("정상적으로 재시작을 못했습니다.")
-            this.gameController.setActiveId(this.player.getAppTitle())
-            return false
-        } 
+        if(!managerTitle){
+            ; 타이밍상 LD인지 모를수 있으니 ... 최대한의 부팅을 위해 ..            
+            managerTitle := "ahk_class LDRemoteLoginFrame"
+            managerPopupTitle := "ahk_class MessageBoxWindow"
+        }
+        ; if(!isLDPlayer){
+        ;     this.logger.log("정상적으로 재시작을 못했습니다.")
+        ;     this.gameController.setActiveId(this.player.getAppTitle())
+        ;     return false
+        ; } 
         this.logger.log("멀티 매니저로 종료해봅시다")
-        this.player.addSystemStatus("매니저_시도")
+        this.player.addRestartCount("매니저")
         this.gameController.setActiveId(managerTitle)
         if (this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료\버튼_LD매니저_종료")) {
             this.logger.log("매니저의 종료 버튼을 눌렀습니다.")
@@ -649,22 +654,32 @@ Class AutoGameMode{
                     this.logger.log("앱이 종료 되길 리붓 딜레이 만큼 기다립니다.")
                     this.gameController.waitDelayForReboot()
                     this.gameController.setActiveId(managerTitle)
-                    this.logger.log("다시 실행을 해봅니다.")
+                    this.logger.log("매니저로 다시 실행을 해봅니다.")
                     if (this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료\버튼_LD매니저_종료\화면_알림확인\버튼_확인\버튼_실행")) {
                         this.logger.log("자 다시 실행 버튼을 눌렀습니다. 리붓 딜레이 대기합니다.")
                         this.gameController.waitDelayForReboot()
                         this.gameController.setActiveId(this.player.getAppTitle())
                         this.releaseControl()
-                        this.logger.log("정상 재기동이 되었기를 ...")
-                        this.player.addSystemStatus("매니저_성공")
+                        this.logger.log("매니저로 정상 재기동이 되었기를 ...")
+                        this.player.addRestartCount("매니저_성공")
                         return true
                     }
                 }
             }
+        }else{
+            this.logger.log("혹시.. 실행이 대기중일수 있다.")
+            if (this.gameController.searchAndClickFolder("1.공통\버튼_앱강제종료\버튼_LD매니저_종료\화면_알림확인\버튼_확인\버튼_실행")) {
+                this.logger.log("자 다시 실행 버튼을 눌렀습니다. 리붓 딜레이 대기합니다.")
+                this.gameController.waitDelayForReboot()
+                this.gameController.setActiveId(this.player.getAppTitle())
+                this.releaseControl()
+                this.logger.log("매니저로 정상 재기동이 되었기를 ...")
+                this.player.addRestartCount("매니저_성공")
+                return true
+            }
         }
         this.gameController.setActiveId(this.player.getAppTitle())
         this.releaseControl()
-        this.player.addSystemStatus("매니저_실패")
         return false
     }
 
