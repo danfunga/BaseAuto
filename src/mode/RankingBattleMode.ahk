@@ -54,14 +54,14 @@ Class RankingBattleMode extends AutoGameMode{
             return 1
         }
 
-        if ( this.gameController.searchImageFolder("랭대모드\화면_상대있음") ){
+        ; if ( this.gameController.searchImageFolder("랭대모드\화면_상대있음") ){
             this.checkAndSetBattleEquips()
 
             this.logger.log("랭킹 대전 준비 화면으로 넘어갑니다.")
             if ( this.clickCommonStartButton() ){
                 return 1
             }
-        }
+        ; }
     }
     checkAndSetBattleEquips(){
         global baseballAutoConfig
