@@ -176,10 +176,10 @@ Class BaseballAutoGui{
         currentWindowHeight=50
         this.guiMain.addGroupBox("Buttons", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
 
-        this.guiMain.Add("Button", "시작[F9]", "w90 h30 xs+10 ys+15 section", "GuiStartButton", 0)
+        this.guiMain.Add("Button", "시작[F9]", "w60 h30 xs+10 ys+15 section", "GuiStartButton", 0)
         this.guiMain.Controls["GuiStartButton"].BindMethod(this.startByGui.Bind(this))
 
-        this.guiMain.Add("Button", "종료[F10]", "w90 h30 xs ys +Hidden", "GuiStopButton", 0)
+        this.guiMain.Add("Button", "종료[F10]", "w60 h30 xs ys +Hidden", "GuiStopButton", 0)
         this.guiMain.Controls["GuiStopButton"].BindMethod(this.stopByGui.Bind(this))
 
         vIcon_resume=%A_ScriptDir%\Resource\Image\resume.png
@@ -194,11 +194,13 @@ Class BaseballAutoGui{
         this.guiMain.Add("Button", "리로드[F12]", "w80 h30 X+5 yp-4 ", "GuiReloadButton", 0)
         this.guiMain.Controls["GuiReloadButton"].BindMethod(this.reloadByGui.Bind(this))
 
-        this.guiMain.Add("Button", "설정", "w40 h30 X+5 ", "GuiConfigButton", 0)
-        this.guiMain.Add("Button", "패스", "w40 h30 X+5 ", "GuiWaitResultButton", 0)
+        this.guiMain.Add("Button", "설정", "w35 h30 X+5 ", "GuiConfigButton", 0)        
+        this.guiMain.Add("Button", "리붓", "w30 h30 X+5 ", "GuiRestartButton", 0)
+        this.guiMain.Add("Button", "패스", "w35 h30 X+5 ", "GuiWaitResultButton", 0)
 
         this.guiMain.Controls["GuiConfigButton"].BindMethod(this.configByGui.Bind(this))
         this.guiMain.Controls["GuiWaitResultButton"].BindMethod(this.waitingResultByGui.Bind(this))
+        this.guiMain.Controls["GuiRestartButton"].BindMethod(this.restartPlayerByGui.Bind(this))
 
         return currentWindowHeight
 
@@ -653,6 +655,28 @@ Class BaseballAutoGui{
         ToolTip, 종료 또는 Mode Skip을 요청합니다.
         Sleep , 1000
         ToolTip
+    }
+
+    restartPlayerByGui(){
+        global baseballAuto 
+        baseballAuto.setWantToRestart(true)
+
+
+        logger:= new AutoLogger( "시 스 템" )
+        gameController := new MC_GameController()
+        typePerMode := Object()
+
+
+        player := new BaseballAutoPlayer(0)
+        player.setEnabled(true)
+        player.setAppTitle("main")
+        player.setRole("테스트") 
+
+        gameController.setActiveId("main")
+        startMode:= new GameStarterMode( gameController )
+        startMode.setPlayer(player)
+    
+        startMode.restartAppPlayer()
     }
     getGuiInfo(player){
         player.setEnabled(this.guiMain.Controls[player.getKeyEnable()].get())
