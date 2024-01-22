@@ -176,10 +176,10 @@ Class BaseballAutoGui{
         currentWindowHeight=50
         this.guiMain.addGroupBox("Buttons", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
 
-        this.guiMain.Add("Button", "시작[F9]", "w60 h30 xs+10 ys+15 section", "GuiStartButton", 0)
+        this.guiMain.Add("Button", "시작[F9]", "w65 h30 xs+10 ys+15 section", "GuiStartButton", 0)
         this.guiMain.Controls["GuiStartButton"].BindMethod(this.startByGui.Bind(this))
 
-        this.guiMain.Add("Button", "종료[F10]", "w60 h30 xs ys +Hidden", "GuiStopButton", 0)
+        this.guiMain.Add("Button", "종료[F10]", "w65 h30 xs ys +Hidden", "GuiStopButton", 0)
         this.guiMain.Controls["GuiStopButton"].BindMethod(this.stopByGui.Bind(this))
 
         vIcon_resume=%A_ScriptDir%\Resource\Image\resume.png
@@ -195,7 +195,7 @@ Class BaseballAutoGui{
         this.guiMain.Controls["GuiReloadButton"].BindMethod(this.reloadByGui.Bind(this))
 
         this.guiMain.Add("Button", "설정", "w35 h30 X+5 ", "GuiConfigButton", 0)        
-        this.guiMain.Add("Button", "리붓", "w30 h30 X+5 ", "GuiRestartButton", 0)
+        this.guiMain.Add("Button", "끄기", "w30 h30 X+5 ", "GuiRestartButton", 0)
         this.guiMain.Add("Button", "패스", "w35 h30 X+5 ", "GuiWaitResultButton", 0)
 
         this.guiMain.Controls["GuiConfigButton"].BindMethod(this.configByGui.Bind(this))
