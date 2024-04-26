@@ -6,8 +6,15 @@ Class LeagueRunningMode extends AutoGameMode{
     {
         base.__NEW("리그모드", controller)
     }
-
+    initForThisPlayer(){
+        this.frontLoopProtectCount:=0
+    }
     initMode(){
+        this.addAction(this.isMainWindow,this.selectTeamManageButtonWithDelay)
+        this.addAction(this.isTeamManageWindow,this.selectFruntButtonWithDelay)
+        this.addAction(this.isFruntManageWindow,this.selectReceiveFruntMoney)
+        this.addAction(this.isFruntManageWindow,this.selectOuterHelper)
+        this.addAction(this.isFruntManageWindow,this.activeFront)
         this.addAction(this.isMainWindow, this.selectLeagueButton)
         this.addAction(this.skippLeagueSchedule)
         this.addAction(this.skippBattleHistory)
@@ -23,6 +30,80 @@ Class LeagueRunningMode extends AutoGameMode{
         this.addAction(this.skipMVPWindow)
         this.addAction(this.checkTotalLeagueEnd)
         this.addAction(this.checkAndGoHome) 
+    }
+
+    selectTeamManageButtonWithDelay(){
+        if ( this.gameController.searchImageFolder("0.기본UI\화면_프런트_대기중") ){ 
+            if( baseballAutoConfig.getFrontAutoActive() ){
+                this.logger.log("프런트 대기중이니 활성화를 합니다.") 
+
+                if( this.clickCommonTeamManageButton() ){
+                    this.gameController.waitDelayForClick()
+                    return 1
+                } 
+            } else{
+                this.logger.log("프런트 대기중이나 설정 OFF입니다.") 
+            }
+        }
+        return 0
+    }
+    selectFruntButtonWithDelay(){
+        if( this.clickCommonFruntManageButton() ){
+            this.gameController.waitDelayForClick()
+        }else{
+            return 0
+        }
+    }
+    selectReceiveFruntMoney(){
+        this.logger.log("정기 운영비를 수령합니다.")
+        if ( this.gameController.searchAndClickFolder("보상모드\버튼_정기운영비수령") ){
+            this.gameController.waitDelayForClick()
+        }else{
+            this.logger.log("시간이 안되었거나... 팝업 상태 인가요")
+        }
+    }
+    selectOuterHelper(){
+        this.logger.log("외부 자문을 선택합니다.")
+        if ( this.gameController.searchAndClickFolder("보상모드\버튼_외부자문임명") ){
+            this.gameController.waitDelayForClick()
+            if ( this.gameController.searchAndClickFolder("보상모드\버튼_외부자문임명\버튼_선택") ){
+                if ( this.gameController.searchImageFolder("보상모드\버튼_외부자문임명\버튼_선택\화면_자문선택") ){
+                    if( this.clickNextAndConfirmButton() ){
+                        this.gameController.waitDelayForClick()
+                        this.logger.log("외부 자문을 선택했습니다.")
+                    }
+                }
+                this.gameController.clickESC() 
+            }else{
+                this.logger.log("가능한 외부 자문이 없습니다.")
+                this.gameController.clickESC()
+            }
+        }else{
+            this.logger.log("이미 외부 자문이 있습니다.")
+        }
+    }
+    activeFront(){
+        global baseballAutoConfig
+        if( baseballAutoConfig.getFrontAutoActive() ){
+            this.logger.log("프런트를 활성화를 진행하겠습니다.")
+            if ( this.gameController.searchAndClickFolder("보상모드\버튼_프론트활성화") ){
+                if ( this.gameController.searchImageFolder("보상모드\버튼_프론트활성화\화면_활성화확인") ){
+                    if( this.clickNextAndConfirmButton() ){
+                        this.logger.log("프런트를 활성화 했습니다.")
+                        this.gameController.sleep(2)
+                        this.gameController.clickESC()
+                    }
+                }else{
+                    this.logger.log("프런트 활성화 확인 화면이 안나오네요.. 고치던가 하세요")
+                    this.gameController.clickESC()
+                }
+            }else{
+                this.logger.log("프런트가 이미 활성화 되어 있거나, 운영비가 부족합니다.")
+            }
+        }else{
+            this.logger.log("프런트 옵션이 꺼져있어 활성화 시키지 않습니다.")
+        }
+        this.moveMainPageForNextJob()
     }
 
     selectLeagueButton(){
@@ -60,7 +141,7 @@ Class LeagueRunningMode extends AutoGameMode{
 
             if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
                 this.logger.log("이어하기는 정상 종료, 리그 종료와 무관하게 수행합니다.")
-                this.gameController.sleep(15)				
+                this.gameController.sleep(10)
                 return 1
             }else{
                 this.logger.log("이어하기가 아닙니다.")

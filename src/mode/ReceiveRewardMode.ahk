@@ -35,10 +35,7 @@ Class ReceiveRewardMode extends AutoGameMode{
     selectTeamManageButtonWithDelay(){
         if( this.checkWantToModeQuit() ){
             return 0
-        }
-        if ( this.receiveFruntReward ){
-            return 0
-        }
+        }  
         if( this.clickCommonTeamManageButton() ){
             this.gameController.waitDelayForClick()
         }else{
@@ -71,7 +68,6 @@ Class ReceiveRewardMode extends AutoGameMode{
         this.logger.log("정기 운영비를 수령합니다.")
         if ( this.gameController.searchAndClickFolder("보상모드\버튼_정기운영비수령") ){
             this.gameController.waitDelayForClick()
-            this.receiveFruntReward:=true
         }else{
             this.logger.log("시간이 안되었거나... 팝업 상태 인가요")
         }
@@ -267,7 +263,11 @@ Class ReceiveRewardMode extends AutoGameMode{
                 pieceCount:=0
                 completeCount:=0
                 loop 10{
-                    if ( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성") ){ 
+                    ; 먼저 앰블럼 생서(5/5)
+                    if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
+                        this.logger.log("앰블럼 제작 - " A_INDEX) 
+                        this.checkPopup()
+                    }else if ( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성") ){ 
                         if ( this.gameController.searchImageFolder("보상모드\버튼_앰블럼생성\선택" ) ){
                             if ( this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼생성\선택\0먼저") ){
                                 this.logger.log("한개도 없는걸 먼저 선택")
@@ -289,11 +289,6 @@ Class ReceiveRewardMode extends AutoGameMode{
                                 }
                             }
                             this.checkPopup()
-                            if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
-                                completeCount++
-                                this.logger.log("앰블럼 제작 - " completeCount) 
-                                this.checkPopup()
-                            } 
                         }else{
                             pieceCount++
                             this.logger.log("앰블럼 획득 - " pieceCount)
@@ -301,10 +296,7 @@ Class ReceiveRewardMode extends AutoGameMode{
                     }else if( this.gameController.searchImageFolder("보상모드\화면_보상없음") ){
                         this.logger.log("더이상 제작 불가능") 
                         break
-                    }else if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
-                        this.logger.log("앰블럼 제작 - " A_INDEX) 
-                        this.checkPopup()
-                    } 
+                    }
                 } 
             }
             this.checkPopup()
