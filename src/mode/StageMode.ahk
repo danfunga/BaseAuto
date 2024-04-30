@@ -25,6 +25,7 @@ Class StageMode extends AutoGameMode{
         this.addAction(this.checkStageModeClose)
         this.addAction(this.checkPopup) 
         this.addAction(this.checkAndGoHome) 
+        this.addAction(this.checkAndStopStartLimitCount)
     }
 
     selectStageMode(){
@@ -100,7 +101,8 @@ Class StageMode extends AutoGameMode{
                 this.logger.log("스테이지 모드를 시작합니다~")
 
                 this.setAutoMode(true)
-                if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
+                if ( this.clickCommonStartButton() ){ 
+                    this.startingLoopLimit:=0
                     this.logger.log("고고변 받아봤자 캡틴 안나옴ㅋ")
                     this.logger.log("6초 기다립니다.")
                     this.gameController.sleep(6)

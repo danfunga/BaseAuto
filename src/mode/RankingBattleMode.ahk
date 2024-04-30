@@ -23,6 +23,7 @@ Class RankingBattleMode extends AutoGameMode{
         this.addAction(this.isAutoModePlayingWindow, this.checkPlaying)
         this.addAction(this.checkRankingClose)
         this.addAction(this.checkAndGoHome) 
+        this.addAction(this.checkAndStopStartLimitCount)
     }
 
     selectBattleMode(){
@@ -55,12 +56,12 @@ Class RankingBattleMode extends AutoGameMode{
         }
 
         ; if ( this.gameController.searchImageFolder("랭대모드\화면_상대있음") ){
-            this.checkAndSetBattleEquips()
+        this.checkAndSetBattleEquips()
 
-            this.logger.log("랭킹 대전 준비 화면으로 넘어갑니다.")
-            if ( this.clickCommonStartButton() ){
-                return 1
-            }
+        this.logger.log("랭킹 대전 준비 화면으로 넘어갑니다.")
+        if ( this.clickCommonStartButton() ){
+            return 1
+        }
         ; }
     }
     checkAndSetBattleEquips(){
@@ -71,8 +72,8 @@ Class RankingBattleMode extends AutoGameMode{
         }else{
             this.logger.log("랭킹 대전 장비를 사용하지 않습니다.")
             this.setBattleModeEquipment(false)
-        }        
-    }   
+        } 
+    } 
 
     ransleep(min, max)
     {
@@ -88,7 +89,8 @@ Class RankingBattleMode extends AutoGameMode{
             }
             this.continueControl()
             this.logger.log("경기를 시작합니다")
-            if ( this.clickCommonStartButton() ){
+            if ( this.clickCommonStartButton() ){ 
+                this.startingLoopLimit:=0
                 this.logger.log("6초 기다립니다")
                 this.gameController.sleep(6)
                 return 1

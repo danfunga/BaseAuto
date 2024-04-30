@@ -22,6 +22,7 @@ Class HomrunDerbyMode extends AutoGameMode{
         this.addAction(this.checkHomerunDerbyClose)
         this.addAction(this.checkPopupClose) 
         this.addAction(this.checkAndGoHome) 
+        this.addAction(this.checkAndStopStartLimitCount)         
     }
 
     selectHomrunDerby(){
@@ -42,7 +43,8 @@ Class HomrunDerbyMode extends AutoGameMode{
             return 1
         }else{
             this.logger.log("홈런 더비를 시작합니다") 
-            if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
+            if ( this.clickCommonStartButton() ){ 
+                this.startingLoopLimit:=0
                 this.logger.log("6초 기다립니다") 
                 this.gameController.sleep(6)
                 return 1

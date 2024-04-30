@@ -29,6 +29,7 @@ Class TitleHolderMode extends AutoGameMode{
         this.addAction(this.checkTitleHodlerModeClosed)
         this.addAction(this.checkPopup) 
         this.addAction(this.checkAndGoHome) 
+        this.addAction(this.checkAndStopStartLimitCount)
     }
 
     selectTitleHoldMode(){
@@ -115,6 +116,7 @@ Class TitleHolderMode extends AutoGameMode{
                 this.logger.log("타이틀 홀드 모드를 플레이합니다")
                 this.setAutoMode(true)
                 if ( this.clickCommonStartButton() ){ 
+                    this.startingLoopLimit:=0
                     this.logger.log("6초 기다립니다.")
                     this.gameController.sleep(6)
                     return 1

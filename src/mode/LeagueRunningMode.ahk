@@ -30,6 +30,7 @@ Class LeagueRunningMode extends AutoGameMode{
         this.addAction(this.skipMVPWindow)
         this.addAction(this.checkTotalLeagueEnd)
         this.addAction(this.checkAndGoHome) 
+        this.addAction(this.checkAndStopStartLimitCount)
     }
 
     selectTeamManageButtonWithDelay(){
@@ -139,7 +140,8 @@ Class LeagueRunningMode extends AutoGameMode{
                 this.player.setNeedSkip(false)
             }
 
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
+            if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){                
+                this.startingLoopLimit:=0
                 this.logger.log("이어하기는 정상 종료, 리그 종료와 무관하게 수행합니다.")
                 this.gameController.sleep(10)
                 return 1
@@ -172,6 +174,7 @@ Class LeagueRunningMode extends AutoGameMode{
                 }
             }
             if ( this.clickCommonStartButton() ){
+                this.startingLoopLimit:=0
                 return 1
             }		 
         }

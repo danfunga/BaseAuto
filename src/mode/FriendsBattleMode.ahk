@@ -21,6 +21,7 @@ Class FriendsBattleMode extends AutoGameMode{
         this.addAction(this.checkLocalModePopup)
         this.addAction(this.receiveReward)
         this.addAction(this.checkAndGoHome) 
+        this.addAction(this.checkAndStopStartLimitCount)
     }
 
     selectBattleMode(){
@@ -55,7 +56,7 @@ Class FriendsBattleMode extends AutoGameMode{
     startFriendsBattle(){
         if ( this.gameController.searchImageFolder("친구대전\화면_대상선택상태") ){		
             this.logger.log("친구 대전을 시작합니다") 
-            if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
+            if ( this.clickCommonStartButton() ){ 
                 return 1
             }		 
         }else{
@@ -70,7 +71,8 @@ Class FriendsBattleMode extends AutoGameMode{
             this.continueControl()
             this.logger.log("친구대전 경기를 시작합니다") 
             this.setAutoMode(true)
-            if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
+            if ( this.clickCommonStartButton() ){ 
+                this.startingLoopLimit:=0
                 this.logger.log("10초 기다립니다") 
                 this.gameController.sleep(10)
                 return 1

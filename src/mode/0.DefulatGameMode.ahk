@@ -15,6 +15,7 @@ Class AutoGameMode{
         this.gameController :=controller
         this.actionList:=[]
         this.initMode()
+        this.startingLoopLimit:=0
     }
     initMode(){
     }
@@ -27,6 +28,15 @@ Class AutoGameMode{
     }
     initForThisPlayer(){
     }
+
+    checkAndStopStartLimitCount(){
+        this.startingLoopLimit++
+        if(this.startingLoopLimit >20){
+            this.logger.log("모드 시작을 못하고 Loop가 도는거 같아 다음 임무를 수행합니다.")
+            this.stopControl()
+        }
+    }
+
     addAction( firstMethod, secondMethod:="" ){
         if( secondMethod = ""){
             this.actionList.push( [firstMethod] )

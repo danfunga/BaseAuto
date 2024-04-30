@@ -99,7 +99,7 @@ Class LeagueUpgradeMode extends AutoGameMode{
                         return 0
                     }
                 }
-                if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){
+                if ( this.clickCommonStartButton() ){ 
                     return 1
                 }else if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){
                     this.logger.log("경기가 이어합니다. 10초 기다립니다.")
