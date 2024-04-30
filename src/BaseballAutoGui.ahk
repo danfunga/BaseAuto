@@ -271,6 +271,9 @@ Class BaseballAutoGui{
                 continue
             }
             guiTitle:=% value ":"
+            if ( value = "클협"){
+                guiTitle:=% "메롱:"
+            }
             guiLabel:=% "Statistic" index "Title"
             if ( existIndex = 1 ){
                 option:=% "xs+10 ys+15 section"
@@ -280,7 +283,7 @@ Class BaseballAutoGui{
                 }else{
                     option:=% "x+30 yp"
                 }
-            } 
+            }           
             ; this.guiMain.Add("Text", "단독 활성화 : ", "xs+5 yp+20 section")
             this.guiMain.Add("Text", guiTitle, option,guiLabel,0)
             BaseballAutoPlayer.STASTICS_TITLE_KEY_MAP[value]:=guiLabel 
@@ -415,8 +418,7 @@ Class BaseballAutoGui{
                 }else if ( baseballAutoConfig.standaloneEnabledModeMap[value] ){
                     option:= % option " checked"
                 }
-            } 
-
+            }             
             this.guiMain.Add("CheckBox", value, option, guiLabel,0)
             memberIndex++
         } 

@@ -30,7 +30,7 @@ Class LeagueRunningMode extends AutoGameMode{
         this.addAction(this.skipMVPWindow)
         this.addAction(this.checkTotalLeagueEnd)
         this.addAction(this.checkAndGoHome) 
-        ; this.addAction(this.checkAndStopStartLimitCount)
+        this.addAction(this.checkAndStopStartLimitCount)
     }
 
     selectTeamManageButtonWithDelay(){
@@ -237,7 +237,7 @@ Class LeagueRunningMode extends AutoGameMode{
         result:=before
         if( this.gameController.searchAndClickFolder("리그모드\Button_skipBeforePlay") = true ){				
             this.startingLoopLimit:=0
-            this.logger.log(this.player.getAppTitle() " 라인업 등을 넘어갑니다.") 
+            this.logger.log("라인업 등을 넘어갑니다.") 
             result+=1
             if( result > 4 )
                 return result
