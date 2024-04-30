@@ -236,6 +236,7 @@ Class LeagueRunningMode extends AutoGameMode{
     skippPlayLineupStatus(before:=0){
         result:=before
         if( this.gameController.searchAndClickFolder("리그모드\Button_skipBeforePlay") = true ){				
+            this.startingLoopLimit:=0
             this.logger.log(this.player.getAppTitle() " 라인업 등을 넘어갑니다.") 
             result+=1
             if( result > 4 )

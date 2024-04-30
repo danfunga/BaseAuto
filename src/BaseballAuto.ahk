@@ -147,7 +147,7 @@ Class BaseballAuto{
                                         this.startMode.setPlayer(player)
                                         this.startMode.goBackward()
                                     } 
-                                    if ( loopCount > 120 ){
+                                    if ( loopCount > 130 ){
                                         this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 이녀석을 강제...로...")
                                         if( this.startMode.quitCom2usBaseball()){
                                             this.logger.log("자~ 재기동을 시켜 버렸다... 어떻게 하나 보자")
@@ -158,19 +158,19 @@ Class BaseballAuto{
                                         }
                                     }
                                 }else{
-                                    if( loopCount!=0 and mod(loopCount,60) = 0 ){
+                                    if( loopCount!=0 and mod(loopCount,30) = 0 ){
                                         this.logger.log(player.getAppTitle() "[" player.getMode() "] 이미지 없음 " loopCount "회")
                                     }
-                                    if( loopCount = 180 or loopCount = 240){
+                                    if( loopCount = 90 or loopCount = 120){
                                         this.logger.log("ERROR : 어딘지 모르니 일단 뒤로가기!!!")
                                         this.startMode.setPlayer(player)
                                         this.startMode.goBackward()
                                     } 
 
-                                    if ( loopCount > 240 ){
+                                    if ( loopCount > 130 ){
                                         this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 이녀석을 강제...로...")
                                         if( this.startMode.quitCom2usBaseball()){
-                                            this.logger.log("자~ 재기동을 시켜 버렸다... 어떻게 하나 보자")
+                                            this.logger.log("자~ 재기동을 시켜 버렸다... 어떻게 하나 보자")                                            
                                             player.setUnknwon()
                                             loopCount:=0
                                         }else{
