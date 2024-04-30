@@ -30,7 +30,7 @@ Class LeagueRunningMode extends AutoGameMode{
         this.addAction(this.skipMVPWindow)
         this.addAction(this.checkTotalLeagueEnd)
         this.addAction(this.checkAndGoHome) 
-        this.addAction(this.checkAndStopStartLimitCount)
+        ; this.addAction(this.checkAndStopStartLimitCount)
     }
 
     selectTeamManageButtonWithDelay(){
