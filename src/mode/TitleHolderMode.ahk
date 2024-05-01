@@ -86,7 +86,7 @@ Class TitleHolderMode extends AutoGameMode{
     }
     selectBatterType(){
         if ( this.gameController.searchImageFolder("타이틀홀더모드\화면_유형선택") ){		 
-            if ( this.gameController.searchAndClickFolder("타이틀홀더모드\버튼_장타자") ){ 
+            if ( this.gameController.searchAndClickFolder("타이틀홀더모드\버튼_유형선택") ){ 
                 this.clickNextAndConfirmButton()
                 return 1
             } 
