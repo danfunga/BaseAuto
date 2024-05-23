@@ -17,12 +17,12 @@ restartAppPlayer(){
     myController.setActiveId(managerTitle)
     if ( not (myController.checkAppPlayer())) {
         logger.log("Checker: 매니저가 실행 중이지 않습니다. 난 의미가 없습니다.")
-        Looping_:=false
         return false
     }
     logger.log("Checker: 매니저로 종료를 진행합니다.")
     if (myController.searchAndClickFolder("1.공통\버튼_앱강제종료\버튼_LD매니저_종료")) {
-        logger.log("Checker: 종료 버튼을 눌렀습니다.") 
+        logger.log("Checker: 종료 버튼을 눌렀습니다. (2초)") 
+        myController.sleep(2)
         myController.setActiveId(managerPopupTitle)
         if (myController.searchImageFolder("1.공통\버튼_앱강제종료\버튼_LD매니저_종료\화면_알림확인")) {
             logger.log("Checker: 알림 팝업이 떴어요.") 
@@ -47,6 +47,7 @@ restartAppPlayer(){
             return true
         }
     }
+    return false
 }
 logger.log("Checker: 동작을 시작합니다.")
 while(Looping_){
