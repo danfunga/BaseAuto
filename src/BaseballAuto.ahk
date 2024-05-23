@@ -94,7 +94,7 @@ Class BaseballAuto{
             }
 
             BaseballAutoGui.started()
-            while( AUTO_RUNNING = true ){ 
+            while( AUTO_RUNNING ){ 
                 if ( this.currentEnablePlayers.length() = 0 ){
                     AUTO_RUNNING:=false
                     this.logger.log("가능한 AppPlayer가 없습니다.")
@@ -107,8 +107,11 @@ Class BaseballAuto{
                     this.gameController.setActiveId(player.getAppTitle())
 
                     loopCount:=0
-                    while( AUTO_RUNNING = true ){
+                    while( AUTO_RUNNING = true ){ 
                         localChecker:=0
+                        ; 외부적 요인에 의해 재기동이 되더라도 정상 동작위해 Handle Update
+                        this.gameController.setActiveId(player.getAppTitle())
+
                         if not ( this.gameController.checkAppPlayer() ){
                             this.logger.log("Application Title을 확인하세요 변경 후 save ")
                             this.stopPlayer(playerIndex) 
@@ -170,7 +173,7 @@ Class BaseballAuto{
                                     if ( loopCount > 130 ){
                                         this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 이녀석을 강제...로...")
                                         if( this.startMode.quitCom2usBaseball()){
-                                            this.logger.log("자~ 재기동을 시켜 버렸다... 어떻게 하나 보자")                                            
+                                            this.logger.log("자~ 재기동을 시켜 버렸다... 어떻게 하나 보자") 
                                             player.setUnknwon()
                                             loopCount:=0
                                         }else{
@@ -188,6 +191,7 @@ Class BaseballAuto{
             }
         }else{ 
             this.logger.log("BaseballAuto Already Started!!")
+            return
         }
         this.stop()
     }
@@ -238,12 +242,13 @@ Class BaseballAuto{
 
     }
     stop(){
-        global BaseballAutoGui, globalCurrentPlayer
+        global BaseballAutoGui, globalCurrentPlayer, AUTO_RUNNING
         if ( this.started ){
             this.started:=false
             ; for playerIndex, player in this.currentEnablePlayers{
             ;     this.logger.log( this.getPlayerResult(player)) 
             ; }
+            AUTO_RUNNING:=false
             this.logger.log("BaseballAuto Stopped!!")
             BaseballAutoGui.stopped()
 

@@ -1,8 +1,10 @@
-﻿#include %A_ScriptDir%\src\BaseballAutoConfig.ahk
+﻿#SingleInstance, Force
+#include %A_ScriptDir%\src\BaseballAutoConfig.ahk
 #include %A_ScriptDir%\src\BaseballAuto.ahk
 #include %A_ScriptDir%\src\BaseballAutoGui.ahk
 
-DEFAULT_APP_ID:="(Hard)"
+Menu, Tray, Icon, %A_ScriptDir%\Resource\Image\white.png
+DEFAULT_APP_ID:="main"
 
 BooleanDebugMode:=true
 
