@@ -15,6 +15,7 @@ baseballAutoConfig.loadConfig()
 baseballAutoConfig.getLastGuiPosition( positionX, positionY )
 baseballAutoGui.show( positionX , positionY )
 
+run %A_ScriptDir%\ActiveChecker.ahk
 return
 
 baseballGuiClose:
