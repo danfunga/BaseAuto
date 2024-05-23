@@ -56,11 +56,14 @@ while(Looping_){
     if ( autoHandle ){ 
         result := DllCall("IsHungAppWindow", "ptr", autoHandle)
         if (result) {
-            logger.log("Checker: Auto가 응답 없음 상태입니다.")
+            logger.log("Checker: Auto가 응답 없음 상태입니다.")           
             if( restartAppPlayer() ){ 
+                Menu, Tray, Icon, %A_ScriptDir%\Resource\Image\green.png
                 myController.setActiveId(myAutoTitle)
                 logger.log("Checker: 종료 했을 수도 있으니 Auto 시작 단축키 고") 
                 Send,^{F9}
+            }else{
+                Menu, Tray, Icon, %A_ScriptDir%\Resource\Image\red.png
             }
         } else {
             ; 정상 일때 로그를 안남기겠으.
