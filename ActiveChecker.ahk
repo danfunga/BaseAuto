@@ -2,6 +2,7 @@
 Menu, Tray, Icon, %A_ScriptDir%\Resource\Image\black.png
 #include %A_ScriptDir%\src\util\AutoLogger.ahk
 #include %A_ScriptDir%\src\util\MC_GameController.ahk
+#include %A_ScriptDir%\src\external\Gdip_all.ahk
 
 myController := new MC_GameController()
 logger:= new AutoLogger( "CHECKER","checker" )
@@ -9,6 +10,48 @@ myAutoTitle := "MC - baseball"
 managerTitle := "ahk_class LDRemoteLoginFrame"
 managerPopupTitle := "ahk_class MessageBoxWindow"
 Looping_:=true
+
+if !pToken := Gdip_Startup()
+{
+    MsgBox, 48, GDI+ Error, GDI+ couldn't be started. Please ensure you have GDI+ installed.
+    ExitApp
+}
+SetTrayBadge(Number) {
+    global pToken
+
+    IconSize := 16
+
+    ; 기본 아이콘 생성
+    pBitmap := Gdip_CreateBitmap(IconSize, IconSize)
+    G := Gdip_GraphicsFromImage(pBitmap)
+    Gdip_SetSmoothingMode(G, 4)
+
+    Red := 255 - Round((Min(Number, 10) / 10) * 255) ; 1에서 10까지의 숫자를 0에서 255로 변환하여 빨간색의 R 채널 조절
+    Color := (255 << 24) | (255 << 16) |(Red << 8)|Red 
+
+    hBrush := Gdip_BrushCreateSolid(Color)
+    Gdip_FillRoundedRectangle(G, hBrush, 0, 0, IconSize, IconSize,5)
+    Gdip_DeleteBrush(hBrush)
+
+    Font = Arial
+    if( Number > 99 ){
+        Options = c00000000 r4 s7 Bold Centre vCenter y2
+    }else{
+        Options = c00000000 r4 s10 Bold Centre vCenter y2
+    }
+    
+    
+    Gdip_TextToGraphics(G, Number, Options, Font,IconSize,IconSize)
+
+    ; 아이콘으로 변환
+    hIcon := Gdip_CreateHICONFromBitmap(pBitmap)
+    Menu, Tray, Icon, % "HICON:" hIcon
+
+    ; 리소스 해제
+    Gdip_DeleteGraphics(G) 
+    DeleteObject(hIcon)
+    Gdip_DisposeImage(pBitmap)
+}
 
 restartAppPlayer(){
     global myController, managerTitle, logger, managerPopupTitle, Looping_
@@ -50,6 +93,7 @@ restartAppPlayer(){
     return false
 }
 logger.log("Checker: 동작을 시작합니다.")
+errorcounter:=0
 while(Looping_){
     ; Auto TItle로 Set하고
     myController.setActiveId(myAutoTitle)     
@@ -58,13 +102,12 @@ while(Looping_){
         result := DllCall("IsHungAppWindow", "ptr", autoHandle)
         if (result) {
             logger.log("Checker: Auto가 응답 없음 상태입니다.")           
-            if( restartAppPlayer() ){ 
-                Menu, Tray, Icon, %A_ScriptDir%\Resource\Image\green.png
+            errorcounter++
+            SetTrayBadge(errorcounter)            
+            if( restartAppPlayer() ){                 
                 myController.setActiveId(myAutoTitle)
                 logger.log("Checker: 종료 했을 수도 있으니 Auto 시작 단축키 고") 
                 Send,^{F9}
-            }else{
-                Menu, Tray, Icon, %A_ScriptDir%\Resource\Image\red.png
             }
         } else {
             ; 정상 일때 로그를 안남기겠으.
