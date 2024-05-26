@@ -1,4 +1,6 @@
 ﻿#SingleInstance, Force
+#Persistent
+
 Menu, Tray, Icon, %A_ScriptDir%\Resource\Image\black.png
 #include %A_ScriptDir%\src\util\AutoLogger.ahk
 #include %A_ScriptDir%\src\util\MC_GameController.ahk
@@ -10,24 +12,19 @@ myAutoTitle := "MC - baseball"
 managerTitle := "ahk_class LDRemoteLoginFrame"
 managerPopupTitle := "ahk_class MessageBoxWindow"
 Looping_:=true
-gdipAvailable_:=true
+; gdipAvailable_:=true
 debuging_:=true
 
-if !pToken := Gdip_Startup()
-{
-    gdipAvailable_:= false
-    logger.log("GDIP이 정상 동작 하지 않는다.") 
-}
-
 SetTrayBadge(Number) {
-    global pToken
+    global logger
 
-    if( not gdipAvailable_ ){
+    pToken:=Gdip_Startup() 
+    if( not pToken){        
+        logger.log("GDIP이 정상 동작 하지 않는다.") 
         Menu, Tray, Icon, %A_ScriptDir%\Resource\Image\green.png
-        logger.log("GDIP이 정상 동작 하지 않아 녹색으로만 변경") 
+        logger.log("GDIP이 정상 동작 하지 않아 녹색으로만 변경")
         return
     }
-
     IconSize := 16
 
     ; 기본 아이콘 생성
@@ -59,6 +56,8 @@ SetTrayBadge(Number) {
     Gdip_DeleteGraphics(G) 
     DeleteObject(hIcon)
     Gdip_DisposeImage(pBitmap)
+
+    Gdip_Shutdown(pToken)
 }
 
 restartAppPlayer(){
@@ -100,37 +99,36 @@ restartAppPlayer(){
     }
     return false
 }
-logger.log("동작을 시작합니다.")
-errorcounter:=0
-while(Looping_){
-    ; Auto TItle로 Set하고
+
+logger.log("ActiveChecker가 시작됩니다..")
+SetTimer, CheckAppStatus, 60000 ; 60 seconds
+
+CheckAppStatus:
+    logger.log("체크 시작.")
     myController.setActiveId(myAutoTitle) 
-    autoHandle:=myController.checkAppPlayer()
-    if ( autoHandle ){ 
+    autoHandle := myController.checkAppPlayer()
+    if (autoHandle) { 
         result := DllCall("IsHungAppWindow", "ptr", autoHandle)
         if (result) {
             logger.log("Auto가 응답 없음 상태입니다.") 
             errorcounter++
             SetTrayBadge(errorcounter) 
-            if( restartAppPlayer() ){ 
+            if (restartAppPlayer()) { 
                 myController.setActiveId(myAutoTitle)
                 logger.log("종료 했을 수도 있으니 Auto 시작 단축키 누릅니다") 
                 Send,^{F9}
             }
         } else {
             ; 정상 일때 로그를 안남기겠으.
-            if( debuging_) {
+            if (debuging_) {
                 logger.log("디버깅: Auto가 정상 상태입니다.")
             }
         }
     } else {
-        logger.log("Auto가 없으니 저도 죽을래요.") 
-        Looping_:=false
+        logger.log("Auto가 없으니 Timer를 제외합니다.") 
+        SetTimer, CheckAppStatus, Off
     } 
-    if( debuging_) {
+    if (debuging_) {
         logger.log("디버깅: 60초 후에 봅시다") 
     }
-    Sleep, 60000
-}
 return
-
