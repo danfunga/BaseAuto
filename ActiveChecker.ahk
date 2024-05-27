@@ -8,18 +8,18 @@ Menu, Tray, Icon, %A_ScriptDir%\Resource\Image\black.png
 
 myController := new MC_GameController()
 logger:= new AutoLogger( "CHECKER","checker" )
-myAutoTitle := "MC - baseball"
+myAutoTitle := "MC - baseball"버튼_팝업스킵
 managerTitle := "ahk_class LDRemoteLoginFrame"
 managerPopupTitle := "ahk_class MessageBoxWindow"
 Looping_:=true
 ; gdipAvailable_:=true
-debuging_:=true
+debuging_:=false
 
 SetTrayBadge(Number) {
     global logger
 
     pToken:=Gdip_Startup() 
-    if( not pToken){        
+    if( not pToken){ 
         logger.log("GDIP이 정상 동작 하지 않는다.") 
         Menu, Tray, Icon, %A_ScriptDir%\Resource\Image\green.png
         logger.log("GDIP이 정상 동작 하지 않아 녹색으로만 변경")
@@ -104,7 +104,9 @@ logger.log("ActiveChecker가 시작됩니다..")
 SetTimer, CheckAppStatus, 60000 ; 60 seconds
 
 CheckAppStatus:
-    logger.log("체크 시작.")
+    if (debuging_) {
+        logger.log("체크 시작.")
+    } 
     myController.setActiveId(myAutoTitle) 
     autoHandle := myController.checkAppPlayer()
     if (autoHandle) { 
@@ -125,8 +127,13 @@ CheckAppStatus:
             }
         }
     } else {
-        logger.log("Auto가 없으니 Timer를 제외합니다.") 
-        SetTimer, CheckAppStatus, Off
+        if(needToQuit){
+            logger.log("종료가 확인되었습니다. 종료합니다.")
+            ExitApp
+        }else{
+            needToQuit := true
+            logger.log("Auto가 없으니 1분후에 다시 확인하고 종료합니다.")
+        } 
     } 
     if (debuging_) {
         logger.log("디버깅: 60초 후에 봅시다") 
