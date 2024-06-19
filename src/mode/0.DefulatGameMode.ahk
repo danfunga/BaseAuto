@@ -38,6 +38,7 @@ Class AutoGameMode{
             }            
             this.logger.log("모드 시작을 못하고 Loop가 도는거 같아 다음 임무를 수행합니다.")
             this.stopControl()
+            this.startingLoopLimit:=0
         }
     }
 
