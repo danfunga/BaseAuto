@@ -10,8 +10,8 @@ Class LeagueRunningMode extends AutoGameMode{
         this.frontLoopProtectCount:=0
     }
     initMode(){
-        this.addAction(this.isMainWindow,this.selectTeamManageButtonWithDelay)
-        this.addAction(this.isTeamManageWindow,this.selectFruntButtonWithDelay)
+        ; this.addAction(this.isMainWindow,this.selectTeamManageButtonWithDelay)
+        this.addAction(this.isMainWindow,this.selectFruntButtonWithDelay)
         this.addAction(this.isFruntManageWindow,this.selectReceiveFruntMoney)
         this.addAction(this.isFruntManageWindow,this.selectOuterHelper)
         this.addAction(this.isFruntManageWindow,this.activeFront)
@@ -33,21 +33,21 @@ Class LeagueRunningMode extends AutoGameMode{
         this.addAction(this.checkAndStopStartLimitCount)
     }
 
-    selectTeamManageButtonWithDelay(){
-        if ( this.gameController.searchImageFolder("0.기본UI\화면_프런트_대기중") ){ 
-            if( baseballAutoConfig.getFrontAutoActive() ){
-                this.logger.log("프런트 대기중이니 활성화를 합니다.") 
+    ; selectTeamManageButtonWithDelay(){
+    ;     if ( this.gameController.searchImageFolder("0.기본UI\화면_프런트_대기중") ){ 
+    ;         if( baseballAutoConfig.getFrontAutoActive() ){
+    ;             this.logger.log("프런트 대기중이니 활성화를 합니다.") 
 
-                if( this.clickCommonTeamManageButton() ){
-                    this.gameController.waitDelayForClick()
-                    return 1
-                } 
-            } else{
-                this.logger.log("프런트 대기중이나 설정 OFF입니다.") 
-            }
-        }
-        return 0
-    }
+    ;             if( this.clickCommonTeamManageButton() ){
+    ;                 this.gameController.waitDelayForClick()
+    ;                 return 1
+    ;             } 
+    ;         } else{
+    ;             this.logger.log("프런트 대기중이나 설정 OFF입니다.") 
+    ;         }
+    ;     }
+    ;     return 0
+    ; }
     selectFruntButtonWithDelay(){
         if( this.clickCommonFruntManageButton() ){
             this.gameController.waitDelayForClick()
