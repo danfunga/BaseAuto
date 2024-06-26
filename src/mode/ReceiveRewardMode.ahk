@@ -15,7 +15,7 @@ Class ReceiveRewardMode extends AutoGameMode{
 
     initMode(){
 
-        this.addAction(this.isMainWindow,this.selectTeamManageButtonWithDelay)
+        ; this.addAction(this.isMainWindow,this.selectTeamManageButtonWithDelay)
         this.addAction(this.isTeamManageWindow,this.selectFruntButtonWithDelay)
         this.addAction(this.checkFruntAdPopup)
         this.addAction(this.isFruntManageWindow,this.selectReceiveFruntMoney)
@@ -32,16 +32,16 @@ Class ReceiveRewardMode extends AutoGameMode{
         this.addAction(this.checkAndGoHome) 
     }
 
-    selectTeamManageButtonWithDelay(){
-        if( this.checkWantToModeQuit() ){
-            return 0
-        }  
-        if( this.clickCommonTeamManageButton() ){
-            this.gameController.waitDelayForClick()
-        }else{
-            return 0
-        }
-    }
+    ; selectTeamManageButtonWithDelay(){
+    ;     if( this.checkWantToModeQuit() ){
+    ;         return 0
+    ;     }  
+    ;     if( this.clickCommonTeamManageButton() ){
+    ;         this.gameController.waitDelayForClick()
+    ;     }else{
+    ;         return 0
+    ;     }
+    ; }
 
     selectFruntButtonWithDelay(){
         if( this.checkWantToModeQuit() ){

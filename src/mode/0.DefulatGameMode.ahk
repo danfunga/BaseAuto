@@ -257,7 +257,7 @@ Class AutoGameMode{
     }
 
     clickCommonFruntManageButton(){
-        return this.gameController.searchAndClickFolder("0.기본UI\7.팀관리_버튼_프런트관리")
+        return this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_구단프런트")
     }
 
     isFruntManageWindow(callback){
