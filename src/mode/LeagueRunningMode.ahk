@@ -275,7 +275,7 @@ Class LeagueRunningMode extends AutoGameMode{
                 if( winW < 630 )
                     this.gameController.clickRatioPos(0.744, 0.114, 10)
                 else
-                    this.gameController.clickRatioPos(0.76, 0.097, 20)
+                    this.gameController.clickRatioPos(0.80, 0.097, 20)
 
                 this.gameController.waitDelayForLoading()
                 if ( this.gameController.searchImageFolder("리그모드\화면_게임정지상태") != true ){
