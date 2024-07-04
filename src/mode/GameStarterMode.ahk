@@ -10,7 +10,7 @@ Class GameStarterMode extends AutoGameMode{
     initMode(){
         this.addAction(this.skipAndroidAds)
         this.addAction(this.checkGameDown)
-        this.addAction(this.checkWorngLoginPage)
+        this.addAction(this.checkWrongPages)
         this.addAction(this.skipPopupAndAds)
     }
 
@@ -39,20 +39,19 @@ Class GameStarterMode extends AutoGameMode{
         return 0
     }
 
-    checkWorngLoginPage(){        
-        if ( this.gameController.searchImageFolder("1.공통\화면_잘못들옴") ){
+    checkWrongPages(){        
+        if ( this.gameController.searchImageFolder("게임실행모드\화면_팝업_ESC필요") ){
             this.continueControl()
             this.logger.log("이상한 page에 들어왔으면 ESC를 누릅시다.") 
             ; 이걸로 인해 무한 루프가 안되도록 0을 리턴하자
             this.goBackward()
-        }else if ( this.gameController.searchImageFolder("1.공통\화면_잘못들옴\2번") ){
+        }else if ( this.gameController.searchImageFolder("게임실행모드\화면_팝업_버튼필요") ){
             this.continueControl()
-            this.logger.log("이상한 page에 들어왔으면 ESC를 누릅시다.") 
-            ; 이걸로 인해 무한 루프가 안되도록 0을 리턴하자
-            this.goBackward()
-			this.goBackward()
-        }
-		
+            this.logger.log("이상한 page에 맞는 버튼을 누릅니다.") 
+            if( this.gameController.searchAndClickFolder("게임실행모드\화면_팝업_버튼필요\버튼") ){
+                return 1
+            }             
+        }		
         return 0
     }
     skipPopupAndAds(){
