@@ -50,21 +50,39 @@
                 ; this.log( "지난 로그파일을 정리하겠습니다.")
 
                 todayString = %A_NOW%
-                EnvAdd, todayString, -4, Days
+                EnvAdd, todayString, -2, Days
 
+                this.log( "지난 로그 파일을 확인합니다.")
                 loop 30
                 {
                     EnvAdd, todayString, -1, Days
                     FormatTime, targetFileName, %todayString%, MM월dd일
+                    firstNotExist:=false
+                    secondNotExist:=false
                     
-                    if FileExist(this.directory "\log(" targetFileName ").txt")
-                    {
-                        FileDelete, % this.directory "\log(" targetFileName ").txt"
-                        this.log( "지난 로그 파일 [ \log(" targetFileName ").txt] 을 지웠습니다.")
-                    }else{
-                        Break
+                    if ( not firstNotExist ){
+                        if FileExist(this.directory "\log(" targetFileName ").txt")
+                        {
+                            FileDelete, % this.directory "\log(" targetFileName ").txt"
+                            this.log( "지난 로그 파일 [ \log(" targetFileName ").txt] 을 지웠습니다.")
+                        }else{
+                            firstNotExist:=true
+                        }                      
                     }
-                
+
+                    if ( not secondNotExist ){
+                        if FileExist(this.directory "\checker\log(" targetFileName ").txt")
+                        {
+                            FileDelete, % this.directory "\checker\log(" targetFileName ").txt"
+                            this.log( "지난 로그 파일 [ \checker\log(" targetFileName ").txt] 을 지웠습니다.")
+                        }else{
+                            secondNotExist:=true
+                        }                      
+                    }
+
+                    if ( firstNotExist and secondNotExist ){
+                        break
+                    }                
                 }
             }
         }
