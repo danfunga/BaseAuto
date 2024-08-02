@@ -16,15 +16,15 @@ Class ReceiveRewardMode extends AutoGameMode{
     initMode(){
 
         ; this.addAction(this.isMainWindow,this.selectTeamManageButtonWithDelay)
-        this.addAction(this.isMainWindow,this.selectFruntButtonWithDelay)
-        this.addAction(this.checkFruntAdPopup)
-        this.addAction(this.isFruntManageWindow,this.selectReceiveFruntMoney)
-        this.addAction(this.isFruntManageWindow,this.selectOuterHelper)
-        this.addAction(this.isFruntManageWindow,this.activeFront)
+        ; this.addAction(this.isMainWindow,this.selectFruntButtonWithDelay)
+        ; this.addAction(this.checkFruntAdPopup)
+        ; this.addAction(this.isFruntManageWindow,this.selectReceiveFruntMoney)
+        ; this.addAction(this.isFruntManageWindow,this.selectOuterHelper)
+        ; this.addAction(this.isFruntManageWindow,this.activeFront)
 
-        this.addAction(this.isMainWindow,this.selectFriendButton)
-        this.addAction(this.selectFriendsList)
-        this.addAction(this.receiveAndSendFriendPoint)
+        ; this.addAction(this.isMainWindow,this.selectFriendButton)
+        ; this.addAction(this.selectFriendsList)
+        ; this.addAction(this.receiveAndSendFriendPoint)
         this.addAction(this.startReceiveReward)
         this.addAction(this.receiveRewardLoop)
         this.addAction(this.checkPopup)
