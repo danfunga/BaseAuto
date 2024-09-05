@@ -272,7 +272,7 @@ Class LeagueRunningMode extends AutoGameMode{
             if ( this.gameController.searchImageFolder("리그모드\화면_게임정지상태") ){
                 this.logger.log("자동 방식을 활성화 합니다.") 
                 WinGetPos, , , winW, winH, % this.player.getAppTitle
-                this.gameController.clickRatioPos(0.77, 0.097, 20)
+                this.gameController.clickRatioPos(0.80, 0.097, 20)
 
                 this.gameController.waitDelayForLoading()
                 if ( this.gameController.searchImageFolder("리그모드\화면_게임정지상태") != true ){
