@@ -273,7 +273,7 @@ Class LeagueRunningMode extends AutoGameMode{
                 this.logger.log("자동 방식을 활성화 합니다.") 
                 WinGetPos, , , winW, winH, % this.player.getAppTitle
                 ; 0.80-.0.75 변경 이상하게 카메라가 바귄다.
-                this.gameController.clickRatioPos(0.76, 0.10, 20)
+                this.gameController.clickRatioPos(0.80, 0.10, 20)
 
                 this.gameController.waitDelayForLoading()
                 if ( this.gameController.searchImageFolder("리그모드\화면_게임정지상태") != true ){
