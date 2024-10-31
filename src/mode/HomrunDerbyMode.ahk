@@ -58,7 +58,7 @@ Class HomrunDerbyMode extends AutoGameMode{
             this.logger.log("홈런 더비 프로필 클릭 합니다~") 
             this.gameController.sleep(1)
             this.logger.log("홈런 더비 시작 하자!!") 
-            this.gameController.clickRatioPos(0.5, 0.6, 80)
+            this.gameController.clickRatioPos(0.5, 0.8, 70)
         }
         return 0		
     }
