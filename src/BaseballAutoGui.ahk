@@ -44,6 +44,7 @@ Class BaseballAutoGui{
         mainHeight+=this.initWindowStatistic(mainHeight)
         mainHeight+=this.initRestartCounts(mainHeight)
         mainHeight+=this.initLogWindow(mainHeight)
+        mainHeight+=this.initGitAddressWindow(mainHeight)
         ; mainHeight+=this.initConfigWindow(mainHeight)+5
         this.totalHeight:=mainHeight+this.initConfigWindow(mainHeight)+5
         return mainHeight
@@ -375,6 +376,16 @@ Class BaseballAutoGui{
         ; this.guiMain.Add("Text", "GoodDay", "x+15 	yp w100", "GuiLoggerSubTitle",0)
 
         return currentWindowHeight+5
+    }
+    initGitAddressWindow(_height){
+        currentWindowHeight:=17
+        this.guiMain.Add("Text", "https://github.com/danfunga/BaseAuto", "x30 y+7", "GuiAddressClickLabel",0)
+        this.guiMain.Controls["GuiAddressClickLabel"].BindMethod(this.clickAddressLink.Bind(this))
+        return currentWindowHeight+5
+    }
+    clickAddressLink(){
+        Run, https://github.com/danfunga/BaseAuto
+        return        
     }
 
     guiLog( title, subTitle, logMessage ){
