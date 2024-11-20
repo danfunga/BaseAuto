@@ -129,7 +129,7 @@ Class RankingBattleMode extends AutoGameMode{
                 localCounter++
                 this.checkLocalModePopup(localCounter)
             }else{
-                this.gameController.postClickESC()
+                this.gameController.clickESC()
             }
         }
         return localCounter

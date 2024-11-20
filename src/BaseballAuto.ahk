@@ -14,6 +14,8 @@
 #include %A_ScriptDir%\src\mode\StageMode.ahk
 #include %A_ScriptDir%\src\mode\TitleHolderMode.ahk
 #include %A_ScriptDir%\src\mode\LeagueUpgradeMode.ahk
+#include %A_ScriptDir%\src\mode\PennantRaceMode.ahk
+
 
 Class BaseballAuto{
     __NEW(){
@@ -72,7 +74,12 @@ Class BaseballAuto{
         this.typePerMode["히스"].Push(new HistoryMode( this.gameController ) ) 
 
         this.typePerMode["등반"]:=[]
+        this.typePerMode["등반"].Push(new GameStarterMode( this.gameController ) ) 
         this.typePerMode["등반"].Push(new LeagueUpgradeMode( this.gameController ) ) 
+
+        this.typePerMode["패넌"]:=[]
+        this.typePerMode["패넌"].Push(new GameStarterMode( this.gameController ) ) 
+        this.typePerMode["패넌"].Push(new PennatRaceMode( this.gameController ) ) 
 
         this.logger.log("BaseballAuto Ready !")
     }

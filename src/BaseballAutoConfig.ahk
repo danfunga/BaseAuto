@@ -57,11 +57,7 @@ class BaseballAutoConfig{
             if( loadValue != "" ){
                 this.standaloneEnabledModeMap[value]:=loadValue 
             } else{
-                if( value = "리그" or value = "홈런" or value = "랭대" or value = "히스" or value = "친구" or value = "보상"){
-                    this.standaloneEnabledModeMap[value]:=true 
-                }else{
-                    this.standaloneEnabledModeMap[value]:=false
-                } 
+                this.standaloneEnabledModeMap[value]:=BaseballAutoPlayer.ALONE_MODE_ENABLED_DEFAULT[value] 
             }
         } 
         ; 단독 모드 순서 
@@ -86,7 +82,7 @@ class BaseballAutoConfig{
             { 
                 player.setEnabled(true)
                 if( playerTitle = "" )
-                    player.setAppTitle("nox1")
+                    player.setAppTitle("main")
                 if( playerRole = "" )
                     player.setRole("단독")
 
@@ -140,7 +136,7 @@ class BaseballAutoConfig{
 
     setStandAloneModeOrderString( value ){
         if(value =""){
-            value:="리그,실대,홈런,랭대,히스,스테,타홀,클협,친구,보상"
+            value:=BaseballAutoPlayer.ALONE_MODE_ORDER_DEFAULT
         }
         this.standAloneModeOrderString:=value
     }
@@ -182,13 +178,13 @@ class BaseballAutoConfig{
 
     setDelySecForClick(value){
         if(value =""){
-            value:=2
+            value:=1
         }
         this.delaySecForClick:=value
     }
     setDelaySecChangeWindow(value){
         if(value =""){
-            value:=5
+            value:=2
         }
         this.delaySecChangeWindow:=value
     }
@@ -200,7 +196,7 @@ class BaseballAutoConfig{
     }
     setDelaySecReboot(value){
         if(value =""){
-            value:=60
+            value:=30
         }
         this.delaySecReboot:=value
     }

@@ -130,6 +130,19 @@ Class AutoGameMode{
         }
         return 0
     }
+
+    ;-------------------------------
+    ; 대전 화면 : 4. 패넌트레이스
+    ;-------------------------------
+    isPannetRaceModeWindow( callback ){
+        if ( this.gameController.searchImageFolder("0.기본UI\2-4.패넌트레이스모드_Base") ){
+            this.continueControl()
+            return callback.Call(this)
+        }
+        return 0
+    }
+    
+
     ;-------------------------------
     ; 스페셜 모드 화면
     ;-------------------------------
@@ -286,6 +299,9 @@ Class AutoGameMode{
     }
 
     isMVPWindow( callback ){
+        if( this.isAutoModePlayingWindow() ){
+            return 0
+        }
         if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){
             this.logger.log("MVP 를 확인했습니다.")
             return callback.Call(this)

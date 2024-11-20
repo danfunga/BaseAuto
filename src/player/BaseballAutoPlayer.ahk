@@ -3,9 +3,8 @@
 class BaseballAutoPlayer{
     static logger:= new AutoLogger( "Player" ) 
 
-    ; static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","로얄","친구","보상","스테","히스","등반","클협","타홀"]
-    static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","로얄","친구","보상","스테","히스","등반","타홀"]
-    static AVAILABLE_MODES:=["리그","홈런","랭대","히스","스테","타홀","클협", "친구","보상", "실대","등반","로얄"]
+    static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","로얄","패넌","친구","보상","스테","히스","등반","타홀"] ;클협?
+    static AVAILABLE_MODES:=["리그","홈런","랭대","히스","스테","타홀","클협","친구","패넌","보상","실대","등반","로얄"]
     static RESTART_TYPES:=["탭닫기","재기동","매니저","탭닫기_성공","재기동_성공","매니저_성공"]
     ; static AVAILABLE_MODES:=["리그","실대","랭대","홈런","로얄","친구","보상","히스","스테","등반","클협","타홀"]
     static AVAILABLE_PLAY_TYPE:=["전체","공격","수비"]
@@ -19,7 +18,7 @@ class BaseballAutoPlayer{
     static STOP_PLAYER_STATUS:=["끝","리그종료"]
 
     ; 기본 모드든에 대한 설정 
-    static COUNT_PER_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2,"리그":-1, "스테":-1, "타홀":-1, "클협":-1,"등반":-1 }
+    static COUNT_PER_MODE := { "랭대":-1, "홈런":-1, "친구":40, "실대":2,"리그":-1, "스테":-1, "타홀":-1, "클협":-1,"등반":-1,"패넌":-1}
 
     ; 일꾼 모드 설정
     static COUNT_PER_ASSIST_MODE := { "랭대":-1,"히스":-1, "홈런":-1, "친구":40, "실대":2, "보상":1 } 
@@ -27,14 +26,16 @@ class BaseballAutoPlayer{
     static ASSIST_MODE_ENDLESS:=false
 
     ; 1번 돌때 도는 횟수
-
-    static COUNT_PER_ALONE_MODE:={ "리그":5, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":-1, "타홀":-1,"친구":10, "보상":1 } 
-    static DEFULAT_LOOP_COUNT_PER_DAY :={ "리그":-1, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":2, "타홀":-1,"친구":-1, "보상":-1 } 
+    static COUNT_PER_ALONE_MODE:={ "리그":5, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":-1, "타홀":-1,"친구":10, "보상":1, "패넌":1 }     
+    static DEFULAT_LOOP_COUNT_PER_DAY :={ "리그":-1, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":2, "타홀":-1,"친구":-1, "보상":-1, "패넌":1 } 
+    ; Default Config
+    static ALONE_MODE_ENABLED_DEFAULT:={ "리그":true, "실대":false,"랭대":true,"홈런":true,"히스":true, "스테":true,"클협":false, "타홀":true,"친구":true, "보상":true ,"패넌":true} 
+    static ALONE_MODE_ORDER_DEFAULT:="리그,실대,패넌,홈런,랭대,히스,스테,타홀,친구,보상"
     ; 친구대전을 계속 돌 필요 없으니
     ; 사이클 횟수
     LOOP_PER_ALONE_MODE :={} 
-    ALONE_MODE_ENABLED_MAP:={ "리그":true, "실대":false,"랭대":true,"홈런":true,"히스":true, "스테":false,"클협":false, "타홀":false,"친구":true, "보상":true } 
-    ALONE_MODE_ARRAY:=["리그","실대","홈런","랭대","히스","스테","타홀","친구","보상"] 
+    ALONE_MODE_ENABLED_MAP:={ "리그":true, "실대":false,"랭대":true,"홈런":true,"히스":true, "스테":true,"클협":false, "타홀":false,"친구":true, "보상":true ,"패넌":true} 
+    ALONE_MODE_ARRAY:=["리그","실대","패넌","홈런","랭대","히스","스테","타홀","친구","보상", "패넌"] 
 
     __NEW( index , title:="nox1", enabled:=false, role:="단독" ){
         this.index:=index
@@ -49,7 +50,7 @@ class BaseballAutoPlayer{
         this.currentBattleRemainCount:=0
         this.remainFriendsBattleCount:=40
         this.remainRealTimeBattleCount:=2
-        this.countPerMode := { "리그":0, "실대":0,"랭대":0,"홈런":0,"히스":0, "스테":0,"클협":0, "타홀":0,"친구":0, "보상":0, "로얄":0, "등반":0,"클협":0 } 
+        this.countPerMode := { "리그":0, "실대":0,"랭대":0,"홈런":0,"히스":0, "스테":0,"클협":0, "타홀":0,"친구":0, "보상":0, "로얄":0, "등반":0,"클협":0 ,"패넌":0 } 
         this.countPerRestart := { "탭닫기":0, "재기동":0,"매니저":0,"탭닫기_성공":0, "재기동_성공":0,"매니저_성공":0}     
         this.initTodayLoopCount( false )
     } 
