@@ -48,11 +48,11 @@ Class PennatRaceMode extends AutoGameMode{
             return 0
         } 
 
-        if( this.checkPennantRaceDone() ){
+        if( this.checkPennantRaceNotReady() ){
             return 1
         }
 
-        if( this.checkPennantRaceNotReady() ){
+        if( this.checkPennantRaceDone() ){
             return 1
         }
 
@@ -64,6 +64,14 @@ Class PennatRaceMode extends AutoGameMode{
                 return 1
             }
         }
+    }
+
+    checkPennantRaceNotReady(){
+        if ( this.gameController.searchImageFolder("패넌트레이스모드\화면_아직_안열림" ) ){ 
+            this.stopControl() 
+            return true
+        }
+        return false 
     }
 
     checkPennantRaceDone(){ 
@@ -88,14 +96,6 @@ Class PennatRaceMode extends AutoGameMode{
                 return true
             } 
         }
-    }
-
-    checkPennantRaceNotReady(){
-        if ( this.gameController.searchImageFolder("패넌트레이스모드\화면_아직_안열림" ) ){ 
-            this.stopControl() 
-            return true
-        }
-        return false 
     }
 
     playPennantRaceGame(){
