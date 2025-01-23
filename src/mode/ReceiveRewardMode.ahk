@@ -256,7 +256,7 @@ Class ReceiveRewardMode extends AutoGameMode{
                     this.logger.log("주간 보상 없음") 
                 }
                 this.logger.log("앰블럼으로 이동") 
-                this.gameController.searchAndClickFolder("보상모드\버튼_앰블럼")
+                this.gameController.searchAndClickFolder("보상모드\화면_앰블럼")
                 this.gameController.waitDelayForChangeWindow()
             }
             if ( this.gameController.searchImageFolder("보상모드\화면_앰블럼") ){
