@@ -11,6 +11,7 @@ Class TitleHolderMode extends AutoGameMode{
         this.addAction(this.isMainWindow,this.commonSelectSpecialMode)
         this.addAction(this.isSpecialWindow,this.selectTitleHoldMode)
         this.addAction(this.isTitleHolderModeWindow,this.checkPlayerSelected)
+        this.addAction(this.isTitleHolderModeWindow,this.checkTitleHodlerModeClosed)
         this.addAction(this.isTitleHolderModeWindow,this.enterTitleHolderMode)
         this.addAction(this.confirmTitleHoldWarnning)
         this.addAction(this.selectBatterType)
@@ -43,6 +44,7 @@ Class TitleHolderMode extends AutoGameMode{
             return 1
         }		 
     }
+  
     checkPlayerSelected(){
         if ( this.gameController.searchAndClickFolder("타이틀홀더모드\화면_플레이어없음") ){
             this.logger.log("플레이어 선택이 필요하다.") 
