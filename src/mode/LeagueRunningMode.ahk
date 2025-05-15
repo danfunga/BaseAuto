@@ -56,6 +56,8 @@ Class LeagueRunningMode extends AutoGameMode{
         }
     }
     selectReceiveFruntMoney(){
+        this.logger.log("5초 대기합니다.")
+        this.gameController.sleep(5)
         this.logger.log("정기 운영비를 수령합니다.")
         if ( this.gameController.searchAndClickFolder("보상모드\버튼_정기운영비수령") ){
             this.gameController.waitDelayForClick()
