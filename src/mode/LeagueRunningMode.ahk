@@ -50,15 +50,13 @@ Class LeagueRunningMode extends AutoGameMode{
     ; }
     selectFruntButtonWithDelay(){
         if( this.clickCommonFruntManageButton() ){
-            this.gameController.waitDelayForClick()
-            this.gameController.sleep(1)
+            this.gameController.waitDelayForClick(3)
         }else{
             return 0
         }
     }
+
     selectReceiveFruntMoney(){
-        this.logger.log("5초 대기합니다.")
-        this.gameController.sleep(5)
         this.logger.log("정기 운영비를 수령합니다.")
         if ( this.gameController.searchAndClickFolder("보상모드\버튼_정기운영비수령") ){
             this.gameController.waitDelayForClick()
@@ -66,6 +64,7 @@ Class LeagueRunningMode extends AutoGameMode{
             this.logger.log("시간이 안되었거나... 팝업 상태 인가요")
         }
     }
+    
     selectOuterHelper(){
         this.logger.log("외부 자문을 선택합니다.")
         if ( this.gameController.searchAndClickFolder("보상모드\버튼_외부자문임명") ){

@@ -86,10 +86,22 @@ class MC_GameController{
         }
     }
 
-    waitDelayForClick(){
-        global baseballAutoConfig 
+    ;waitDelayForClick(){
+     ;   global baseballAutoConfig 
+      ;  this.sleep(baseballAutoConfig.delaySecForClick)
+    ;}
+
+    waitDelayForClick(extra := ""){
+        global baseballAutoConfig
+
+        if (extra != ""){
+            this.logger.log(" " extra " 초 추가 대기")
+            this.sleep(extra)
+        }
+
         this.sleep(baseballAutoConfig.delaySecForClick)
     }
+
     waitDelayForLoading(){
         global baseballAutoConfig 
         this.sleep(baseballAutoConfig.delaySecChangeWindow/2)
