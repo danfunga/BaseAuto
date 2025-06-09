@@ -272,7 +272,7 @@ Class BaseballAutoGui{
                 continue
             }
             guiTitle:=% value ":"
-            if ( value = "클협"){
+            if ( value = "실대"){
                 guiTitle:=% "메롱:"
             }
             guiLabel:=% "Statistic" index "Title"
@@ -423,10 +423,7 @@ Class BaseballAutoGui{
                 }else{
                     option:="x+0 yp"
                 }
-                if( value = "클협" ){
-                    baseballAutoConfig.standaloneEnabledModeMap[value]:=false
-                    option:= % option " disabled"
-                }else if ( baseballAutoConfig.standaloneEnabledModeMap[value] ){
+                if ( baseballAutoConfig.standaloneEnabledModeMap[value] ){
                     option:= % option " checked"
                 }
             }             

@@ -27,15 +27,15 @@ class BaseballAutoPlayer{
 
     ; 1번 돌때 도는 횟수
     static COUNT_PER_ALONE_MODE:={ "리그":5, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":-1, "타홀":-1,"친구":10, "보상":1, "패넌":1 }     
-    static DEFULAT_LOOP_COUNT_PER_DAY :={ "리그":-1, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":2, "타홀":-1,"친구":-1, "보상":-1, "패넌":3 } 
+    static DEFULAT_LOOP_COUNT_PER_DAY :={ "리그":-1, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":3, "타홀":-1,"친구":-1, "보상":-1, "패넌":3 } 
     ; Default Config
-    static ALONE_MODE_ENABLED_DEFAULT:={ "리그":true, "실대":false,"랭대":true,"홈런":true,"히스":true, "스테":true,"클협":false, "타홀":true,"친구":true, "보상":true ,"패넌":true} 
-    static ALONE_MODE_ORDER_DEFAULT:="리그,실대,패넌,홈런,랭대,히스,스테,타홀,친구,보상"
+    static ALONE_MODE_ENABLED_DEFAULT:={ "리그":true, "실대":false,"랭대":true,"홈런":true,"히스":true, "스테":true,"클협":true, "타홀":true,"친구":true, "보상":true ,"패넌":true} 
+    static ALONE_MODE_ORDER_DEFAULT:="리그,실대,패넌,홈런,랭대,클협,히스,스테,타홀,친구,보상"
     ; 친구대전을 계속 돌 필요 없으니
     ; 사이클 횟수
     LOOP_PER_ALONE_MODE :={} 
-    ALONE_MODE_ENABLED_MAP:={ "리그":true, "실대":false,"랭대":true,"홈런":true,"히스":true, "스테":true,"클협":false, "타홀":false,"친구":true, "보상":true ,"패넌":true} 
-    ALONE_MODE_ARRAY:=["리그","실대","패넌","홈런","랭대","히스","스테","타홀","친구","보상", "패넌"] 
+    ALONE_MODE_ENABLED_MAP:={ "리그":true, "실대":false,"랭대":true,"홈런":true,"히스":true, "스테":true,"클협":true, "타홀":true,"친구":true, "보상":true ,"패넌":true} 
+    ALONE_MODE_ARRAY:=["리그","실대","패넌","홈런","랭대","히스","스테","타홀","친구","보상", "패넌","클협"] 
 
     __NEW( index , title:="nox1", enabled:=false, role:="단독" ){
         this.index:=index
