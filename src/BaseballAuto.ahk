@@ -15,6 +15,7 @@
 #include %A_ScriptDir%\src\mode\TitleHolderMode.ahk
 #include %A_ScriptDir%\src\mode\LeagueUpgradeMode.ahk
 #include %A_ScriptDir%\src\mode\PennantRaceMode.ahk
+#include %A_ScriptDir%\src\mode\ClubTogetherMode.ahk
 
 
 Class BaseballAuto{

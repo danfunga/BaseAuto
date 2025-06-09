@@ -8,119 +8,137 @@ Class ClubTogetherMode extends AutoGameMode{
     }
 
     initMode(){
-        this.addAction(this.isMainWindow,this.selectSpecialMode)
-        this.addAction(this.isSpecialWindow,this.selectStageMode)
-        this.addAction(this.isStageWindow,this.selectStageLevel)
-        this.addAction(this.isStageWindow,this.startStageMode)
-        this.addAction(this.playStageMode)
+        this.addAction(this.isMainWindow,this.selectClubMode)
+        this.addAction(this.isClubWindow,this.selectClubTogether)
+        this.addAction(this.isClubTogetherWindow,this.startClubTogetherMode)
+        this.addAction(this.checkAndSelectCaptain)
+        this.addAction(this.playClubTogetherGame)
 
-        this.addAction(this.skipPlayerProfile)
         this.addAction(this.checkPlaying)
         this.addAction(this.skipGameResultWindow)
         this.addAction(this.afterSkipMVPWindow,this.checkModeRunMore)
 
         this.addAction(this.skipCommonPopup)
-        this.addAction(this.checkStageModeClose)
-        this.addAction(this.checkPopup) 
+        this.addAction(this.checkLocalModePopup)
+        this.addAction(this.receiveReward)
+        this.addAction(this.checkClubTogetherModeClose)
         this.addAction(this.checkAndGoHome) 
     }
 
-    selectSpecialMode(){
-        if ( this.gameController.searchImageFolder("0.기본UI\0.메인화면_Base") ){
-            this.logger.log(this.player.getAppTitle() "스테이지모드를 시작합니다!")
-            this.continueControl()
-            if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_스페셜_팀별") ){
+
+    selectClubMode(){
+        if ( this.gameController.searchAndClickFolder("0.기본UI\0.메인화면_버튼_클럽_팀별") ){
+            this.logger.log(this.player.getAppTitle() "클럽협동전을 시작합니다")
+            return 1
+        }else{
+            this.logger.log(this.player.getAppTitle() "클럽 버튼을 찾지 못했습니다.")
+            return 0
+        }
+    }
+
+    selectClubTogether(){
+        if ( this.gameController.searchAndClickFolder("0.기본UI\6.클럽모드_버튼_클럽협동전") ){
+            this.logger.log(this.player.getAppTitle() "클럽협동전을 선택합니다.")
+            return 1
+        }else{
+            this.logger.log(this.player.getAppTitle() "클럽 협동 버튼을 찾지 못했습니다.")
+            return 0
+        }
+
+    }
+
+    startClubTogetherMode(){ 
+        ; 종료 요청이 있는지 확인한다.
+        if( this.checkWantToModeQuit() ){
+            return 0
+        } 
+
+        if( this.checkClubTogetherNotReady() ){
+            return 1
+        }
+
+        if( this.checkClubTogetherDone() ){
+            return 1
+        }
+
+        if( this.gameController.searchImageFolder("\버튼_클럽협동전_연속경기") ){
+            return this.playClubTogetherGame()
+        }else{
+            this.logger.log("클럽협동전 플레이화면으로 이동")
+            if ( this.clickCommonStartButton() ){
                 return 1
             }
         }
-        return 0
     }
 
-    selectStageMode(){
-        if ( this.gameController.searchImageFolder("0.기본UI\3.스페셜모드_Base") ){		
-            this.continueControl()
-            this.logger.log("스테이지 모드를 선택합니다~") 
-            if ( this.gameController.searchAndClickFolder("0.기본UI\3.스페셜모드_버튼_스테이지모드") ){
-                return 1
-            }		 
+    checkClubTogetherNotReady(){
+        if ( this.gameController.searchImageFolder("클럽협동전\화면_아직_안열림" ) ){ 
+            this.stopControl() 
+            return true
         }
-        return 0		
+        return false 
     }
 
-    selectStageLevel(){
-        if ( this.gameController.searchImageFolder("0.기본UI\3-3.스테이지모드_Base") ){		
-            this.continueControl()
-            this.logger.log("입장합니다")
-            this.setStageEquips()
-            if ( this.gameController.searchAndClickFolder("스테이지모드\화면_입장") ){
-                return 1
-            }		 
-        }
-        return 0	
-    }
-
-    setStageEquips(){
-        global baseballAutoGui
-
-        if(baseballAutoGui.getUseStageEquip()=1){
-
-        } else {
-            this.logger.log("장비 착용이 설정 되어 있지 않습니다.")
-            this.unsetStageEquips()
-        }
-        return 0
-    }
-
-    unsetStageEquips(){
-        if ( this.gameController.searchImageFolder("0.기본UI\3-3.스테이지모드_Base") ){
-            if ( this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비있음") ){
-                this.logger.log("스테 장비를 해제합니다.")
-                this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\해제")
-                this.gameController.searchAndClickFolder("랭대모드\화면_장비착용\장비\닫기")
-                return 1
-            }
-        }
-        return 0
-    }
-
-    startStageMode(){
-        if ( this.gameController.searchImageFolder("0.기본UI\3-3.스테이지모드_Base") ){		 
-            if(this.checkStageModeClose()){
+    checkAndSelectCaptain(){
+        if( this.gameController.searchAndClickFolder("클럽협동전\버튼_캡틴_필요")){
+            ;캡틴 선정 클릭
+            this.logger.log("캡틴 선택이 필요하다.") 
+            this.logger.log("1번 타자를 선택합니다.")
+            ;캡틴 선택
+            if ( this.gameController.searchAndClickFolder("클럽협동전\버튼_캡틴_선발타자",10,-30) ){
+                this.logger.log("선택하기를 누릅니다.")
+                this.gameController.searchAndClickFolder("클럽협동전\버튼_캡틴_선택하기")
                 return 1
             }else{
-                this.continueControl()
-                this.logger.log("스테이지 모드를 준비합니다~")
-                if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
-                    return 1
-                } 
+                return 0
             }
-
+        }else{
+            this.logger.log("이미 캡틴이 선택되어 있습니다.")
+            return 1
         }
-        return 0		
     }
-    playStageMode(){
-        if ( this.gameController.searchImageFolder("스테이지모드\화면_대전준비") ){		 
-            if(this.checkStageModeClose()){
-                return 1
-            }else{
-                this.continueControl()
-                this.logger.log("스테이지 모드를 시작합니다~")
-                
-                this.setAutoMode(true)
-                if ( this.gameController.searchAndClickFolder("1.공통\버튼_게임시작") ){ 
-                    this.logger.log("고고변 받아봤자 캡틴 안나옴ㅋ")
-                    this.logger.log("6초 기다립니다.")
-                    this.gameController.sleep(6)
-                    return 1
-                } 
-            }
 
+    checkClubTogetherDone(){ 
+        if ( this.gameController.searchImageFolder("클럽협동전\화면_오늘돌았음" ) ){
+            this.player.addResult()
+            if( this.player.appRole == "단독" ){
+                if( this.player.needToStopBattle() ){
+                    this.logger.log("클럽협동전을 이미 돌았습니다. - 빠져라")
+                    this.stopControl()
+                    return true
+                }else{
+                    if( this.player.getRemainBattleCount() = "무한" ){
+                        this.logger.log( "돌 수 없을 때까지 돌게 됩니다.") 
+                    }else{
+                        this.logger.log( this.player.getRemainBattleCount() " 번 더 돌겠습니다.") 
+                    } 
+                    return false
+                }
+            }else{
+                this.logger.log("클럽협동전을 이미 돌았습니다.")
+                this.stopControl() 
+                return true
+            } 
         }
-        return 0		
+    }
+
+    playClubTogetherGame(){
+        localCounter:=0
+        if( this.gameController.searchAndClickFolder("클럽협동전\버튼_연속경기") ){
+            this.logger.log("연속 경기를 돌겠습니다.")
+            localCounter++
+        }
+        if( this.gameController.searchImageFolder("클럽협동전\화면_연속경기") ){
+            this.logger.log("연속 경기 확인을 누릅니다.")
+            if ( this.clickNextAndConfirmButton() ){
+                localCounter++
+            }
+        }
+        return localCounter
     }
 
     skipPlayerProfile(){
-        if ( this.gameController.searchAndClickFolder("스테이지모드\화면_투수프로필") ){		 
+        if ( this.gameController.searchAndClickFolder("클럽협동전\화면_투수프로필") ){		 
             this.continueControl()
             this.logger.log("스테이지 모드 프로필 클릭 합니다~") 
             this.gameController.sleep(1)
@@ -142,9 +160,9 @@ Class ClubTogetherMode extends AutoGameMode{
             }
         }
         ; 아직 아래 없음
-        if ( this.gameController.searchImageFolder("스테이지모드\화면_팝업체크" ) ){		
+        if ( this.gameController.searchImageFolder("클럽협동전\화면_팝업체크" ) ){		
             this.logger.log("팝업을 제거합니다. 보상을 안받았나.") 
-            if( this.gameController.searchAndClickFolder("스테이지모드\화면_팝업체크\버튼_확인" ) ){
+            if( this.gameController.searchAndClickFolder("클럽협동전\화면_팝업체크\버튼_확인" ) ){
                 if( localCounter > 5 ){
                     return localCounter
                 }
@@ -156,7 +174,7 @@ Class ClubTogetherMode extends AutoGameMode{
     }
 
     checkPlaying(){
-        if ( this.gameController.searchImageFolder("스테이지모드\화면_진행중" ) ){		
+        if ( this.gameController.searchImageFolder("클럽협동전\화면_진행중" ) ){		
             this.continueControl()
             this.logger.log("고고변을 향하여..")
 
@@ -178,11 +196,11 @@ Class ClubTogetherMode extends AutoGameMode{
     checkMVPWindow(){
         if ( this.gameController.searchImageFolder("1.공통\화면_MVP" ) ){		
             this.continueControl()
-            this.logger.log("스테이지모드 종료를 확인했습니다.") 
+            this.logger.log("클럽협동전 종료를 확인했습니다.") 
             if( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" ) ){
                 this.player.addResult()
                 if( this.player.needToStopBattle() ){
-                    this.logger.log("스테이지모드를 횟수만큼 다 돌았습니다.") 
+                    this.logger.log("클럽협동전를 횟수만큼 다 돌았습니다.") 
                     this.releaseControl()
                 }else{
                     if( this.player.getRemainBattleCount() = "무한" ){
@@ -198,9 +216,9 @@ Class ClubTogetherMode extends AutoGameMode{
         return 0 
     } 
 
-    checkStageModeClose(){
-        if ( this.gameController.searchImageFolder("스테이지모드\화면_볼없음" ) ){		 
-            this.logger.log("볼이 없는거 보니 스테이지모드 다 돌았네요. ..")
+    checkClubTogetherModeClose(){
+        if ( this.gameController.searchAndClickFolder("클럽협동전\화면_아이템획득" ) ){		 
+            this.logger.log("클럽협동전 다 돌았네요...")
             this.releaseControl()
             return 1
         }

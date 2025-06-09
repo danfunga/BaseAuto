@@ -51,6 +51,7 @@ Class LeagueRunningMode extends AutoGameMode{
     selectFruntButtonWithDelay(){
         if( this.clickCommonFruntManageButton() ){
             this.gameController.waitDelayForClick()
+            this.gameController.sleep(1)
         }else{
             return 0
         }
