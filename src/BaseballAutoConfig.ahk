@@ -17,7 +17,7 @@ class BaseballAutoConfig{
         this.usingEquipmentForRankingBattleFlag:=false
         this.usingBoostItemFlag:=false
         this.usingStageModeEquipmentFlag:=false
-        this.usingAutofrontActive:=false
+        this.usingAutofrontActive:=true
 
         ; 딜레이 설정
         this.delaySecForClick:=2
