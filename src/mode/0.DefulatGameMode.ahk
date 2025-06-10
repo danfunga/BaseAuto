@@ -31,7 +31,7 @@ Class AutoGameMode{
 
     checkAndStopStartLimitCount(){
         this.startingLoopLimit++
-        this.player.setCurrentModeResult("클협", this.startingLoopLimit)         
+        this.player.setCurrentModeResult("실대", this.startingLoopLimit)         
         if(this.startingLoopLimit >40){
             if ( this.player.appMode = "리그" ){
                 return

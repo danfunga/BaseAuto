@@ -23,6 +23,7 @@ Class ClubTogetherMode extends AutoGameMode{
         this.addAction(this.receiveReward)
         this.addAction(this.checkClubTogetherModeClose)
         this.addAction(this.checkAndGoHome) 
+        this.addAction(this.checkAndStopStartLimitCount)
     }
 
     selectClubMode(){
@@ -67,6 +68,7 @@ Class ClubTogetherMode extends AutoGameMode{
             if ( this.clickCommonStartButton() ){
                 return 1
             }
+            return 0
         }
     }
 
@@ -75,7 +77,7 @@ Class ClubTogetherMode extends AutoGameMode{
             this.stopControl() 
             return true
         }
-        return false 
+        return 0 
     }
 
     checkAndSelectCaptain(){
@@ -92,7 +94,7 @@ Class ClubTogetherMode extends AutoGameMode{
             }
         }else{
             ; this.logger.log("이미 캡틴이 선택되어 있습니다.")
-            return 1
+            return 0
         }
     }
 
@@ -100,7 +102,7 @@ Class ClubTogetherMode extends AutoGameMode{
         if ( this.gameController.searchImageFolder("클럽협동전\화면_오늘돌았음" ) ){
             this.logger.log("클럽협동전을 이미 돌았습니다.")
             this.stopControl() 
-            return true
+            return 1
         }
 
     }
@@ -243,5 +245,4 @@ Class ClubTogetherMode extends AutoGameMode{
             return 1
         }
     }
-
 }
