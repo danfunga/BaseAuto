@@ -50,7 +50,7 @@ class BaseballAutoPlayer{
         this.currentBattleRemainCount:=0
         this.remainFriendsBattleCount:=40
         this.remainRealTimeBattleCount:=2
-        this.countPerMode := { "리그":0, "실대":0,"랭대":0,"홈런":0,"히스":0, "스테":0,"클협":0, "타홀":0,"친구":0, "보상":0, "로얄":0, "등반":0,"클협":0 ,"패넌":0 } 
+        this.countPerMode := { "리그":0, "실대":0,"랭대":0,"홈런":0,"히스":0, "스테":0,"클협":0, "타홀":0,"친구":0, "보상":0, "로얄":0, "등반":0,"클협":0 ,"패넌":0, "메롱":0} 
         this.countPerRestart := { "탭닫기":0, "재기동":0,"매니저":0,"탭닫기_성공":0, "재기동_성공":0,"매니저_성공":0}     
         this.initTodayLoopCount( false )
     } 

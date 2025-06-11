@@ -195,7 +195,7 @@ Class BaseballAutoGui{
         this.guiMain.Add("Button", "리로드[F12]", "w80 h30 X+5 yp-4 ", "GuiReloadButton", 0)
         this.guiMain.Controls["GuiReloadButton"].BindMethod(this.reloadByGui.Bind(this))
 
-        this.guiMain.Add("Button", "설정", "w35 h30 X+5 ", "GuiConfigButton", 0)        
+        this.guiMain.Add("Button", "설정", "w35 h30 X+5 ", "GuiConfigButton", 0) 
         this.guiMain.Add("Button", "끄기", "w30 h30 X+5 ", "GuiRestartButton", 0)
         this.guiMain.Add("Button", "패스", "w35 h30 X+5 ", "GuiWaitResultButton", 0)
 
@@ -262,7 +262,7 @@ Class BaseballAutoGui{
 
         currentPlayer:=baseballAutoConfig.players[1]
 
-        currentWindowHeight:=50
+        currentWindowHeight:=65
         this.guiMain.addGroupBox("Main Statstics", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
 
         existIndex:=1
@@ -272,9 +272,6 @@ Class BaseballAutoGui{
                 continue
             }
             guiTitle:=% value ":"
-            if ( value = "실대"){
-                guiTitle:=% "메롱:"
-            }
             guiLabel:=% "Statistic" index "Title"
             if ( existIndex = 1 ){
                 option:=% "xs+10 ys+15 section"
@@ -284,12 +281,21 @@ Class BaseballAutoGui{
                 }else{
                     option:=% "x+30 yp"
                 }
-            }           
+            } 
             ; this.guiMain.Add("Text", "단독 활성화 : ", "xs+5 yp+20 section")
             this.guiMain.Add("Text", guiTitle, option,guiLabel,0)
             BaseballAutoPlayer.STASTICS_TITLE_KEY_MAP[value]:=guiLabel 
             existIndex++
         } 
+        guiTitle:= "메롱:"
+        guiLabel:=% "Statistic" existIndex "Title"
+        if(existIndex=6 or existIndex = 11){
+            option:=% "xs y+4"
+        }else{
+            option:=% "x+30 yp"
+        }
+        this.guiMain.Add("Text", guiTitle, option,guiLabel,0)
+        BaseballAutoPlayer.STASTICS_TITLE_KEY_MAP["메롱"]:=guiLabel 
 
         existIndex:=1
         for index, value in BaseballAutoPlayer.AVAILABLE_MODES
@@ -314,6 +320,18 @@ Class BaseballAutoGui{
             existIndex++
         } 
 
+        guiTitle:=currentPlayer.countPerMode["메롱"]
+        guiLabel:=% "Statistic" existIndex "Result"
+
+        if(existIndex=6 or existIndex = 11){
+            option:=% "xs y+4 wp right"
+        }else{
+            option:=% "x+36 yp wp right"
+        }
+
+        this.guiMain.Add("Text", guiTitle, option, guiLabel,0)
+        BaseballAutoPlayer.STASTICS_KEY_MAP["메롱"]:=guiLabel 
+
         return currentWindowHeight
     }
     initRestartCounts(_height){
@@ -330,7 +348,7 @@ Class BaseballAutoGui{
             if ( existIndex < 4 ){
                 guiTitle:=% value ":"
             }else{
-                guiTitle:=% "성   공:"
+                guiTitle:=% "성 공:"
             }
             guiLabel:=% "RestartCount" index "Title"
             if ( existIndex = 1 ){
@@ -355,403 +373,401 @@ Class BaseballAutoGui{
             if ( existIndex = 1 ){
                 option:=% "xs+65 ys w22 right section"
             }else{ if(existIndex=4 ){
-                    option:=% "xs y+4 wp right"
-                }else{
-                option:=% "x+75 yp wp right"
-                }
-            } 
-            this.guiMain.Add("Text", guiTitle, option, guiLabel,0)
-            BaseballAutoPlayer.RESTART_COUNTS_KEY_MAP[value]:=guiLabel 
-            existIndex++
-        } 
-        return currentWindowHeight
-    }
-
-    initLogWindow(_height){
-        currentWindowHeight:=this.CONST_SIZE_LOG_HEIGHT
-        ; this.guiMain.Add("Edit", "Logs", "Readonly xp y+5 w" this.maxGroupWidth-1 " h" currentWindowHeight-30 , "GuiLoggerLogging",0)
-        this.guiMain.Add("logEdit", "Logs", "Readonly x10 y" _height+5 " w" this.maxGroupWidth-1 " h" currentWindowHeight-5 , "GuiLoggerLogging",0)
-        ; this.guiMain.addGroupBox("Logs", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
-
-        ; this.guiMain.Add("Text", "GoodDay", "x+15 	yp w100", "GuiLoggerSubTitle",0)
-
-        return currentWindowHeight+5
-    }
-    initGitAddressWindow(_height){
-        currentWindowHeight:=17
-        this.guiMain.Add("Text", "https://github.com/danfunga/BaseAuto", "x30 y+7", "GuiAddressClickLabel",0)
-        this.guiMain.Controls["GuiAddressClickLabel"].BindMethod(this.clickAddressLink.Bind(this))
-        return currentWindowHeight+5
-    }
-    clickAddressLink(){
-        Run, https://github.com/danfunga/BaseAuto
-        return        
-    }
-
-    guiLog( title, subTitle, logMessage ){
-        currentLog:=this.guiMain.Controls["GuiLoggerLogging"].get()
-        StringLen, length, currentLog
-        if( length > 1000000 ){
-            currentLog:=""
-        }
-        this.guiMain.Controls["GuiLoggerLogging"].set( logMessage currentLog )
-    }
-    initConfigWindow(_height){
-        global baseballAutoConfig
-        currentWindowHeight:=this.CONST_SIZE_CONFIG_HEIGHT
-        ; currentWindowHeight:=300
-
-        this.guiMain.addGroupBox("Config", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
-        ; this.guiMain.Add("CheckBox", "Pushbullet ", "xs+5 ys+20 h10", "configPushbulletEnabled",0)
-        ; this.guiMain.Add("Button", "Save", "x" this.maxGroupWidth -45 " yp+10 w50", "buttonConfigSave",0)
-
-        this.guiMain.Add("Text", "단독 활성화 : ", "xs+5 yp+20 section")
-
-        memberIndex:=1
-        for index, value in BaseballAutoPlayer.AVAILABLE_MODES
-        { 
-            if( value = "등반" or value ="로얄"){
-                continue
-            }
-            guiLabel :=% "AloneMode" index "CheckBox"
-            if ( memberIndex = 1 ){
-                baseballAutoConfig.standaloneEnabledModeMap[value]:=true
-                option:=% "xs+5 y+5 checked disabled"
+                option:=% "xs y+4 wp right"
             }else{
-                if(memberIndex=7 or memberIndex = 13){
-                    option:=% "xs+5 y+5"
-                }else{
-                    option:="x+0 yp"
-                }
-                if ( baseballAutoConfig.standaloneEnabledModeMap[value] ){
-                    option:= % option " checked"
-                }
-            }             
-            this.guiMain.Add("CheckBox", value, option, guiLabel,0)
-            memberIndex++
+                option:=% "x+75 yp wp right"
+            }
         } 
-
-        this.guiMain.Add("Text", "단독 순서 : ", "xs y+13") 
-        this.guiMain.Add("Edit", baseballAutoConfig.standAloneModeOrderString, "xs y+3 h17 w" this.maxGroupWidth-10, "configJobOrder")
-
-        ; baseballAutoConfig.delaySecForClick
-        ; baseballAutoConfig.delaySecChangeWindow
-        ; baseballAutoConfig.delaySecSkip
-        ; baseballAutoConfig.delaySecReboot
-        this.guiMain.Add("Text", "딜레이 : ", "xs y+13")
-        this.guiMain.Add("Text", "클릭: ", "xs y+3 section")
-        this.guiMain.Add("Edit", baseballAutoConfig.delaySecForClick, "x+0 ys-2 w20 h15 +Right", "delayForClickConfigEdit")
-        this.guiMain.Add("Text", "초 화면: ", "x+0 ys+0")
-        this.guiMain.Add("Edit", baseballAutoConfig.delaySecChangeWindow, "x+0 ys-2 w20 h15 Right", "delayForChangeWindowConfigEdit")
-        this.guiMain.Add("Text", "초 스킵: ", "x+0 ys+0")
-        this.guiMain.Add("Edit", baseballAutoConfig.delaySecSkip, "x+0 ys-2 w20 h15 Right", "delayForSkipConfigEdit")
-        this.guiMain.Add("Text", "초 리붓: ", "x+0 ys+0")
-        this.guiMain.Add("Edit", baseballAutoConfig.delaySecReboot, "x+0 ys-2 w20 h15 Right", "delayForRebootConfigEdit")
-        this.guiMain.Add("Text", "초 ", "x+0 ys+0")
-
-        return currentWindowHeight
-    }
-
-    initOptionWindow( _height ){
-        global baseballAutoConfig
-
-        currentWindowHeight=40
-        this.guiMain.addGroupBox("Options", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
-
-        option:="xs+10 ys+20"
-        if( baseballAutoConfig.usingEquipmentForRankingBattleFlag){
-            option:= % option " checked"
-        }
-        this.guiMain.Add("Checkbox", "랭킹장비", option, "RankingBattleEquipmentCheckBox", 0)
-
-        option:="x+10 yp"
-        if( baseballAutoConfig.usingBoostItemFlag){
-            option:= % option " checked"
-        }
-        this.guiMain.Add("Checkbox", "부스터", option, "BoosterChk", 0)
-
-        option:="x+10 yp"
-        if( baseballAutoConfig.usingStageModeEquipmentFlag){
-            option:= % option " checked"
-        }
-        this.guiMain.Add("Checkbox", "스테장비", option, "StageEquipChk", 0)
-
-        option:="x+10 yp"
-        this.addFrontActive(option)
-        this.setFrontActive(baseballAutoConfig.getFrontAutoActive())
-
-        return currentWindowHeight
-    }
-    getUsingEquipment(){
-        return this.guiMain.Controls["RankingBattleEquipmentCheckBox"].get()
+        this.guiMain.Add("Text", guiTitle, option, guiLabel,0)
+        BaseballAutoPlayer.RESTART_COUNTS_KEY_MAP[value]:=guiLabel 
+        existIndex++
     } 
-    setUsingEquipment(bool){
-        ; configFile 에서 설정되는 부분
-        this.guiMain.Controls["RankingBattleEquipmentCheckBox"].set(bool)
-    }
+    return currentWindowHeight
+}
 
-    getUseStageEquip(){
-        return this.guiMain.Controls["StageEquipChk"].get()
-    }
+initLogWindow(_height){
+    currentWindowHeight:=this.CONST_SIZE_LOG_HEIGHT
+    ; this.guiMain.Add("Edit", "Logs", "Readonly xp y+5 w" this.maxGroupWidth-1 " h" currentWindowHeight-30 , "GuiLoggerLogging",0)
+    this.guiMain.Add("logEdit", "Logs", "Readonly x10 y" _height+5 " w" this.maxGroupWidth-1 " h" currentWindowHeight-5 , "GuiLoggerLogging",0)
+    ; this.guiMain.addGroupBox("Logs", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
 
-    setUseStageEquip( bool ) {
-        ; configFile 에서 설정되는 부분
-        this.guiMain.Controls["StageEquipChk"].set(bool)
-    }
+    ; this.guiMain.Add("Text", "GoodDay", "x+15 	yp w100", "GuiLoggerSubTitle",0)
 
-    getUseBooster() {
-        return this.guiMain.Controls["BoosterChk"].get()
-    }
-    setUseBooster( bool ) {
-        ; configFile 에서 설정되는 부분
-        this.guiMain.Controls["BoosterChk"].set(bool)
-    }
+    return currentWindowHeight+5
+}
+initGitAddressWindow(_height){
+    currentWindowHeight:=17
+    this.guiMain.Add("Text", "https://github.com/danfunga/BaseAuto", "x30 y+7", "GuiAddressClickLabel",0)
+    this.guiMain.Controls["GuiAddressClickLabel"].BindMethod(this.clickAddressLink.Bind(this))
+    return currentWindowHeight+5
+}
+clickAddressLink(){
+    Run, https://github.com/danfunga/BaseAuto
+    return 
+}
 
-    addFrontActive(option){
-        this.guiMain.Add("Checkbox", "프론트", option, "FrontActiveChk", 0)
+guiLog( title, subTitle, logMessage ){
+    currentLog:=this.guiMain.Controls["GuiLoggerLogging"].get()
+    StringLen, length, currentLog
+    if( length > 1000000 ){
+        currentLog:=""
     }
-    getFrontActive() {
-        return this.guiMain.Controls["FrontActiveChk"].get()
-    }
-    setFrontActive( bool ) {
-        ; configFile 에서 설정되는 부분
-        this.guiMain.Controls["FrontActiveChk"].set(bool)
-    }
+    this.guiMain.Controls["GuiLoggerLogging"].set( logMessage currentLog )
+}
+initConfigWindow(_height){
+    global baseballAutoConfig
+    currentWindowHeight:=this.CONST_SIZE_CONFIG_HEIGHT
+    ; currentWindowHeight:=300
 
-    getPaused(){
-        return this.BoolPaused
-    }
-    startByGui() {
-        global baseballAuto
+    this.guiMain.addGroupBox("Config", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
+    ; this.guiMain.Add("CheckBox", "Pushbullet ", "xs+5 ys+20 h10", "configPushbulletEnabled",0)
+    ; this.guiMain.Add("Button", "Save", "x" this.maxGroupWidth -45 " yp+10 w50", "buttonConfigSave",0)
 
-        baseballAuto.start()
-    }
-    guiClosed(){
+    this.guiMain.Add("Text", "단독 활성화 : ", "xs+5 yp+20 section")
 
-        msgbox "Closed"
-    }
-    stopByGui() {
-        global baseballAuto
-        baseballAuto.tryStop()
-    }
-
-    configByGui( thisGui ){
-
-        this.changeContents( this.toggleConfig)
-        this.toggleConfig?this.toggleConfig:=false:this.toggleConfig:=true
-
-    }
-    byePlayerFunction(){
-        global globalCurrentPlayer, baseballAutoConfig
-        targetAppTiile:=globalCurrentPlayer.getAppTitle()
-        if( targetAppTiile = "" ){
-
-            player:=baseballAutoConfig.getDefaultPlayer()
-            targetAppTiile:=player.getAppTitle()
+    memberIndex:=1
+    for index, value in BaseballAutoPlayer.AVAILABLE_MODES
+    { 
+        if( value = "등반" or value ="로얄"){
+            continue
         }
-        if not ( targetAppTiile =""){
-            winmove, %targetAppTiile%,,3841,0
-        }
-        ; MsgBox, % "Target App=" targetAppTiile
-
-    }
-
-    hiPlayerFunction(){
-        global globalCurrentPlayer, baseballAutoConfig
-        targetAppTiile:=globalCurrentPlayer.getAppTitle()
-        if( targetAppTiile = "" ){
-
-            player:=baseballAutoConfig.getDefaultPlayer()
-            targetAppTiile:=player.getAppTitle()
-        }
-        if not ( targetAppTiile =""){
-            winmove, %targetAppTiile%,,0,0
-        }
-        ; winmove, %targetAppTiile%,,0,0
-    }
-
-    reloadByGui() {
-        global baseballAuto, baseballAutoConfig
-        baseballAuto.reload()
-
-        title := this.getTitle()
-        WinGetPos, posx, posy, width, height, %title%
-        baseballAutoConfig.setLastGuiPosition(posx, posy)
-
-        Reload
-    }
-    clearStatsByGui(){
-
-        global baseballAutoConfig
-
-        for index,player in baseballAutoConfig.players
-        {
-            player.setResult(0)
-            if( index = 1){
-                for key in player.countPerMode
-                {
-                    player.setCurrentModeResult(key,0)
-                }
-                for statusKey in player.countPerRestart
-                {
-                    
-                    player.setRestartCountResult(statusKey,0)
-                }
-            } 
-        }
-    }
-    savePlayerByGui(){
-        this.saveGuiConfigs()
-        ToolTip, Player Saved
-        Sleep , 500
-        ToolTip
-    }
-
-    saveGuiConfigs(){
-        global baseballAutoConfig
-        memberIndex:=1
-
-        for index, value in BaseballAutoPlayer.AVAILABLE_MODES
-        { 
-            if( value = "등반" or value ="로얄"){
-                continue
+        guiLabel :=% "AloneMode" index "CheckBox"
+        if ( memberIndex = 1 ){
+            baseballAutoConfig.standaloneEnabledModeMap[value]:=true
+            option:=% "xs+5 y+5 checked disabled"
+        }else{
+            if(memberIndex=7 or memberIndex = 13){
+                option:=% "xs+5 y+5"
+            }else{
+                option:="x+0 yp"
             }
-            guiLabel :=% "AloneMode" index "CheckBox" 
-            baseballAutoConfig.standaloneEnabledModeMap[value]:=this.guiMain.Controls[guiLabel].get()
-            memberIndex++
+            if ( baseballAutoConfig.standaloneEnabledModeMap[value] ){
+                option:= % option " checked"
+            }
         } 
+        this.guiMain.Add("CheckBox", value, option, guiLabel,0)
+        memberIndex++
+    } 
 
-        baseballAutoConfig.setStandAloneModeOrderString(this.getJobOrder())
-        baseballAutoConfig.enabledPlayers:=[]
-        for index,player in baseballAutoConfig.players
-        {
-            this.getGuiInfo(player)
-            player.setStandAloneModeOrder(baseballAutoConfig.standAloneModeOrderString)
-            player.setStandAloneModeEnableMap(baseballAutoConfig.standaloneEnabledModeMap)
-            if( player.getEnabled() ){
-                baseballAutoConfig.enabledPlayers.push(player)
+    this.guiMain.Add("Text", "단독 순서 : ", "xs y+13") 
+    this.guiMain.Add("Edit", baseballAutoConfig.standAloneModeOrderString, "xs y+3 h17 w" this.maxGroupWidth-10, "configJobOrder")
+
+    ; baseballAutoConfig.delaySecForClick
+    ; baseballAutoConfig.delaySecChangeWindow
+    ; baseballAutoConfig.delaySecSkip
+    ; baseballAutoConfig.delaySecReboot
+    this.guiMain.Add("Text", "딜레이 : ", "xs y+13")
+    this.guiMain.Add("Text", "클릭: ", "xs y+3 section")
+    this.guiMain.Add("Edit", baseballAutoConfig.delaySecForClick, "x+0 ys-2 w20 h15 +Right", "delayForClickConfigEdit")
+    this.guiMain.Add("Text", "초 화면: ", "x+0 ys+0")
+    this.guiMain.Add("Edit", baseballAutoConfig.delaySecChangeWindow, "x+0 ys-2 w20 h15 Right", "delayForChangeWindowConfigEdit")
+    this.guiMain.Add("Text", "초 스킵: ", "x+0 ys+0")
+    this.guiMain.Add("Edit", baseballAutoConfig.delaySecSkip, "x+0 ys-2 w20 h15 Right", "delayForSkipConfigEdit")
+    this.guiMain.Add("Text", "초 리붓: ", "x+0 ys+0")
+    this.guiMain.Add("Edit", baseballAutoConfig.delaySecReboot, "x+0 ys-2 w20 h15 Right", "delayForRebootConfigEdit")
+    this.guiMain.Add("Text", "초 ", "x+0 ys+0")
+
+    return currentWindowHeight
+}
+
+initOptionWindow( _height ){
+    global baseballAutoConfig
+
+    currentWindowHeight=40
+    this.guiMain.addGroupBox("Options", 10, _height , this.maxGroupWidth, currentWindowHeight , , true )
+
+    option:="xs+10 ys+20"
+    if( baseballAutoConfig.usingEquipmentForRankingBattleFlag){
+        option:= % option " checked"
+    }
+    this.guiMain.Add("Checkbox", "랭킹장비", option, "RankingBattleEquipmentCheckBox", 0)
+
+    option:="x+10 yp"
+    if( baseballAutoConfig.usingBoostItemFlag){
+        option:= % option " checked"
+    }
+    this.guiMain.Add("Checkbox", "부스터", option, "BoosterChk", 0)
+
+    option:="x+10 yp"
+    if( baseballAutoConfig.usingStageModeEquipmentFlag){
+        option:= % option " checked"
+    }
+    this.guiMain.Add("Checkbox", "스테장비", option, "StageEquipChk", 0)
+
+    option:="x+10 yp"
+    this.addFrontActive(option)
+    this.setFrontActive(baseballAutoConfig.getFrontAutoActive())
+
+    return currentWindowHeight
+}
+getUsingEquipment(){
+    return this.guiMain.Controls["RankingBattleEquipmentCheckBox"].get()
+} 
+setUsingEquipment(bool){
+    ; configFile 에서 설정되는 부분
+    this.guiMain.Controls["RankingBattleEquipmentCheckBox"].set(bool)
+}
+
+getUseStageEquip(){
+    return this.guiMain.Controls["StageEquipChk"].get()
+}
+
+setUseStageEquip( bool ) {
+    ; configFile 에서 설정되는 부분
+    this.guiMain.Controls["StageEquipChk"].set(bool)
+}
+
+getUseBooster() {
+    return this.guiMain.Controls["BoosterChk"].get()
+}
+setUseBooster( bool ) {
+    ; configFile 에서 설정되는 부분
+    this.guiMain.Controls["BoosterChk"].set(bool)
+}
+
+addFrontActive(option){
+    this.guiMain.Add("Checkbox", "프론트", option, "FrontActiveChk", 0)
+}
+getFrontActive() {
+    return this.guiMain.Controls["FrontActiveChk"].get()
+}
+setFrontActive( bool ) {
+    ; configFile 에서 설정되는 부분
+    this.guiMain.Controls["FrontActiveChk"].set(bool)
+}
+
+getPaused(){
+    return this.BoolPaused
+}
+startByGui() {
+    global baseballAuto
+
+    baseballAuto.start()
+}
+guiClosed(){
+
+    msgbox "Closed"
+}
+stopByGui() {
+    global baseballAuto
+    baseballAuto.tryStop()
+}
+
+configByGui( thisGui ){
+
+    this.changeContents( this.toggleConfig)
+    this.toggleConfig?this.toggleConfig:=false:this.toggleConfig:=true
+
+}
+byePlayerFunction(){
+    global globalCurrentPlayer, baseballAutoConfig
+    targetAppTiile:=globalCurrentPlayer.getAppTitle()
+    if( targetAppTiile = "" ){
+
+        player:=baseballAutoConfig.getDefaultPlayer()
+        targetAppTiile:=player.getAppTitle()
+    }
+    if not ( targetAppTiile =""){
+        winmove, %targetAppTiile%,,3841,0
+    }
+    ; MsgBox, % "Target App=" targetAppTiile
+
+}
+
+hiPlayerFunction(){
+    global globalCurrentPlayer, baseballAutoConfig
+    targetAppTiile:=globalCurrentPlayer.getAppTitle()
+    if( targetAppTiile = "" ){
+
+        player:=baseballAutoConfig.getDefaultPlayer()
+        targetAppTiile:=player.getAppTitle()
+    }
+    if not ( targetAppTiile =""){
+        winmove, %targetAppTiile%,,0,0
+    }
+    ; winmove, %targetAppTiile%,,0,0
+}
+
+reloadByGui() {
+    global baseballAuto, baseballAutoConfig
+    baseballAuto.reload()
+
+    title := this.getTitle()
+    WinGetPos, posx, posy, width, height, %title%
+    baseballAutoConfig.setLastGuiPosition(posx, posy)
+
+    Reload
+}
+clearStatsByGui(){
+
+    global baseballAutoConfig
+
+    for index,player in baseballAutoConfig.players
+    {
+        player.setResult(0)
+        if( index = 1){
+            for key in player.countPerMode
+            {
+                player.setCurrentModeResult(key,0)
             }
+            for statusKey in player.countPerRestart
+            {
+
+                player.setRestartCountResult(statusKey,0)
+            }
+        } 
+    }
+}
+savePlayerByGui(){
+    this.saveGuiConfigs()
+    ToolTip, Player Saved
+    Sleep , 500
+    ToolTip
+}
+
+saveGuiConfigs(){
+    global baseballAutoConfig
+    memberIndex:=1
+
+    for index, value in BaseballAutoPlayer.AVAILABLE_MODES
+    { 
+        if( value = "등반" or value ="로얄"){
+            continue
         }
-        baseballAutoConfig.setUsingEquipmentForRankingBattleFlag(this.getUsingEquipment())
-        baseballAutoConfig.setUsingBoostItemFlag(this.getUseBooster())
-        baseballAutoConfig.setUsingStageModeEquipmentFlag(this.getUseStageEquip())
-        baseballAutoConfig.setFrontAutoActive(this.getFrontActive())
+        guiLabel :=% "AloneMode" index "CheckBox" 
+        baseballAutoConfig.standaloneEnabledModeMap[value]:=this.guiMain.Controls[guiLabel].get()
+        memberIndex++
+    } 
 
-        baseballAutoConfig.setDelySecForClick(this.getGuiValueDelayForClick())
-        baseballAutoConfig.setDelaySecChangeWindow(this.getGuiValueDelayForChangeWindow())
-        baseballAutoConfig.setDelaySecSkip(this.getGuiValueDelayForSkip())
-        baseballAutoConfig.setDelaySecReboot(this.getGuiValueDelayForReboot())
-
-        baseballAutoConfig.saveConfigFile()
-    }
-    rolePassByGui(){
-        global globalContinueFlag
-        globalContinueFlag:=true
-        ToolTip, " JUST NEXT PLAYER"
-        Sleep , 500
-        ToolTip
-    }
-    roleAllowByGui(){
-        global globalCurrentPlayer
-        globalCurrentPlayer["status"]:="AUTO_PLAYING"
-        ToolTip, % globalCurrentPlayer.getAppTitle() " Already AutoPlaying()"
-        Sleep , 500
-        ToolTip
-    }
-    waitingResultByGui(){
-        global baseballAuto 
-        baseballAuto.setWantToResult(true)
-
-        ToolTip, 종료 또는 Mode Skip을 요청합니다.
-        Sleep , 1000
-        ToolTip
-    }
-
-    restartPlayerByGui(){
-        global baseballAuto 
-        baseballAuto.setWantToRestart(true)
-
-
-        logger:= new AutoLogger( "시 스 템" )
-        gameController := new MC_GameController()
-        typePerMode := Object()
-
-
-        player := new BaseballAutoPlayer(0)
-        player.setEnabled(true)
-        player.setAppTitle("main")
-        player.setRole("테스트") 
-
-        gameController.setActiveId("main")
-        startMode:= new GameStarterMode( gameController )
-        startMode.setPlayer(player)
-    
-        startMode.restartAppPlayer()
-    }
-    getGuiInfo(player){
-        player.setEnabled(this.guiMain.Controls[player.getKeyEnable()].get())
-        player.setAppTitle(this.guiMain.Controls[player.getKeyAppTitle()].get())
-        player.setRole(this.guiMain.Controls[player.getKeyRole()].get())
-        player.setBattleType(this.guiMain.Controls[player.getKeyBattleType()].get())
-    }
-    getJobOrder(){
-        return this.guiMain.Controls["configJobOrder"].get()
-    }
-    setJobOrder( order ){
-        this.guiMain.Controls["configJobOrder"].set(order)
-    }
-
-    getGuiValueDelayForClick(){
-        return this.guiMain.Controls["delayForClickConfigEdit"].get()
-    }
-
-    getGuiValueDelayForChangeWindow(){
-        return this.guiMain.Controls["delayForChangeWindowConfigEdit"].get()
-    }
-
-    getGuiValueDelayForSkip(){
-        return this.guiMain.Controls["delayForSkipConfigEdit"].get()
-    }
-    getGuiValueDelayForReboot(){
-        return this.guiMain.Controls["delayForRebootConfigEdit"].get()
-    }
-
-    started(){
-        this.statusPaused:=false
-        this.guiMain.Controls["GuiStopButton"].show()
-        this.guiMain.Controls["GuiPauseButton"].show()
-        this.guiMain.Controls["GuiStartButton"].hide()
-    }
-
-    pauseByGui(){
-        if( this.statusPaused = false ){
-            this.statusPaused:= true
-            this.guiMain.Controls["GuiPauseButton"].hide()
-            this.guiMain.Controls["GuiResumeButton"].show()
-            pause
+    baseballAutoConfig.setStandAloneModeOrderString(this.getJobOrder())
+    baseballAutoConfig.enabledPlayers:=[]
+    for index,player in baseballAutoConfig.players
+    {
+        this.getGuiInfo(player)
+        player.setStandAloneModeOrder(baseballAutoConfig.standAloneModeOrderString)
+        player.setStandAloneModeEnableMap(baseballAutoConfig.standaloneEnabledModeMap)
+        if( player.getEnabled() ){
+            baseballAutoConfig.enabledPlayers.push(player)
         }
     }
+    baseballAutoConfig.setUsingEquipmentForRankingBattleFlag(this.getUsingEquipment())
+    baseballAutoConfig.setUsingBoostItemFlag(this.getUseBooster())
+    baseballAutoConfig.setUsingStageModeEquipmentFlag(this.getUseStageEquip())
+    baseballAutoConfig.setFrontAutoActive(this.getFrontActive())
 
-    resumeByGui(){
-        if( this.statusPaused = true ){
-            this.statusPaused:= false
-            this.guiMain.Controls["GuiPauseButton"].show()
-            this.guiMain.Controls["GuiResumeButton"].hide()
-            pause
-        }
-    }
-    stopped(){
-        this.guiMain.Controls["GuiStopButton"].hide()
+    baseballAutoConfig.setDelySecForClick(this.getGuiValueDelayForClick())
+    baseballAutoConfig.setDelaySecChangeWindow(this.getGuiValueDelayForChangeWindow())
+    baseballAutoConfig.setDelaySecSkip(this.getGuiValueDelayForSkip())
+    baseballAutoConfig.setDelaySecReboot(this.getGuiValueDelayForReboot())
+
+    baseballAutoConfig.saveConfigFile()
+}
+rolePassByGui(){
+    global globalContinueFlag
+    globalContinueFlag:=true
+    ToolTip, " JUST NEXT PLAYER"
+    Sleep , 500
+    ToolTip
+}
+roleAllowByGui(){
+    global globalCurrentPlayer
+    globalCurrentPlayer["status"]:="AUTO_PLAYING"
+    ToolTip, % globalCurrentPlayer.getAppTitle() " Already AutoPlaying()"
+    Sleep , 500
+    ToolTip
+}
+waitingResultByGui(){
+    global baseballAuto 
+    baseballAuto.setWantToResult(true)
+
+    ToolTip, 종료 또는 Mode Skip을 요청합니다.
+    Sleep , 1000
+    ToolTip
+}
+
+restartPlayerByGui(){
+    global baseballAuto 
+    baseballAuto.setWantToRestart(true)
+
+    logger:= new AutoLogger( "시 스 템" )
+    gameController := new MC_GameController()
+    typePerMode := Object()
+
+    player := new BaseballAutoPlayer(0)
+    player.setEnabled(true)
+    player.setAppTitle("main")
+    player.setRole("테스트") 
+
+    gameController.setActiveId("main")
+    startMode:= new GameStarterMode( gameController )
+    startMode.setPlayer(player)
+
+    startMode.restartAppPlayer()
+}
+getGuiInfo(player){
+    player.setEnabled(this.guiMain.Controls[player.getKeyEnable()].get())
+    player.setAppTitle(this.guiMain.Controls[player.getKeyAppTitle()].get())
+    player.setRole(this.guiMain.Controls[player.getKeyRole()].get())
+    player.setBattleType(this.guiMain.Controls[player.getKeyBattleType()].get())
+}
+getJobOrder(){
+    return this.guiMain.Controls["configJobOrder"].get()
+}
+setJobOrder( order ){
+    this.guiMain.Controls["configJobOrder"].set(order)
+}
+
+getGuiValueDelayForClick(){
+    return this.guiMain.Controls["delayForClickConfigEdit"].get()
+}
+
+getGuiValueDelayForChangeWindow(){
+    return this.guiMain.Controls["delayForChangeWindowConfigEdit"].get()
+}
+
+getGuiValueDelayForSkip(){
+    return this.guiMain.Controls["delayForSkipConfigEdit"].get()
+}
+getGuiValueDelayForReboot(){
+    return this.guiMain.Controls["delayForRebootConfigEdit"].get()
+}
+
+started(){
+    this.statusPaused:=false
+    this.guiMain.Controls["GuiStopButton"].show()
+    this.guiMain.Controls["GuiPauseButton"].show()
+    this.guiMain.Controls["GuiStartButton"].hide()
+}
+
+pauseByGui(){
+    if( this.statusPaused = false ){
+        this.statusPaused:= true
         this.guiMain.Controls["GuiPauseButton"].hide()
-        this.guiMain.Controls["GuiResumeButton"].hide()
-        this.guiMain.Controls["GuiStartButton"].show()
+        this.guiMain.Controls["GuiResumeButton"].show()
+        pause
     }
-    Activate(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:="") {
-        MsgBox % "You've really done it now.`r`nCtrlHwnd= " CtrlHwnd "`r`nGuiEvent = " GuiEvent "`r`nEventInfo = " EventInfo "`r`nErrLevel = " ErrLevel
-    }
+}
 
-    TestRoutine(){
-        MsgBox % "You've activated the test subroutine!"
+resumeByGui(){
+    if( this.statusPaused = true ){
+        this.statusPaused:= false
+        this.guiMain.Controls["GuiPauseButton"].show()
+        this.guiMain.Controls["GuiResumeButton"].hide()
+        pause
     }
+}
+stopped(){
+    this.guiMain.Controls["GuiStopButton"].hide()
+    this.guiMain.Controls["GuiPauseButton"].hide()
+    this.guiMain.Controls["GuiResumeButton"].hide()
+    this.guiMain.Controls["GuiStartButton"].show()
+}
+Activate(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:="") {
+    MsgBox % "You've really done it now.`r`nCtrlHwnd= " CtrlHwnd "`r`nGuiEvent = " GuiEvent "`r`nEventInfo = " EventInfo "`r`nErrLevel = " ErrLevel
+}
+
+TestRoutine(){
+    MsgBox % "You've activated the test subroutine!"
+}
 }
 
