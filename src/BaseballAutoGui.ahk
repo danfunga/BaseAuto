@@ -287,15 +287,15 @@ Class BaseballAutoGui{
             BaseballAutoPlayer.STASTICS_TITLE_KEY_MAP[value]:=guiLabel 
             existIndex++
         } 
-        guiTitle:= "메롱:"
-        guiLabel:=% "Statistic" existIndex "Title"
-        if(existIndex=6 or existIndex = 11){
-            option:=% "xs y+4"
-        }else{
-            option:=% "x+30 yp"
-        }
-        this.guiMain.Add("Text", guiTitle, option,guiLabel,0)
-        BaseballAutoPlayer.STASTICS_TITLE_KEY_MAP["메롱"]:=guiLabel 
+        ; guiTitle:= "메롱:"
+        ; guiLabel:=% "Statistic" existIndex "Title"
+        ; if(existIndex=6 or existIndex = 11){
+        ;     option:=% "xs y+4"
+        ; }else{
+        ;     option:=% "x+30 yp"
+        ; }
+        ; this.guiMain.Add("Text", guiTitle, option,guiLabel,0)
+        ; BaseballAutoPlayer.STASTICS_TITLE_KEY_MAP["메롱"]:=guiLabel 
 
         existIndex:=1
         for index, value in BaseballAutoPlayer.AVAILABLE_MODES
@@ -320,17 +320,17 @@ Class BaseballAutoGui{
             existIndex++
         } 
 
-        guiTitle:=currentPlayer.countPerMode["메롱"]
-        guiLabel:=% "Statistic" existIndex "Result"
+        ; guiTitle:=currentPlayer.countPerMode["메롱"]
+        ; guiLabel:=% "Statistic" existIndex "Result"
 
-        if(existIndex=6 or existIndex = 11){
-            option:=% "xs y+4 wp right"
-        }else{
-            option:=% "x+36 yp wp right"
-        }
+        ; if(existIndex=6 or existIndex = 11){
+        ;     option:=% "xs y+4 wp right"
+        ; }else{
+        ;     option:=% "x+36 yp wp right"
+        ; }
 
-        this.guiMain.Add("Text", guiTitle, option, guiLabel,0)
-        BaseballAutoPlayer.STASTICS_KEY_MAP["메롱"]:=guiLabel 
+        ; this.guiMain.Add("Text", guiTitle, option, guiLabel,0)
+        ; BaseballAutoPlayer.STASTICS_KEY_MAP["메롱"]:=guiLabel 
 
         return currentWindowHeight
     }
@@ -348,7 +348,7 @@ Class BaseballAutoGui{
             if ( existIndex < 4 ){
                 guiTitle:=% value ":"
             }else{
-                guiTitle:=% "성 공:"
+                guiTitle:=% "성   공:"
             }
             guiLabel:=% "RestartCount" index "Title"
             if ( existIndex = 1 ){
@@ -428,7 +428,7 @@ initConfigWindow(_height){
     memberIndex:=1
     for index, value in BaseballAutoPlayer.AVAILABLE_MODES
     { 
-        if( value = "등반" or value ="로얄"){
+        if( value = "등반" or value ="로얄" or value="메롱"){
             continue
         }
         guiLabel :=% "AloneMode" index "CheckBox"
@@ -458,13 +458,13 @@ initConfigWindow(_height){
     ; baseballAutoConfig.delaySecReboot
     this.guiMain.Add("Text", "딜레이 : ", "xs y+13")
     this.guiMain.Add("Text", "클릭: ", "xs y+3 section")
-    this.guiMain.Add("Edit", baseballAutoConfig.delaySecForClick, "x+0 ys-2 w20 h15 +Right", "delayForClickConfigEdit")
+    this.guiMain.Add("Edit", baseballAutoConfig.delaySecForClick, "x+0 ys-2 w25 h15 +Right", "delayForClickConfigEdit")
     this.guiMain.Add("Text", "초 화면: ", "x+0 ys+0")
-    this.guiMain.Add("Edit", baseballAutoConfig.delaySecChangeWindow, "x+0 ys-2 w20 h15 Right", "delayForChangeWindowConfigEdit")
+    this.guiMain.Add("Edit", baseballAutoConfig.delaySecChangeWindow, "x+0 ys-2 w25 h15 Right", "delayForChangeWindowConfigEdit")
     this.guiMain.Add("Text", "초 스킵: ", "x+0 ys+0")
-    this.guiMain.Add("Edit", baseballAutoConfig.delaySecSkip, "x+0 ys-2 w20 h15 Right", "delayForSkipConfigEdit")
+    this.guiMain.Add("Edit", baseballAutoConfig.delaySecSkip, "x+0 ys-2 w25 h15 Right", "delayForSkipConfigEdit")
     this.guiMain.Add("Text", "초 리붓: ", "x+0 ys+0")
-    this.guiMain.Add("Edit", baseballAutoConfig.delaySecReboot, "x+0 ys-2 w20 h15 Right", "delayForRebootConfigEdit")
+    this.guiMain.Add("Edit", baseballAutoConfig.delaySecReboot, "x+0 ys-2 w25 h15 Right", "delayForRebootConfigEdit")
     this.guiMain.Add("Text", "초 ", "x+0 ys+0")
 
     return currentWindowHeight

@@ -20,10 +20,10 @@ class BaseballAutoConfig{
         this.usingAutofrontActive:=true
 
         ; 딜레이 설정
-        this.delaySecForClick:=2
-        this.delaySecChangeWindow:=5
-        this.delaySecSkip:=0.1
-        this.delaySecReboot:=60
+        this.delaySecForClick:=1.5
+        this.delaySecChangeWindow:=4
+        this.delaySecSkip:=0.2
+        this.delaySecReboot:=40
 
         this.initConfig()
     }
@@ -50,7 +50,7 @@ class BaseballAutoConfig{
         ; init 단독 모드 활성화 상태
         for index, value in BaseballAutoPlayer.AVAILABLE_MODES
         { 
-            if( value = "등반" or value="로얄"){
+            if( value = "등반" or value="로얄" or value="메롱"){
                 continue
             }
             loadValue := this.configFile.loadValue("STANDALONE_ENABLED_MODE", value )
@@ -92,6 +92,9 @@ class BaseballAutoConfig{
                 ; Main Static 설정
                 for index, value in BaseballAutoPlayer.AVAILABLE_MODES
                 { 
+                    ; 메롱은 불러오지 않는다.
+                    if(value="메롱")
+                        continue
                     readValue:= this.configFile.loadValue("PLAYERS_STAISTICS", value )
                     if( readValue = "")
                         readValue:=0
@@ -168,7 +171,7 @@ class BaseballAutoConfig{
 
     setFrontAutoActive( value ){
         if(value =""){
-            value:=false
+            return
         }
         this.usingAutofrontActive:=value
     }
@@ -178,25 +181,25 @@ class BaseballAutoConfig{
 
     setDelySecForClick(value){
         if(value =""){
-            value:=1
+            return
         }
         this.delaySecForClick:=value
     }
     setDelaySecChangeWindow(value){
         if(value =""){
-            value:=2
+            return
         }
         this.delaySecChangeWindow:=value
     }
     setDelaySecSkip(value){
         if(value =""){
-            value:=0.1
+            return
         }
         this.delaySecSkip:=value
     }
     setDelaySecReboot(value){
         if(value =""){
-            value:=30
+            return
         }
         this.delaySecReboot:=value
     }

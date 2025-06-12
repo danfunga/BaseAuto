@@ -4,7 +4,7 @@ class BaseballAutoPlayer{
     static logger:= new AutoLogger( "Player" ) 
 
     static AVAILABLE_ROLES:=["리그","일꾼","단독","실대","랭대","홈런","로얄","패넌","친구","보상","스테","히스","등반","타홀","클협"] ;클협?
-    static AVAILABLE_MODES:=["리그","홈런","랭대","히스","스테","타홀","클협","친구","패넌","보상","실대","등반","로얄"]
+    static AVAILABLE_MODES:=["리그","홈런","랭대","히스","스테","타홀","클협","친구","패넌","보상","실대","등반","로얄", "메롱"]
     static RESTART_TYPES:=["탭닫기","재기동","매니저","탭닫기_성공","재기동_성공","매니저_성공"]
     ; static AVAILABLE_MODES:=["리그","실대","랭대","홈런","로얄","친구","보상","히스","스테","등반","클협","타홀"]
     static AVAILABLE_PLAY_TYPE:=["전체","공격","수비"]
@@ -27,7 +27,7 @@ class BaseballAutoPlayer{
 
     ; 1번 돌때 도는 횟수
     static COUNT_PER_ALONE_MODE:={ "리그":5, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":-1, "타홀":-1,"친구":10, "보상":1, "패넌":1 }     
-    static DEFULAT_LOOP_COUNT_PER_DAY :={ "리그":-1, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":3, "타홀":-1,"친구":-1, "보상":-1, "패넌":3 } 
+    static DEFULAT_LOOP_COUNT_PER_DAY :={ "리그":-1, "실대":1,"랭대":-1,"홈런":-1,"히스":-1, "스테":3,"클협":-1, "타홀":-1,"친구":-1, "보상":-1, "패넌":3 } 
     ; Default Config
     static ALONE_MODE_ENABLED_DEFAULT:={ "리그":true, "실대":false,"랭대":true,"홈런":true,"히스":true, "스테":true,"클협":true, "타홀":true,"친구":true, "보상":true ,"패넌":true} 
     static ALONE_MODE_ORDER_DEFAULT:="리그,실대,패넌,홈런,랭대,클협,히스,스테,타홀,친구,보상"
