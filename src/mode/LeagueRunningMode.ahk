@@ -91,7 +91,7 @@ Class LeagueRunningMode extends AutoGameMode{
             this.logger.log("프런트를 활성화를 진행하겠습니다.")
             if ( this.gameController.searchAndClickFolder("보상모드\버튼_프론트활성화") ){
                 if ( this.gameController.searchImageFolder("보상모드\버튼_프론트활성화\화면_활성화확인") ){
-                    if( this.clickNextAndConfirmButton() ){
+                    if( this.clickYesButton() ){
                         this.logger.log("프런트를 활성화 했습니다.")
                         this.gameController.sleep(2)
                         this.gameController.clickESC()

@@ -361,6 +361,9 @@ Class AutoGameMode{
     clickNextAndConfirmButton(){
         return this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인" )
     }
+    clickYesButton(){
+        return this.gameController.searchAndClickFolder("1.공통\버튼_예" )
+    }
 
     checkWantToModeQuit(){
         if ( this.player.getWaitingResult() ){
