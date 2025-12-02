@@ -64,7 +64,6 @@ Class InActiveImageSearcher{
         static sampleStep:=20
         w:=Gdip_GetImageWidth(this.pBitmapHayStack)
         h:=Gdip_GetImageHeight(this.pBitmapHayStack)
-        ToolTip, "Width=%w% Height=%h%"
 
         Gdip_LockBits(this.pBitmapHayStack,0,0,w,h,stride,scan0,bd)
         hash:=0
