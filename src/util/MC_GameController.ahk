@@ -87,8 +87,8 @@ class MC_GameController{
     }
 
     ;waitDelayForClick(){
-     ;   global baseballAutoConfig 
-      ;  this.sleep(baseballAutoConfig.delaySecForClick)
+    ;   global baseballAutoConfig 
+    ;  this.sleep(baseballAutoConfig.delaySecForClick)
     ;}
 
     waitDelayForClick(extra := ""){
@@ -180,5 +180,9 @@ class MC_GameController{
         this.logger.debug( "특정 비율을 클릭합니다.(화면) WinW=" winW ", WinH=" winH ", WinX" winX " , WinY" winY)
         this.logger.debug( "특정 비율을 클릭합니다. RatioX=" ratioX ", RatioY=" ratioY ", ResultX=" targetX ", ResultY=" targetY )
         this.randomClick(targetX, targetY, 0, maxSize, needDelay)
+    }
+
+    getCurrentImageHashNumber(){
+        return this.imageSearcher.getCurrentBitMapHash()
     }
 }
