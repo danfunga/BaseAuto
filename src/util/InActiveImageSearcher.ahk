@@ -42,11 +42,11 @@ Class InActiveImageSearcher{
                 ; this.logger.log( target "을 찾았다고 말하지만 없네요" )
                 findResult:=false 
             }else{
-                StringSplit, LISTArray, resultList, `,             
+                StringSplit, LISTArray, resultList, `, 
                 intPosX:=LISTArray1 
                 intPosY:=LISTArray2
                 ; this.logger.log( target "을 찾았습니다. X=" intPosX ", Y=" intPosY )
-                findResult:=true             
+                findResult:=true 
             }
             Gdip_DisposeImage(pBitmapNeedle)
         }else {
@@ -58,5 +58,28 @@ Class InActiveImageSearcher{
             this.done()
         }
         return findResult
+    }
+    getCurrentBitMapHash(){
+        this.prepare()
+        static sampleStep:=20
+        w:=Gdip_GetImageWidth(this.pBitmapHayStack)
+        h:=Gdip_GetImageHeight(this.pBitmapHayStack)
+
+        Gdip_LockBits(this.pBitmapHayStack,0,0,w,h,stride,scan0,bd)
+        hash:=0
+        p:=scan0
+
+        Loop % (h // sampleStep){
+            y:= A_Index *sampleStep
+            row:= p+(y*stride)
+            Loop % (w // sampleStep){
+                x:=A_Index *sampleStep
+                color:=NumGet(row+x*4,"UInt")
+                hash^=color * (x+1)*(y+1)
+            }
+        }
+        Gdip_UnlockBits(this.pBitmapHayStack, bd)
+        this.done()
+        return hash
     }
 }

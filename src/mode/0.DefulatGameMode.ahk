@@ -31,11 +31,11 @@ Class AutoGameMode{
 
     checkAndStopStartLimitCount(){
         this.startingLoopLimit++
-        this.player.setCurrentModeResult("메롱", this.startingLoopLimit)         
+        this.player.setCurrentModeResult("메롱", this.startingLoopLimit) 
         if(this.startingLoopLimit >40){
             if ( this.player.appMode = "리그" ){
                 return
-            }            
+            } 
             this.logger.log("모드 시작을 못하고 Loop가 도는거 같아 다음 임무를 수행합니다.")
             this.stopControl()
             this.startingLoopLimit:=0
@@ -141,7 +141,6 @@ Class AutoGameMode{
         }
         return 0
     }
-    
 
     ;-------------------------------
     ; 스페셜 모드 화면

@@ -17,7 +17,6 @@
 #include %A_ScriptDir%\src\mode\PennantRaceMode.ahk
 #include %A_ScriptDir%\src\mode\ClubTogetherMode.ahk
 
-
 Class BaseballAuto{
     __NEW(){
         this.init()
@@ -115,6 +114,7 @@ Class BaseballAuto{
                     this.gameController.setActiveId(player.getAppTitle())
 
                     loopCount:=0
+                    sameCount:=0
                     while( AUTO_RUNNING = true ){ 
                         localChecker:=0
                         ; 외부적 요인에 의해 재기동이 되더라도 정상 동작위해 Handle Update
@@ -159,7 +159,7 @@ Class BaseballAuto{
                                         this.startMode.goBackward()
                                     } 
                                     if ( loopCount > 130 ){
-                                        this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 이녀석을 강제...로...")
+                                        this.logger.log("ERROR : 리그모드도 갇혀 있으면 다른애들이 불쌍하다.. 이녀석을 강제...로...")
                                         if( this.startMode.quitCom2usBaseball()){
                                             this.logger.log("자~ 재기동을 시켜 버렸다... 어떻게 하나 보자")
                                             player.setUnknwon()
@@ -169,16 +169,16 @@ Class BaseballAuto{
                                         }
                                     }
                                 }else{
-                                    if( loopCount!=0 and mod(loopCount,30) = 0 ){
+                                    if( loopCount!=0 and mod(loopCount,10) = 0 ){
                                         this.logger.log(player.getAppTitle() "[" player.getMode() "] 이미지 없음 " loopCount "회")
                                     }
-                                    if( loopCount = 90 or loopCount = 120){
-                                        this.logger.log("ERROR : 어딘지 모르니 일단 뒤로가기!!!")
+                                    if( loopCount = 30 or loopCount = 60){
+                                        this.logger.log("ERROR : 어딘지 모르니 일단 뒤로가기!!! " loopCount "/90")
                                         this.startMode.setPlayer(player)
                                         this.startMode.goBackward()
                                     } 
 
-                                    if ( loopCount > 130 ){
+                                    if ( loopCount > 90 ){
                                         this.logger.log("ERROR : 갇혀 있으면 다른애들이 불쌍하다.. 이녀석을 강제...로...")
                                         if( this.startMode.quitCom2usBaseball()){
                                             this.logger.log("자~ 재기동을 시켜 버렸다... 어떻게 하나 보자") 
@@ -189,7 +189,26 @@ Class BaseballAuto{
                                         }
                                     }
                                 } 
+
                             } else{
+                                currentHash:=this.gameController.getCurrentImageHashNumber()
+                                if( currentHash = beforeHash){
+                                    sameCount++
+                                    this.logger.log("이거 멈춘거 아니냐?!?!? " sameCount "/20") 
+                                }else{
+                                    sameCount:=0
+                                }
+                                beforeHash:=currentHash 
+
+                                if ( sameCount > 20 ){
+                                    this.logger.log("ERROR : 화면이 멈춘거 같으니깐 재기동 한다!!!!")
+                                    if( this.startMode.quitCom2usBaseball()){
+                                        this.logger.log("맞는지 몰라!!!... 어떻게 하나 보자") 
+                                        player.setUnknwon()
+                                        sameCount:=0
+                                        loopCount:=0
+                                    }
+                                }
                                 loopCount:=0
                             }
                         }
