@@ -142,11 +142,13 @@ Class LeagueRunningMode extends AutoGameMode{
                 this.player.setNeedSkip(false)
             }
 
-            if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){                
+            if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){         
+                if( this.gameController.searchAndClickFolder("1.공통\버튼_이어하기") ){       
                 this.startingLoopLimit:=0
                 this.logger.log("이어하기는 정상 종료, 리그 종료와 무관하게 수행합니다.")
                 this.gameController.sleep(10)
                 return 1
+                }
             }else{
                 this.logger.log("이어하기가 아닙니다.")
             }
