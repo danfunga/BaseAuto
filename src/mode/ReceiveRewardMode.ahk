@@ -238,6 +238,7 @@ Class ReceiveRewardMode extends AutoGameMode{
                     this.gameController.waitDelayForLoading()
                     this.logger.log("일일 보상 모두 받기를 수행합니다.") 
                     this.checkPopup()
+                    this.gameController.searchAndClickFolder("보상모드\버튼_확인")
                     return 1
                 }else{
                     this.logger.log("일일 보상 없음") 
@@ -250,6 +251,7 @@ Class ReceiveRewardMode extends AutoGameMode{
                 if ( this.gameController.searchAndClickFolder("보상모드\버튼_보상받고보내기") ){
                     this.gameController.waitDelayForLoading()
                     this.logger.log("주간 보상 모두 받기를 수행합니다.") 
+                    this.gameController.searchAndClickFolder("보상모드\버튼_확인")
                     this.checkPopup()
                     return 1
                 } else{

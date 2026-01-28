@@ -58,7 +58,12 @@ Class GameStarterMode extends AutoGameMode{
         result:=0
         if ( this.gameController.searchImageFolder("게임실행모드\Button_NoMoreAds") ){
             this.continueControl()
-            this.logger.log("팝업 광고 등을 취소합니다..") 
+            this.logger.log("팝업 광고 등을 취소합니다.")
+            if ( this.gameController.searchAndClickFolder("1.공통\버튼_다음_확인") = true ){
+                result+=1
+                result+=this.skipPopupAndAds()			
+            }
+
             if ( this.gameController.searchAndClickFolder("게임실행모드\Button_NoMoreAds") = true ){
                 result+=1
                 result+=this.skipPopupAndAds()			
