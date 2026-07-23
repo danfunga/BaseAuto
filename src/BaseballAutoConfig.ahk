@@ -34,11 +34,11 @@ class BaseballAutoConfig{
     {
         posX:= this.configFile.loadValue("GUI_POSITION", "MAIN_X")
         posY:= this.configFile.loadValue("GUI_POSITION", "MAIN_Y")
-        ; ToolTip, "posX " %posX% "  posY" %posY% 
-        if ( posX = "" ) 
-            posX:=1150
-        if ( posY = "" ) 
-            posY:=0
+        ; ToolTip, "posX " %posX% " posY" %posY% 
+        if ( posX = "" || posX<0 ) 
+            posX:=4
+        if ( posY = "" || posY<0) 
+            posY:=500
     }
     setLastGuiPosition( posX, posY)
     {
